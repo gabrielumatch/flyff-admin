@@ -35,24 +35,68 @@ const sidebarNavItems = [
     icon: Languages,
     items: [
       {
-        title: "Item Names",
-        href: "/dashboard/translations/items",
+        title: "Character",
+        href: "/dashboard/translations/character",
       },
       {
-        title: "NPC Dialogues",
-        href: "/dashboard/translations/npcs",
+        title: "Etc",
+        href: "/dashboard/translations/etc",
       },
       {
-        title: "UI Elements",
-        href: "/dashboard/translations/ui",
+        title: "Honor List",
+        href: "/dashboard/translations/honor-list",
       },
       {
-        title: "Quest Text",
-        href: "/dashboard/translations/quests",
+        title: "Lord Skills",
+        href: "/dashboard/translations/lord-skills",
       },
       {
-        title: "System Messages",
-        href: "/dashboard/translations/messages",
+        title: "Prop Items",
+        href: "/dashboard/translations/prop-items",
+      },
+      {
+        title: "Prop Item Etc",
+        href: "/dashboard/translations/prop-item-etc",
+      },
+      {
+        title: "Prop Karma",
+        href: "/dashboard/translations/prop-karma",
+      },
+      {
+        title: "Prop Combo Box Data",
+        href: "/dashboard/translations/prop-combo-box-data",
+      },
+      {
+        title: "Prop Motion",
+        href: "/dashboard/translations/prop-motion",
+      },
+      {
+        title: "Prop Mover",
+        href: "/dashboard/translations/prop-mover",
+      },
+      {
+        title: "Prop Skill",
+        href: "/dashboard/translations/prop-skill",
+      },
+      {
+        title: "Prop Troupe Skill",
+        href: "/dashboard/translations/prop-troupe-skill",
+      },
+      {
+        title: "Quest Destination",
+          href: "/dashboard/translations/quest-destination",
+      },
+      {
+        title: "Resdata",
+        href: "/dashboard/translations/resdata",
+      },
+      {
+        title: "Text Client",
+        href: "/dashboard/translations/text-client",
+      },
+      {
+        title: "World",
+        href: "/dashboard/translations/world",
       },
     ],
   },
