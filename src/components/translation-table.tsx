@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Search, Edit, Trash2, Plus } from "lucide-react"
 import { useSupabase } from "./supabase-provider"
+import { TranslationEditModal } from "./translation-edit-modal"
 
 interface TranslationRecord {
   szname: string
@@ -64,6 +65,8 @@ export function TranslationTable({ tableName, title, description }: TranslationT
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalRecords, setTotalRecords] = useState(0)
+  const [editingRecord, setEditingRecord] = useState<TranslationRecord | null>(null)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const itemsPerPage = 20
 
   useEffect(() => {
@@ -102,8 +105,12 @@ export function TranslationTable({ tableName, title, description }: TranslationT
   }
 
   const handleEdit = (record: TranslationRecord) => {
-    // TODO: Implement edit functionality
-    console.log('Edit record:', record)
+    setEditingRecord(record)
+    setIsEditModalOpen(true)
+  }
+
+  const handleEditSuccess = () => {
+    fetchRecords()
   }
 
   const handleDelete = async (szname: string) => {
@@ -269,9 +276,21 @@ export function TranslationTable({ tableName, title, description }: TranslationT
                 </Pagination>
               </div>
             )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
-}
+                     </CardContent>
+         </Card>
+       </div>
+
+       {/* Edit Modal */}
+       <TranslationEditModal
+         isOpen={isEditModalOpen}
+         onClose={() => {
+           setIsEditModalOpen(false)
+           setEditingRecord(null)
+         }}
+         record={editingRecord}
+         tableName={tableName}
+         onSuccess={handleEditSuccess}
+       />
+     </div>
+   )
+ }
