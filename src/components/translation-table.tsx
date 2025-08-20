@@ -10,6 +10,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { Search, Edit, Trash2, Plus } from "lucide-react"
 import { useSupabase } from "./supabase-provider"
 import { TranslationEditModal } from "./translation-edit-modal"
+import { TranslationAddModal } from "./translation-add-modal"
 
 interface TranslationRecord {
   szname: string
@@ -67,6 +68,7 @@ export function TranslationTable({ tableName, title, description }: TranslationT
   const [totalRecords, setTotalRecords] = useState(0)
   const [editingRecord, setEditingRecord] = useState<TranslationRecord | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const itemsPerPage = 20
 
   useEffect(() => {
@@ -113,6 +115,10 @@ export function TranslationTable({ tableName, title, description }: TranslationT
     fetchRecords()
   }
 
+  const handleAddSuccess = () => {
+    fetchRecords()
+  }
+
   const handleDelete = async (szname: string) => {
     if (!confirm('Are you sure you want to delete this record?')) return
 
@@ -146,10 +152,10 @@ export function TranslationTable({ tableName, title, description }: TranslationT
             <h2 className="text-3xl font-bold">{title}</h2>
             <p className="text-muted-foreground">{description}</p>
           </div>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add New Translation
-          </Button>
+                     <Button onClick={() => setIsAddModalOpen(true)}>
+             <Plus className="h-4 w-4 mr-2" />
+             Add New Translation
+           </Button>
         </div>
 
         {/* Search */}
@@ -290,6 +296,14 @@ export function TranslationTable({ tableName, title, description }: TranslationT
          record={editingRecord}
          tableName={tableName}
          onSuccess={handleEditSuccess}
+       />
+
+       {/* Add Modal */}
+       <TranslationAddModal
+         isOpen={isAddModalOpen}
+         onClose={() => setIsAddModalOpen(false)}
+         tableName={tableName}
+         onSuccess={handleAddSuccess}
        />
      </div>
    )
