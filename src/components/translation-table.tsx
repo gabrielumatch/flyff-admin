@@ -145,8 +145,8 @@ export function TranslationTable({ tableName, title, description }: TranslationT
   }
 
   return (
-    <div className="p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="p-4">
+      <div className="max-w-none mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-3xl font-bold">{title}</h2>
