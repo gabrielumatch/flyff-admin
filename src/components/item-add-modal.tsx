@@ -17,12 +17,20 @@ import type { ItemRecord } from "./item-table";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getItemFieldDescription } from "@/lib/item-field-descriptions";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ItemAddModalProps {
   isOpen: boolean;
   onClose: () => void;
   tableName: string;
   onSuccess: () => void;
+  jobOptions: string[];
 }
 
 export function ItemAddModal({
@@ -30,6 +38,7 @@ export function ItemAddModal({
   onClose,
   tableName,
   onSuccess,
+  jobOptions,
 }: ItemAddModalProps) {
   const { supabase } = useSupabase();
   const [formData, setFormData] = useState<Record<string, string>>({});
@@ -124,11 +133,29 @@ export function ItemAddModal({
                       }
                       help={getItemFieldDescription(key)}
                     />
-                    <Input
-                      id={key}
-                      value={formData[key] ?? ""}
-                      onChange={(e) => handleInputChange(key, e.target.value)}
-                    />
+                    {key === "dwitemjob" ? (
+                      <Select
+                        value={formData[key] ?? ""}
+                        onValueChange={(v) => handleInputChange(key, v)}
+                      >
+                        <SelectTrigger id={key} className="w-full">
+                          <SelectValue placeholder="Select job" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {jobOptions.map((j) => (
+                            <SelectItem key={j} value={j}>
+                              {j}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Input
+                        id={key}
+                        value={formData[key] ?? ""}
+                        onChange={(e) => handleInputChange(key, e.target.value)}
+                      />
+                    )}
                   </div>
                 );
               })}

@@ -569,6 +569,7 @@ export function ItemTable({
         record={editingRecord}
         tableName={tableName}
         onSuccess={handleEditSuccess}
+        jobOptions={jobOptions}
       />
 
       <ItemAddModal
@@ -576,6 +577,7 @@ export function ItemTable({
         onClose={() => setIsAddModalOpen(false)}
         tableName={tableName}
         onSuccess={handleAddSuccess}
+        jobOptions={jobOptions}
       />
     </div>
   );
