@@ -1,23 +1,24 @@
-'use client'
+"use client";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { 
-  LayoutDashboard, 
-  Package, 
-  Languages, 
-  Users, 
-  Settings, 
-  BarChart3, 
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  LayoutDashboard,
+  Package,
+  Languages,
+  Users,
+  Settings,
+  BarChart3,
   FileText,
   ChevronLeft,
-  Menu
-} from "lucide-react"
-import { useState } from "react"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import { ChevronDown } from "lucide-react"
+  Menu,
+  WandSparkles,
+} from "lucide-react";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 
 const sidebarNavItems = [
   {
@@ -26,9 +27,23 @@ const sidebarNavItems = [
     icon: LayoutDashboard,
   },
   {
+    title: "Skills",
+    href: "/dashboard/skills",
+    icon: WandSparkles,
+  },
+  {
     title: "Items",
-    href: "/dashboard/items",
     icon: Package,
+    items: [
+      {
+        title: "Items",
+        href: "/dashboard/items",
+      },
+      {
+        title: "Sets",
+        href: "/dashboard/items/sets",
+      },
+    ],
   },
   {
     title: "Translations",
@@ -84,7 +99,7 @@ const sidebarNavItems = [
       },
       {
         title: "Quest Destination",
-          href: "/dashboard/translations/quest-destination",
+        href: "/dashboard/translations/quest-destination",
       },
       {
         title: "Resdata",
@@ -120,33 +135,39 @@ const sidebarNavItems = [
     href: "/dashboard/logs",
     icon: FileText,
   },
-]
+];
 
 export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
-  const [collapsed, setCollapsed] = useState(false)
-  const [expandedItems, setExpandedItems] = useState<string[]>([])
-  const pathname = usePathname()
+  const [collapsed, setCollapsed] = useState(false);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const pathname = usePathname();
 
   const toggleExpanded = (title: string) => {
-    setExpandedItems(prev => 
-      prev.includes(title) 
-        ? prev.filter(item => item !== title)
+    setExpandedItems((prev) =>
+      prev.includes(title)
+        ? prev.filter((item) => item !== title)
         : [...prev, title]
-    )
-  }
+    );
+  };
 
-  const isExpanded = (title: string) => expandedItems.includes(title)
+  const isExpanded = (title: string) => expandedItems.includes(title);
 
   return (
-    <div className={cn("flex flex-col border-r bg-background", collapsed ? "w-16" : "w-64", className)}>
+    <div
+      className={cn(
+        "flex flex-col border-r bg-background",
+        collapsed ? "w-16" : "w-64",
+        className
+      )}
+    >
       <div className="flex h-14 items-center justify-between border-b px-3">
-        <div className={cn(
-          "flex items-center gap-2 transition-all",
-          collapsed ? "justify-center w-full" : "justify-start"
-        )}>
-          {!collapsed && (
-            <span className="font-semibold">Flyff Admin</span>
+        <div
+          className={cn(
+            "flex items-center gap-2 transition-all",
+            collapsed ? "justify-center w-full" : "justify-start"
           )}
+        >
+          {!collapsed && <span className="font-semibold">Flyff Admin</span>}
         </div>
         <Button
           variant="ghost"
@@ -154,16 +175,20 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
           onClick={() => setCollapsed(!collapsed)}
           className="h-8 w-8 p-0"
         >
-          {collapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {collapsed ? (
+            <Menu className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )}
         </Button>
       </div>
       <ScrollArea className="flex-1">
         <div className="space-y-1 p-2">
           {sidebarNavItems.map((item) => {
-            const hasSubItems = 'items' in item
-            const isActive = hasSubItems 
-              ? item.items?.some(subItem => pathname === subItem.href)
-              : pathname === item.href
+            const hasSubItems = "items" in item;
+            const isActive = hasSubItems
+              ? item.items?.some((subItem) => pathname === subItem.href)
+              : pathname === item.href;
 
             return (
               <div key={item.title}>
@@ -182,10 +207,12 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                         {!collapsed && item.title}
                       </div>
                       {!collapsed && (
-                        <ChevronDown className={cn(
-                          "h-4 w-4 transition-transform",
-                          isExpanded(item.title) && "rotate-180"
-                        )} />
+                        <ChevronDown
+                          className={cn(
+                            "h-4 w-4 transition-transform",
+                            isExpanded(item.title) && "rotate-180"
+                          )}
+                        />
                       )}
                     </Button>
                     {!collapsed && isExpanded(item.title) && item.items && (
@@ -193,7 +220,11 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                         {item.items.map((subItem) => (
                           <Link key={subItem.href} href={subItem.href}>
                             <Button
-                              variant={pathname === subItem.href ? "secondary" : "ghost"}
+                              variant={
+                                pathname === subItem.href
+                                  ? "secondary"
+                                  : "ghost"
+                              }
                               className="w-full justify-start gap-2 text-sm"
                               size="sm"
                             >
@@ -219,10 +250,10 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                   </Link>
                 )}
               </div>
-            )
+            );
           })}
         </div>
       </ScrollArea>
     </div>
-  )
+  );
 }
