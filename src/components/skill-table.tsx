@@ -613,7 +613,7 @@ export function SkillTable({
                         1,
                         currentPage - Math.floor(maxButtons / 2)
                       );
-                      let end = Math.min(totalPages, start + maxButtons - 1);
+                      const end = Math.min(totalPages, start + maxButtons - 1);
                       if (end - start + 1 < maxButtons) {
                         start = Math.max(1, end - maxButtons + 1);
                       }
