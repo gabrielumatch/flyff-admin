@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 import { TwoLineText } from "@/components/two-line-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -35,13 +34,6 @@ import { toast } from "sonner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ItemEditModal } from "@/components/item-edit-modal";
 import { ItemAddModal } from "@/components/item-add-modal";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export type ItemRecord = {
   dwid: string;
@@ -86,18 +78,12 @@ export function ItemTable({
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [nameByKey, setNameByKey] = useState<Record<string, string>>({});
-  const [jobFilter, setJobFilter] = useState<string>("all");
-  const [levelFilter, setLevelFilter] = useState<string>("all");
-  const [jobOptions, setJobOptions] = useState<string[]>([]);
-  const [levelOptions, setLevelOptions] = useState<string[]>([]);
   const itemsPerPage = 20;
 
   // From URL
   useEffect(() => {
     const pageParam = Number(searchParams.get("page") || "1");
     const qParam = searchParams.get("q") || "";
-    const jobParam = searchParams.get("job") || "all";
-    const lvParam = searchParams.get("lv") || "all";
     if (
       !Number.isNaN(pageParam) &&
       pageParam > 0 &&
@@ -108,8 +94,6 @@ export function ItemTable({
     if (qParam !== searchTerm) {
       setSearchTerm(qParam);
     }
-    if (jobParam !== jobFilter) setJobFilter(jobParam);
-    if (lvParam !== levelFilter) setLevelFilter(lvParam);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
@@ -123,52 +107,9 @@ export function ItemTable({
     const params = new URLSearchParams();
     if (currentPage > 1) params.set("page", String(currentPage));
     if (debouncedSearchTerm) params.set("q", debouncedSearchTerm);
-    if (jobFilter !== "all") params.set("job", jobFilter);
-    if (levelFilter !== "all") params.set("lv", levelFilter);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-  }, [
-    currentPage,
-    debouncedSearchTerm,
-    jobFilter,
-    levelFilter,
-    pathname,
-    router,
-  ]);
-
-  // Load filter options once
-  useEffect(() => {
-    const loadOptions = async () => {
-      try {
-        const { data: jobsData } = await supabase
-          .from(tableName)
-          .select("dwitemjob")
-          .not("dwitemjob", "is", null)
-          .order("dwitemjob");
-        const jobs = Array.from(
-          new Set(
-            (jobsData || []).map((r: any) => (r.dwitemjob as string) || "")
-          )
-        ).filter(Boolean);
-        setJobOptions(jobs);
-
-        const { data: levelsData } = await supabase
-          .from(tableName)
-          .select("dwitemlv")
-          .not("dwitemlv", "is", null)
-          .order("dwitemlv");
-        const levels = Array.from(
-          new Set(
-            (levelsData || []).map((r: any) => (r.dwitemlv as string) || "")
-          )
-        ).filter(Boolean);
-        setLevelOptions(levels);
-      } catch (_e) {
-        // ignore
-      }
-    };
-    loadOptions();
-  }, [supabase, tableName]);
+  }, [currentPage, debouncedSearchTerm, pathname, router]);
 
   const fetchRecords = useCallback(async () => {
     setLoading(true);
@@ -192,7 +133,9 @@ export function ItemTable({
         const { data: nrows } = await supabase
           .from(tableName)
           .select("szname")
-          .ilike("szname", `%${term}%`);
+          .or(
+            `szname.ilike.%${term}%,dwitemjob.ilike.%${term}%,dwitemlv.ilike.%${term}%`
+          );
 
         const keySet = new Set<string>();
         for (const r of (trows || []) as Array<{ szname: string }>) {
@@ -220,14 +163,6 @@ export function ItemTable({
         console.error("Error fetching items:", error);
         toast.error("Failed to load items");
         return;
-      }
-
-      // Apply structured filters
-      if (jobFilter !== "all") {
-        query = query.eq("dwitemjob", jobFilter);
-      }
-      if (levelFilter !== "all") {
-        query = query.eq("dwitemlv", levelFilter);
       }
 
       const items = (data as ItemRecord[]) || [];
@@ -333,73 +268,21 @@ export function ItemTable({
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Search & Filters</CardTitle>
-            <CardDescription>
-              Search by name or translations; filter by job and level
-            </CardDescription>
+            <CardTitle>Search</CardTitle>
+            <CardDescription>Search items by name</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="relative">
-                <Label htmlFor="search">Search</Label>
-                <Search className="absolute left-2 top-9 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="search"
-                  placeholder="Search name, EN or PT translations..."
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="pl-8"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="job">Job</Label>
-                <Select
-                  value={jobFilter}
-                  onValueChange={(v) => {
-                    setJobFilter(v);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger id="job">
-                    <SelectValue placeholder="All jobs" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    {jobOptions.map((job) => (
-                      <SelectItem key={job} value={job}>
-                        {job}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="level">Level</Label>
-                <Select
-                  value={levelFilter}
-                  onValueChange={(v) => {
-                    setLevelFilter(v);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger id="level">
-                    <SelectValue placeholder="All levels" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    {levelOptions.map((lv) => (
-                      <SelectItem key={lv} value={lv}>
-                        {lv}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="relative">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by name..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="pl-8"
+              />
             </div>
           </CardContent>
         </Card>
