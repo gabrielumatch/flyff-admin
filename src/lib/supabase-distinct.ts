@@ -10,9 +10,8 @@ export async function fetchDistinctOptions(
   rpcNameOverride?: string
 ): Promise<string[]> {
   try {
-    const rpcName = (rpcNameOverride ||
-      `distinct_${tableName}_${column}`) as any;
-    const { data, error } = await supabase.rpc(rpcName);
+    const rpcName = rpcNameOverride || `distinct_${tableName}_${column}`;
+    const { data, error } = await supabase.rpc(rpcName as unknown as never);
     if (error || !Array.isArray(data)) return [];
     const values = (data as Array<Record<string, unknown>>)
       .map((r) => {
@@ -24,7 +23,7 @@ export async function fetchDistinctOptions(
       })
       .filter((v) => typeof v === "string" && v.length > 0);
     return Array.from(new Set(values));
-  } catch (_e) {
+  } catch {
     return [];
   }
 }
