@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { TwoLineText } from "@/components/two-line-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -34,6 +35,13 @@ import { toast } from "sonner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ItemEditModal } from "@/components/item-edit-modal";
 import { ItemAddModal } from "@/components/item-add-modal";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export type ItemRecord = {
   dwid: string;
@@ -78,12 +86,18 @@ export function ItemTable({
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [nameByKey, setNameByKey] = useState<Record<string, string>>({});
+  const [jobFilter, setJobFilter] = useState<string>("all");
+  const [levelFilter, setLevelFilter] = useState<string>("all");
+  const [jobOptions, setJobOptions] = useState<string[]>([]);
+  const [levelOptions, setLevelOptions] = useState<string[]>([]);
   const itemsPerPage = 20;
 
   // From URL
   useEffect(() => {
     const pageParam = Number(searchParams.get("page") || "1");
     const qParam = searchParams.get("q") || "";
+    const jobParam = searchParams.get("job") || "all";
+    const lvParam = searchParams.get("lv") || "all";
     if (
       !Number.isNaN(pageParam) &&
       pageParam > 0 &&
@@ -94,6 +108,8 @@ export function ItemTable({
     if (qParam !== searchTerm) {
       setSearchTerm(qParam);
     }
+    if (jobParam !== jobFilter) setJobFilter(jobParam);
+    if (lvParam !== levelFilter) setLevelFilter(lvParam);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
@@ -107,9 +123,74 @@ export function ItemTable({
     const params = new URLSearchParams();
     if (currentPage > 1) params.set("page", String(currentPage));
     if (debouncedSearchTerm) params.set("q", debouncedSearchTerm);
+    if (jobFilter !== "all") params.set("job", jobFilter);
+    if (levelFilter !== "all") params.set("lv", levelFilter);
     const qs = params.toString();
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-  }, [currentPage, debouncedSearchTerm, pathname, router]);
+  }, [
+    currentPage,
+    debouncedSearchTerm,
+    jobFilter,
+    levelFilter,
+    pathname,
+    router,
+  ]);
+
+  // Load filter options once (tries RPC GROUP BY, falls back to client dedupe)
+  useEffect(() => {
+    const loadOptions = async () => {
+      try {
+        // Jobs via RPC: create function distinct_propitem_jobs()
+        const { data: jobsRpc, error: jobsErr } = await supabase.rpc(
+          "distinct_propitem_jobs"
+        );
+        if (!jobsErr && jobsRpc) {
+          setJobOptions(
+            (jobsRpc as Array<{ dwitemjob: string | null }>)
+              .map((r) => r.dwitemjob || "")
+              .filter(Boolean)
+          );
+        } else {
+          const { data: jobsData } = await supabase
+            .from(tableName)
+            .select("dwitemjob")
+            .not("dwitemjob", "is", null)
+            .order("dwitemjob");
+          setJobOptions(
+            (jobsData || [])
+              .map((r: { dwitemjob: string | null }) => r.dwitemjob || "")
+              .filter(Boolean)
+          );
+        }
+
+        // Levels via RPC: create function distinct_propitem_levels()
+        const { data: levelsRpc, error: levelsErr } = await supabase.rpc(
+          "distinct_propitem_levels"
+        );
+        if (!levelsErr && levelsRpc) {
+          setLevelOptions(
+            (levelsRpc as Array<{ dwitemlv: string | null }>)
+              .map((r) => r.dwitemlv || "")
+              .filter(Boolean)
+          );
+        } else {
+          const { data: levelsData } = await supabase
+            .from(tableName)
+            .select("dwitemlv")
+            .not("dwitemlv", "is", null)
+            .order("dwitemlv");
+          setLevelOptions(
+            (levelsData || [])
+              .map((r: { dwitemlv: string | null }) => r.dwitemlv || "")
+              .filter(Boolean)
+          );
+        }
+      } catch (_e) {
+        // ignore
+      }
+    };
+    loadOptions();
+  }, [supabase, tableName]);
 
   const fetchRecords = useCallback(async () => {
     setLoading(true);
@@ -152,6 +233,14 @@ export function ItemTable({
           // Fallback to name match so the query still returns 0 or proper results
           query = query.ilike("szname", `%${term}%`);
         }
+      }
+
+      // Apply structured filters before range
+      if (jobFilter !== "all") {
+        query = query.eq("dwitemjob", jobFilter);
+      }
+      if (levelFilter !== "all") {
+        query = query.eq("dwitemlv", levelFilter);
       }
 
       const { data, error, count } = await query.range(
@@ -197,7 +286,14 @@ export function ItemTable({
     } finally {
       setLoading(false);
     }
-  }, [supabase, tableName, debouncedSearchTerm, currentPage]);
+  }, [
+    supabase,
+    tableName,
+    debouncedSearchTerm,
+    currentPage,
+    jobFilter,
+    levelFilter,
+  ]);
 
   useEffect(() => {
     fetchRecords();
@@ -248,6 +344,8 @@ export function ItemTable({
     const params = new URLSearchParams();
     if (page > 1) params.set("page", String(page));
     if (debouncedSearchTerm) params.set("q", debouncedSearchTerm);
+    if (jobFilter !== "all") params.set("job", jobFilter);
+    if (levelFilter !== "all") params.set("lv", levelFilter);
     const qs = params.toString();
     return qs ? `${pathname}?${qs}` : pathname;
   };
@@ -268,21 +366,71 @@ export function ItemTable({
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Search</CardTitle>
-            <CardDescription>Search items by name</CardDescription>
+            <CardTitle>Search & Filters</CardTitle>
+            <CardDescription>
+              Search by name or translations; filter by job and level
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by name..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="pl-8"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="relative">
+                <Label htmlFor="search">Search</Label>
+                <Search className="absolute left-2 top-9 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="search"
+                  placeholder="Search name, EN or PT translations..."
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="pl-8"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="job">Job</Label>
+                <Select
+                  value={jobFilter}
+                  onValueChange={(v) => {
+                    setJobFilter(v);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger id="job">
+                    <SelectValue placeholder="All jobs" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    {jobOptions.map((job) => (
+                      <SelectItem key={job} value={job}>
+                        {job}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="level">Level</Label>
+                <Select
+                  value={levelFilter}
+                  onValueChange={(v) => {
+                    setLevelFilter(v);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger id="level">
+                    <SelectValue placeholder="All levels" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    {levelOptions.map((lv) => (
+                      <SelectItem key={lv} value={lv}>
+                        {lv}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>
