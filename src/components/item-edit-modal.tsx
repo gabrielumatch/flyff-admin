@@ -98,7 +98,11 @@ export function ItemEditModal({
                 return (
                   <div key={key} className="space-y-2">
                     <FieldHelpTooltip
-                      label={<Label htmlFor={key}>{key}</Label>}
+                      label={
+                        <Label htmlFor={key} className="cursor-help">
+                          {key}
+                        </Label>
+                      }
                       help={getItemFieldDescription(key)}
                     />
                     <Input

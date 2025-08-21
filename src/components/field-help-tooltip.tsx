@@ -11,16 +11,10 @@ interface FieldHelpTooltipProps {
   className?: string;
 }
 
-export function FieldHelpTooltip({
-  label,
-  help,
-  className,
-}: FieldHelpTooltipProps) {
+export function FieldHelpTooltip({ label, help }: FieldHelpTooltipProps) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <span className={className + " cursor-help"}>{label}</span>
-      </TooltipTrigger>
+      <TooltipTrigger asChild>{label}</TooltipTrigger>
       <TooltipContent
         side="top"
         align="start"

@@ -53,13 +53,11 @@ export function ItemAddModal({
 
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from(tableName)
-        .insert({
-          ...formData,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
+      const { error } = await supabase.from(tableName).insert({
+        ...formData,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
       if (error) {
         console.error("Error creating item:", error);
         toast.error("Failed to create item");
@@ -109,7 +107,11 @@ export function ItemAddModal({
                 return (
                   <div key={key} className="space-y-2">
                     <FieldHelpTooltip
-                      label={<Label htmlFor={key}>{key}</Label>}
+                      label={
+                        <Label htmlFor={key} className="cursor-help">
+                          {key}
+                        </Label>
+                      }
                       help={getItemFieldDescription(key)}
                     />
                     <Input
