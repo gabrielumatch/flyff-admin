@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -117,7 +116,7 @@ export function TranslationTable({
     if (qParam !== searchTerm) {
       setSearchTerm(qParam);
     }
-  }, [searchParams]);
+  }, [searchParams, currentPage, searchTerm]);
 
   // Debounce search term to reduce query churn
   useEffect(() => {
@@ -136,11 +135,7 @@ export function TranslationTable({
     });
   }, [currentPage, debouncedSearchTerm, pathname, router]);
 
-  useEffect(() => {
-    fetchRecords();
-  }, [tableName, currentPage, debouncedSearchTerm]);
-
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     setLoading(true);
     try {
       let query = supabase
@@ -169,7 +164,11 @@ export function TranslationTable({
     } finally {
       setLoading(false);
     }
-  };
+  }, [supabase, tableName, currentPage, debouncedSearchTerm, itemsPerPage]);
+
+  useEffect(() => {
+    fetchRecords();
+  }, [fetchRecords]);
 
   const handleEdit = (record: TranslationRecord) => {
     setEditingRecord(record);
@@ -355,7 +354,7 @@ export function TranslationTable({
                         1,
                         currentPage - Math.floor(maxButtons / 2)
                       );
-                      let end = Math.min(totalPages, start + maxButtons - 1);
+                      const end = Math.min(totalPages, start + maxButtons - 1);
                       if (end - start + 1 < maxButtons) {
                         start = Math.max(1, end - maxButtons + 1);
                       }
