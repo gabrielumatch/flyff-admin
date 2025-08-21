@@ -1,10 +1,16 @@
-'use client'
+"use client";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useState } from "react";
 import { useSupabase } from "@/components/supabase-provider";
 import { useRouter } from "next/navigation";
@@ -34,7 +40,7 @@ export default function LoginPage() {
         // Redirect to dashboard or home after successful login
         router.push("/dashboard");
       }
-    } catch (err) {
+    } catch (error) {
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);
@@ -46,7 +52,7 @@ export default function LoginPage() {
       <div className="absolute top-4 right-4">
         <ModeToggle />
       </div>
-      
+
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">Flyff Admin</CardTitle>
@@ -78,18 +84,12 @@ export default function LoginPage() {
                 required
               />
             </div>
-            
+
             {error && (
-              <div className="text-sm text-red-500 text-center">
-                {error}
-              </div>
+              <div className="text-sm text-red-500 text-center">{error}</div>
             )}
-            
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={loading}
-            >
+
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing in..." : "Sign in"}
             </Button>
           </form>

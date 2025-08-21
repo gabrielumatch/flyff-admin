@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { TwoLineText } from "@/components/two-line-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -324,11 +326,7 @@ export function SkillTable({
     return () => clearTimeout(t);
   }, [searchTerm]);
 
-  useEffect(() => {
-    fetchRecords();
-  }, [tableName, currentPage, debouncedSearchTerm]);
-
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     setLoading(true);
     try {
       let query = supabase
@@ -359,19 +357,20 @@ export function SkillTable({
       // Fetch translated names by szname from propskill_translation (left join emulation)
       const ids = skills.map((s) => s.szname).filter(Boolean) as string[];
       if (ids.length > 0) {
-        const { data: tdata, error: terr } = await supabase
+        const { data: tdata } = await supabase
           .from("propskill_translation")
           .select("szname, lang_1_us, lang_10_pt")
           .in("szname", ids);
 
-        if (!terr && tdata) {
+        if (tdata) {
           const map: Record<string, string> = {};
-          (tdata as any[]).forEach((t) => {
-            map[String(t.szname)] =
-              t.lang_1_us + " " + t.szname + "</br>" ||
-              t.lang_10_pt + " " + t.szname + "</br>" ||
-              t.szname;
-          });
+          for (const row of tdata as Array<{
+            szname: string;
+            lang_1_us?: string | null;
+            lang_10_pt?: string | null;
+          }>) {
+            map[row.szname] = row.lang_1_us || row.lang_10_pt || "";
+          }
           setNameById(map);
         } else {
           setNameById({});
@@ -385,7 +384,11 @@ export function SkillTable({
     } finally {
       setLoading(false);
     }
-  };
+  }, [supabase, tableName, debouncedSearchTerm, currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    fetchRecords();
+  }, [fetchRecords]);
 
   const handleEdit = (record: SkillRecord) => {
     setEditingRecord(record);
@@ -423,11 +426,17 @@ export function SkillTable({
     }
   };
 
-  const displayValue = (record: SkillRecord, key: keyof SkillRecord) => {
+  const displayValue = (
+    record: SkillRecord,
+    key: keyof SkillRecord
+  ): ReactNode => {
     if (key === "szname") {
       const translated = record.szname ? nameById[record.szname] : undefined;
-      if (translated && translated.trim().length > 0) return translated;
-      return record.szname ?? record.dwid;
+      const primary =
+        translated && translated.trim().length > 0
+          ? translated
+          : record.szname ?? record.dwid;
+      return <TwoLineText primary={primary} secondary={record.szname} />;
     }
     return record[key] ?? "-";
   };

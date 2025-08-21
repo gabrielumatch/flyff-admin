@@ -11,7 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
 import type { SkillRecord } from "./skill-table";
