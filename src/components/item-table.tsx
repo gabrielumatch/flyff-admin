@@ -373,19 +373,21 @@ export function ItemTable({
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="relative">
+              <div className="space-y-2">
                 <Label htmlFor="search">Search</Label>
-                <Search className="absolute left-2 top-9 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="search"
-                  placeholder="Search name, EN or PT translations..."
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="pl-8"
-                />
+                <div className="relative">
+                  <Search className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="search"
+                    placeholder="Search name, EN or PT translations..."
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="pl-8"
+                  />
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="job">Job</Label>
@@ -396,7 +398,7 @@ export function ItemTable({
                     setCurrentPage(1);
                   }}
                 >
-                  <SelectTrigger id="job">
+                  <SelectTrigger id="job" className="w-full min-w-[200px]">
                     <SelectValue placeholder="All jobs" />
                   </SelectTrigger>
                   <SelectContent>
@@ -418,7 +420,7 @@ export function ItemTable({
                     setCurrentPage(1);
                   }}
                 >
-                  <SelectTrigger id="level">
+                  <SelectTrigger id="level" className="w-full min-w-[200px]">
                     <SelectValue placeholder="All levels" />
                   </SelectTrigger>
                   <SelectContent>
