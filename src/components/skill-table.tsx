@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -30,8 +29,8 @@ import {
 import { Search, Edit, Trash2, Plus } from "lucide-react";
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
-import { SkillEditModal } from "./skill-edit-modal";
-import { SkillAddModal } from "./skill-add-modal";
+import { SkillEditModal } from "@/components/skill-edit-modal";
+import { SkillAddModal } from "@/components/skill-add-modal";
 
 export type SkillRecord = {
   ver?: string | null;
