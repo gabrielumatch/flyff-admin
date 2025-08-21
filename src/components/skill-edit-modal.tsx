@@ -14,6 +14,9 @@ import {
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
 import type { SkillRecord } from "./skill-table";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { FieldHelpTooltip } from "@/components/field-help-tooltip";
+import { getSkillFieldDescription } from "@/lib/skill-field-descriptions";
 
 interface SkillEditModalProps {
   isOpen: boolean;
@@ -90,26 +93,26 @@ export function SkillEditModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {allFields.map((field) => (
-              <div key={String(field)} className="space-y-2">
-                <Label htmlFor={String(field)}>{String(field)}</Label>
-                {String(field).startsWith("sz") ? (
-                  <Input
-                    id={String(field)}
-                    value={(formData[field] as string) ?? ""}
-                    onChange={(e) => handleInputChange(field, e.target.value)}
-                  />
-                ) : (
-                  <Input
-                    id={String(field)}
-                    value={(formData[field] as string) ?? ""}
-                    onChange={(e) => handleInputChange(field, e.target.value)}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+          <TooltipProvider>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {allFields.map((field) => {
+                const key = String(field);
+                return (
+                  <div key={key} className="space-y-2">
+                    <FieldHelpTooltip
+                      label={<Label htmlFor={key}>{key}</Label>}
+                      help={getSkillFieldDescription(key)}
+                    />
+                    <Input
+                      id={key}
+                      value={(formData[field] as string) ?? ""}
+                      onChange={(e) => handleInputChange(field, e.target.value)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </TooltipProvider>
 
           <div className="flex justify-end gap-2 pt-4">
             <Button
