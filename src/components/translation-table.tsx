@@ -102,6 +102,7 @@ export function TranslationTable({
   const itemsPerPage = 20;
 
   // Initialize state from URL on mount or when URL changes (via back/forward)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const pageParam = Number(searchParams.get("page") || "1");
     const qParam = searchParams.get("q") || "";
@@ -116,7 +117,7 @@ export function TranslationTable({
     if (qParam !== searchTerm) {
       setSearchTerm(qParam);
     }
-  }, [searchParams, currentPage, searchTerm]);
+  }, [searchParams]);
 
   // Debounce search term to reduce query churn
   useEffect(() => {
@@ -206,6 +207,14 @@ export function TranslationTable({
   const getLanguageValue = (record: TranslationRecord, langCode: string) => {
     const key = `lang_${langCode}` as keyof TranslationRecord;
     return record[key] || "";
+  };
+
+  const buildPageHref = (page: number) => {
+    const params = new URLSearchParams();
+    if (page > 1) params.set("page", String(page));
+    if (debouncedSearchTerm) params.set("q", debouncedSearchTerm);
+    const qs = params.toString();
+    return qs ? `${pathname}?${qs}` : pathname;
   };
 
   return (
@@ -338,9 +347,11 @@ export function TranslationTable({
                   <PaginationContent>
                     <PaginationItem>
                       <PaginationPrevious
-                        onClick={() =>
-                          setCurrentPage((prev) => Math.max(1, prev - 1))
-                        }
+                        href={buildPageHref(Math.max(1, currentPage - 1))}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage((prev) => Math.max(1, prev - 1));
+                        }}
                         className={
                           currentPage === 1
                             ? "pointer-events-none opacity-50"
@@ -363,7 +374,11 @@ export function TranslationTable({
                       return pages.map((page) => (
                         <PaginationItem key={page}>
                           <PaginationLink
-                            onClick={() => setCurrentPage(page)}
+                            href={buildPageHref(page)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setCurrentPage(page);
+                            }}
                             isActive={currentPage === page}
                             className="cursor-pointer"
                           >
@@ -374,11 +389,15 @@ export function TranslationTable({
                     })()}
                     <PaginationItem>
                       <PaginationNext
-                        onClick={() =>
+                        href={buildPageHref(
+                          Math.min(totalPages, currentPage + 1)
+                        )}
+                        onClick={(e) => {
+                          e.preventDefault();
                           setCurrentPage((prev) =>
                             Math.min(totalPages, prev + 1)
-                          )
-                        }
+                          );
+                        }}
                         className={
                           currentPage === totalPages
                             ? "pointer-events-none opacity-50"
