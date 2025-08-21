@@ -94,6 +94,20 @@ export function ItemTable({
   const [kind1Options, setKind1Options] = useState<string[]>([]);
   const [kind2Options, setKind2Options] = useState<string[]>([]);
   const [kind3Options, setKind3Options] = useState<string[]>([]);
+  const selectOptionsByField = {
+    dwitemjob: jobOptions,
+    dwitemlv: levelOptions,
+    dwitemkind1: kind1Options,
+    dwitemkind2: kind2Options,
+    dwitemkind3: kind3Options,
+  } as Record<string, string[]>;
+  const selectPlaceholdersByField = {
+    dwitemjob: "Select job",
+    dwitemlv: "Select level",
+    dwitemkind1: "Select kind1",
+    dwitemkind2: "Select kind2",
+    dwitemkind3: "Select kind3",
+  } as Record<string, string>;
   const itemsPerPage = 20;
 
   // From URL
@@ -582,10 +596,8 @@ export function ItemTable({
         record={editingRecord}
         tableName={tableName}
         onSuccess={handleEditSuccess}
-        jobOptions={jobOptions}
-        kind1Options={kind1Options}
-        kind2Options={kind2Options}
-        kind3Options={kind3Options}
+        selectOptionsByField={selectOptionsByField}
+        selectPlaceholdersByField={selectPlaceholdersByField}
       />
 
       <ItemAddModal
@@ -593,10 +605,8 @@ export function ItemTable({
         onClose={() => setIsAddModalOpen(false)}
         tableName={tableName}
         onSuccess={handleAddSuccess}
-        jobOptions={jobOptions}
-        kind1Options={kind1Options}
-        kind2Options={kind2Options}
-        kind3Options={kind3Options}
+        selectOptionsByField={selectOptionsByField}
+        selectPlaceholdersByField={selectPlaceholdersByField}
       />
     </div>
   );

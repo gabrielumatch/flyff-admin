@@ -24,10 +24,8 @@ interface ItemAddModalProps {
   onClose: () => void;
   tableName: string;
   onSuccess: () => void;
-  jobOptions: string[];
-  kind1Options: string[];
-  kind2Options: string[];
-  kind3Options: string[];
+  selectOptionsByField: Record<string, string[]>;
+  selectPlaceholdersByField?: Record<string, string>;
 }
 
 export function ItemAddModal({
@@ -35,10 +33,8 @@ export function ItemAddModal({
   onClose,
   tableName,
   onSuccess,
-  jobOptions,
-  kind1Options,
-  kind2Options,
-  kind3Options,
+  selectOptionsByField,
+  selectPlaceholdersByField,
 }: ItemAddModalProps) {
   const { supabase } = useSupabase();
   const [formData, setFormData] = useState<Record<string, string>>({});
@@ -133,16 +129,15 @@ export function ItemAddModal({
                       }
                       help={getItemFieldDescription(key)}
                     />
-                    {key === "dwitemjob" ||
-                    key === "dwitemkind1" ||
-                    key === "dwitemkind2" ||
-                    key === "dwitemkind3" ? (
+                    {selectOptionsByField[key] ? (
                       <OptionsSelect
                         id={key}
                         value={formData[key] ?? ""}
                         onChange={(v) => handleInputChange(key, v)}
-                        options={jobOptions}
-                        placeholder="Select job"
+                        options={selectOptionsByField[key]}
+                        placeholder={
+                          selectPlaceholdersByField?.[key] || `Select ${key}`
+                        }
                       />
                     ) : (
                       <Input
