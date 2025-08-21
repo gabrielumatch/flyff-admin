@@ -33,6 +33,7 @@ import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
 import { SkillEditModal } from "@/components/skill-edit-modal";
 import { SkillAddModal } from "@/components/skill-add-modal";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export type SkillRecord = {
   ver?: string | null;
@@ -308,6 +309,9 @@ export function SkillTable({
   description: string;
 }) {
   const { supabase } = useSupabase();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [records, setRecords] = useState<SkillRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -321,10 +325,38 @@ export function SkillTable({
   const itemsPerPage = 20;
   const [nameById, setNameById] = useState<Record<string, string>>({});
 
+  // Initialize from URL (page, q)
+  useEffect(() => {
+    const pageParam = Number(searchParams.get("page") || "1");
+    const qParam = searchParams.get("q") || "";
+    if (
+      !Number.isNaN(pageParam) &&
+      pageParam > 0 &&
+      pageParam !== currentPage
+    ) {
+      setCurrentPage(pageParam);
+    }
+    if (qParam !== searchTerm) {
+      setSearchTerm(qParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearchTerm(searchTerm), 400);
     return () => clearTimeout(t);
   }, [searchTerm]);
+
+  // Reflect in URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (currentPage > 1) params.set("page", String(currentPage));
+    if (debouncedSearchTerm) params.set("q", debouncedSearchTerm);
+    const queryString = params.toString();
+    router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+      scroll: false,
+    });
+  }, [currentPage, debouncedSearchTerm, pathname, router]);
 
   const fetchRecords = useCallback(async () => {
     setLoading(true);
@@ -565,9 +597,19 @@ export function SkillTable({
                         }
                       />
                     </PaginationItem>
-                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                      const page = i + 1;
-                      return (
+                    {(() => {
+                      const maxButtons = 5;
+                      let start = Math.max(
+                        1,
+                        currentPage - Math.floor(maxButtons / 2)
+                      );
+                      let end = Math.min(totalPages, start + maxButtons - 1);
+                      if (end - start + 1 < maxButtons) {
+                        start = Math.max(1, end - maxButtons + 1);
+                      }
+                      const pages: number[] = [];
+                      for (let p = start; p <= end; p++) pages.push(p);
+                      return pages.map((page) => (
                         <PaginationItem key={page}>
                           <PaginationLink
                             onClick={() => setCurrentPage(page)}
@@ -577,8 +619,8 @@ export function SkillTable({
                             {page}
                           </PaginationLink>
                         </PaginationItem>
-                      );
-                    })}
+                      ));
+                    })()}
                     <PaginationItem>
                       <PaginationNext
                         onClick={() =>
