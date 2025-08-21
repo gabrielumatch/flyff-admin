@@ -17,13 +17,7 @@ import type { ItemRecord } from "./item-table";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getItemFieldDescription } from "@/lib/item-field-descriptions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { OptionsSelect } from "@/components/options-select";
 
 interface ItemEditModalProps {
   isOpen: boolean;
@@ -115,24 +109,13 @@ export function ItemEditModal({
                       help={getItemFieldDescription(key)}
                     />
                     {key === "dwitemjob" ? (
-                      <Select
+                      <OptionsSelect
+                        id={key}
                         value={(formData[field] as string) ?? ""}
-                        onValueChange={(v) => handleInputChange(field, v)}
-                      >
-                        <SelectTrigger
-                          id={key}
-                          className="w-full min-w-[200px]"
-                        >
-                          <SelectValue placeholder="Select job" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {jobOptions.map((j) => (
-                            <SelectItem key={j} value={j}>
-                              {j}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        onChange={(v) => handleInputChange(field, v)}
+                        options={jobOptions}
+                        placeholder="Select job"
+                      />
                     ) : (
                       <Input
                         id={key}
