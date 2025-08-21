@@ -120,8 +120,36 @@ export function ItemTable({
         .is("deleted_at", null)
         .order("szname");
 
+      // Extend search to translations (lang_1_us, lang_10_pt)
       if (debouncedSearchTerm) {
-        query = query.ilike("szname", `%${debouncedSearchTerm}%`);
+        const term = debouncedSearchTerm;
+        // Find matching sznames from translation table
+        const { data: trows } = await supabase
+          .from("propitem_translation")
+          .select("szname")
+          .or(`lang_1_us.ilike.%${term}%,lang_10_pt.ilike.%${term}%`);
+
+        // Find matching sznames by raw name
+        const { data: nrows } = await supabase
+          .from(tableName)
+          .select("szname")
+          .ilike("szname", `%${term}%`);
+
+        const keySet = new Set<string>();
+        for (const r of (trows || []) as Array<{ szname: string }>) {
+          if (r.szname) keySet.add(r.szname);
+        }
+        for (const r of (nrows || []) as Array<{ szname: string }>) {
+          if (r.szname) keySet.add(r.szname);
+        }
+
+        const keys = Array.from(keySet);
+        if (keys.length > 0) {
+          query = query.in("szname", keys);
+        } else {
+          // Fallback to name match so the query still returns 0 or proper results
+          query = query.ilike("szname", `%${term}%`);
+        }
       }
 
       const { data, error, count } = await query.range(
