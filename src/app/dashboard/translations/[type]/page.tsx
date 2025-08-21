@@ -1,22 +1,24 @@
-import { TranslationTable } from "@/components/translation-table"
-import { TRANSLATION_CONFIG, TranslationType } from "@/lib/translation-config"
-import { notFound } from "next/navigation"
+import { TranslationTable } from "@/components/translation-table";
+import { TRANSLATION_CONFIG, TranslationType } from "@/lib/translation-config";
+import { notFound } from "next/navigation";
 
 interface TranslationPageProps {
-  params: {
-    type: string
-  }
+  params: Promise<{
+    type: string;
+  }>;
 }
 
-export default function TranslationPage({ params }: TranslationPageProps) {
-  const { type } = params
-  
+export default async function TranslationPage({
+  params,
+}: TranslationPageProps) {
+  const { type } = await params;
+
   // Check if the translation type is valid
   if (!(type in TRANSLATION_CONFIG)) {
-    notFound()
+    notFound();
   }
 
-  const config = TRANSLATION_CONFIG[type as TranslationType]
+  const config = TRANSLATION_CONFIG[type as TranslationType];
 
   return (
     <TranslationTable
@@ -24,5 +26,5 @@ export default function TranslationPage({ params }: TranslationPageProps) {
       title={config.title}
       description={config.description}
     />
-  )
+  );
 }
