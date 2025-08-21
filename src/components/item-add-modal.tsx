@@ -25,6 +25,9 @@ interface ItemAddModalProps {
   tableName: string;
   onSuccess: () => void;
   jobOptions: string[];
+  kind1Options: string[];
+  kind2Options: string[];
+  kind3Options: string[];
 }
 
 export function ItemAddModal({
@@ -33,6 +36,9 @@ export function ItemAddModal({
   tableName,
   onSuccess,
   jobOptions,
+  kind1Options,
+  kind2Options,
+  kind3Options,
 }: ItemAddModalProps) {
   const { supabase } = useSupabase();
   const [formData, setFormData] = useState<Record<string, string>>({});
@@ -127,7 +133,10 @@ export function ItemAddModal({
                       }
                       help={getItemFieldDescription(key)}
                     />
-                    {key === "dwitemjob" ? (
+                    {key === "dwitemjob" ||
+                    key === "dwitemkind1" ||
+                    key === "dwitemkind2" ||
+                    key === "dwitemkind3" ? (
                       <OptionsSelect
                         id={key}
                         value={formData[key] ?? ""}

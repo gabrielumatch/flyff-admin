@@ -42,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { fetchDistinctOptions } from "@/lib/supabase-distinct";
 
 export type ItemRecord = {
   dwid: string;
@@ -90,6 +91,9 @@ export function ItemTable({
   const [levelFilter, setLevelFilter] = useState<string>("all");
   const [jobOptions, setJobOptions] = useState<string[]>([]);
   const [levelOptions, setLevelOptions] = useState<string[]>([]);
+  const [kind1Options, setKind1Options] = useState<string[]>([]);
+  const [kind2Options, setKind2Options] = useState<string[]>([]);
+  const [kind3Options, setKind3Options] = useState<string[]>([]);
   const itemsPerPage = 20;
 
   // From URL
@@ -136,37 +140,46 @@ export function ItemTable({
     router,
   ]);
 
-  // Load filter options once (tries RPC GROUP BY, falls back to client dedupe)
+  // Load filter options once (generic by column)
   useEffect(() => {
     const loadOptions = async () => {
-      try {
-        // Jobs via RPC: create function distinct_propitem_jobs()
-        const { data: jobsRpc, error: jobsErr } = await supabase.rpc(
-          "distinct_propitem_jobs"
-        );
-        if (!jobsErr && jobsRpc) {
-          setJobOptions(
-            (jobsRpc as Array<{ dwitemjob: string | null }>)
-              .map((r) => r.dwitemjob || "")
-              .filter(Boolean)
-          );
-        }
-
-        // Levels via RPC: create function distinct_propitem_levels()
-        const { data: levelsRpc, error: levelsErr } = await supabase.rpc(
-          "distinct_propitem_levels"
-        );
-        if (!levelsErr && levelsRpc) {
-          setLevelOptions(
-            (levelsRpc as Array<{ dwitemlv: string | null }>)
-              .map((r) => r.dwitemlv || "")
-              .filter(Boolean)
-          );
-        }
-      } catch (_e) {
-        // ignore
-        console.error("Error loading options:", _e);
-      }
+      const [jobs, levels, kinds1, kinds2, kinds3] = await Promise.all([
+        fetchDistinctOptions(
+          supabase,
+          tableName,
+          "dwitemjob",
+          "distinct_propitem_dwitemjob"
+        ),
+        fetchDistinctOptions(
+          supabase,
+          tableName,
+          "dwitemlv",
+          "distinct_propitem_dwitemlv"
+        ),
+        fetchDistinctOptions(
+          supabase,
+          tableName,
+          "dwitemkind1",
+          "distinct_propitem_dwitemkind1"
+        ),
+        fetchDistinctOptions(
+          supabase,
+          tableName,
+          "dwitemkind2",
+          "distinct_propitem_dwitemkind2"
+        ),
+        fetchDistinctOptions(
+          supabase,
+          tableName,
+          "dwitemkind3",
+          "distinct_propitem_dwitemkind3"
+        ),
+      ]);
+      setJobOptions(jobs);
+      setLevelOptions(levels);
+      setKind1Options(kinds1);
+      setKind2Options(kinds2);
+      setKind3Options(kinds3);
     };
     loadOptions();
   }, [supabase, tableName]);
@@ -570,6 +583,9 @@ export function ItemTable({
         tableName={tableName}
         onSuccess={handleEditSuccess}
         jobOptions={jobOptions}
+        kind1Options={kind1Options}
+        kind2Options={kind2Options}
+        kind3Options={kind3Options}
       />
 
       <ItemAddModal
@@ -578,6 +594,9 @@ export function ItemTable({
         tableName={tableName}
         onSuccess={handleAddSuccess}
         jobOptions={jobOptions}
+        kind1Options={kind1Options}
+        kind2Options={kind2Options}
+        kind3Options={kind3Options}
       />
     </div>
   );

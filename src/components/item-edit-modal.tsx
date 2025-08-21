@@ -26,6 +26,9 @@ interface ItemEditModalProps {
   tableName: string;
   onSuccess: () => void;
   jobOptions: string[];
+  kind1Options: string[];
+  kind2Options: string[];
+  kind3Options: string[];
 }
 
 export function ItemEditModal({
@@ -35,6 +38,9 @@ export function ItemEditModal({
   tableName,
   onSuccess,
   jobOptions,
+  kind1Options,
+  kind2Options,
+  kind3Options,
 }: ItemEditModalProps) {
   const { supabase } = useSupabase();
   const [formData, setFormData] = useState<Partial<ItemRecord>>({});
@@ -108,7 +114,10 @@ export function ItemEditModal({
                       }
                       help={getItemFieldDescription(key)}
                     />
-                    {key === "dwitemjob" ? (
+                    {key === "dwitemjob" ||
+                    key === "dwitemkind1" ||
+                    key === "dwitemkind2" ||
+                    key === "dwitemkind3" ? (
                       <OptionsSelect
                         id={key}
                         value={(formData[field] as string) ?? ""}
