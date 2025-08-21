@@ -150,17 +150,6 @@ export function ItemTable({
               .map((r) => r.dwitemjob || "")
               .filter(Boolean)
           );
-        } else {
-          const { data: jobsData } = await supabase
-            .from(tableName)
-            .select("dwitemjob")
-            .not("dwitemjob", "is", null)
-            .order("dwitemjob");
-          setJobOptions(
-            (jobsData || [])
-              .map((r: { dwitemjob: string | null }) => r.dwitemjob || "")
-              .filter(Boolean)
-          );
         }
 
         // Levels via RPC: create function distinct_propitem_levels()
@@ -173,20 +162,10 @@ export function ItemTable({
               .map((r) => r.dwitemlv || "")
               .filter(Boolean)
           );
-        } else {
-          const { data: levelsData } = await supabase
-            .from(tableName)
-            .select("dwitemlv")
-            .not("dwitemlv", "is", null)
-            .order("dwitemlv");
-          setLevelOptions(
-            (levelsData || [])
-              .map((r: { dwitemlv: string | null }) => r.dwitemlv || "")
-              .filter(Boolean)
-          );
         }
       } catch (_e) {
         // ignore
+        console.error("Error loading options:", _e);
       }
     };
     loadOptions();
