@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,32 +32,30 @@ export function ItemAddModal({
   onSuccess,
 }: ItemAddModalProps) {
   const { supabase } = useSupabase();
-  const [formData, setFormData] = useState<Partial<ItemRecord>>({});
+  const [formData, setFormData] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [allFields, setAllFields] = useState<string[]>([]);
 
-  const handleInputChange = (field: keyof ItemRecord, value: string) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !formData.dwid ||
-      String(formData.dwid).trim() === "" ||
-      !formData.szname ||
-      String(formData.szname).trim() === ""
-    ) {
+    if (!formData.dwid?.trim() || !formData.szname?.trim()) {
       toast.error("dwid and szname are required");
       return;
     }
 
     setLoading(true);
     try {
-      const { error } = await supabase.from(tableName).insert({
-        ...formData,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
+      const payload: Record<string, string | null> = {};
+      for (const k of allFields) {
+        if (k === "updated_at" || k === "deleted_at") continue;
+        if (k === "created_at") continue;
+        payload[k] = formData[k] ?? "";
+      }
+      const { error } = await supabase.from(tableName).insert(payload);
       if (error) {
         console.error("Error creating item:", error);
         toast.error("Failed to create item");
@@ -81,15 +79,28 @@ export function ItemAddModal({
     }
   };
 
-  // Minimal set of fields to avoid overwhelming the add form first
-  const fields: Array<keyof ItemRecord> = [
-    "dwid",
-    "szname",
-    "dwitemjob",
-    "dwitemlv",
-    "eitemtype",
-    "dwitemrare",
-  ];
+  // Load all keys from a sample row
+  useEffect(() => {
+    if (!isOpen) return;
+    const load = async () => {
+      const { data } = await supabase.from(tableName).select("*").limit(1);
+      const sample = (data && data[0]) || {};
+      const keys = Object.keys(sample).filter(
+        (k) => k !== "updated_at" && k !== "deleted_at"
+      );
+      const ordered = [
+        "dwid",
+        "szname",
+        ...keys.filter((k) => k !== "dwid" && k !== "szname"),
+      ];
+      setAllFields(ordered);
+      const init: Record<string, string> = {};
+      for (const k of ordered) init[k] = "";
+      setFormData((prev) => ({ ...init, ...prev }));
+    };
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, supabase, tableName]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -101,9 +112,8 @@ export function ItemAddModal({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <TooltipProvider>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {fields.map((field) => {
-                const key = String(field);
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {allFields.map((key) => {
                 return (
                   <div key={key} className="space-y-2">
                     <FieldHelpTooltip
@@ -116,8 +126,8 @@ export function ItemAddModal({
                     />
                     <Input
                       id={key}
-                      value={(formData[field] as string) ?? ""}
-                      onChange={(e) => handleInputChange(field, e.target.value)}
+                      value={formData[key] ?? ""}
+                      onChange={(e) => handleInputChange(key, e.target.value)}
                     />
                   </div>
                 );
