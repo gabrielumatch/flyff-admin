@@ -317,6 +317,7 @@ export function SkillTable({
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const itemsPerPage = 20;
+  const [nameById, setNameById] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearchTerm(searchTerm), 400);
@@ -350,9 +351,34 @@ export function SkillTable({
         return;
       }
 
-      setRecords((data as SkillRecord[]) || []);
+      const skills = (data as SkillRecord[]) || [];
+      setRecords(skills);
       setTotalRecords(count || 0);
       setTotalPages(Math.max(1, Math.ceil((count || 0) / itemsPerPage)));
+
+      // Fetch translated names by szname from propskill_translation (left join emulation)
+      const ids = skills.map((s) => s.szname).filter(Boolean) as string[];
+      if (ids.length > 0) {
+        const { data: tdata, error: terr } = await supabase
+          .from("propskill_translation")
+          .select("szname, lang_1_us, lang_10_pt")
+          .in("szname", ids);
+
+        if (!terr && tdata) {
+          const map: Record<string, string> = {};
+          (tdata as any[]).forEach((t) => {
+            map[String(t.szname)] =
+              t.lang_1_us + " " + t.szname + "</br>" ||
+              t.lang_10_pt + " " + t.szname + "</br>" ||
+              t.szname;
+          });
+          setNameById(map);
+        } else {
+          setNameById({});
+        }
+      } else {
+        setNameById({});
+      }
     } catch (error) {
       console.error("Error:", error);
       toast.error("Unexpected error loading skills");
@@ -397,8 +423,14 @@ export function SkillTable({
     }
   };
 
-  const displayValue = (record: SkillRecord, key: keyof SkillRecord) =>
-    record[key] ?? "-";
+  const displayValue = (record: SkillRecord, key: keyof SkillRecord) => {
+    if (key === "szname") {
+      const translated = record.szname ? nameById[record.szname] : undefined;
+      if (translated && translated.trim().length > 0) return translated;
+      return record.szname ?? record.dwid;
+    }
+    return record[key] ?? "-";
+  };
 
   return (
     <div className="p-4">
