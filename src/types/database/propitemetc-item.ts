@@ -1,0 +1,47 @@
+import { BaseRecord } from '@/types/common';
+
+export interface TPropItemEtcItem extends BaseRecord {
+  id: number;
+  num: number | null;
+  name_propitemetc: string | null;
+  elem_1_name: string | null;
+  elem_1_part: string | null;
+  elem_2_name: string | null;
+  elem_2_part: string | null;
+  elem_3_name: string | null;
+  elem_3_part: string | null;
+  elem_4_name: string | null;
+  elem_4_part: string | null;
+  elem_5_name: string | null;
+  elem_5_part: string | null;
+  elem_6_name: string | null;
+  elem_6_part: string | null;
+  elem_7_name: string | null;
+  elem_7_part: string | null;
+  elem_8_name: string | null;
+  elem_8_part: string | null;
+  avail_1_dst: string | null;
+  avail_1_value: number | null;
+  avail_1_required_pieces: number | null;
+  avail_2_dst: string | null;
+  avail_2_value: number | null;
+  avail_2_required_pieces: number | null;
+  avail_3_dst: string | null;
+  avail_3_value: number | null;
+  avail_3_required_pieces: number | null;
+  avail_4_dst: string | null;
+  avail_4_value: number | null;
+  avail_4_required_pieces: number | null;
+  avail_5_dst: string | null;
+  avail_5_value: number | null;
+  avail_5_required_pieces: number | null;
+  avail_6_dst: string | null;
+  avail_6_value: number | null;
+  avail_6_required_pieces: number | null;
+  avail_7_dst: string | null;
+  avail_7_value: number | null;
+  avail_7_required_pieces: number | null;
+  avail_8_dst: string | null;
+  avail_8_value: number | null;
+  avail_8_required_pieces: number | null;
+}

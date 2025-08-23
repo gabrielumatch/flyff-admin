@@ -2,6 +2,7 @@
 export * from '@/types/database/propitem';
 export * from '@/types/database/propskill';
 export * from '@/types/database/proptranslation';
+export * from '@/types/database/propitemetc-item';
 
 // Static options exports
 export { DWITEMJOB_OPTIONS } from '@/types/database/dwitemjob';
@@ -269,3 +270,7 @@ export { SKILLS_DWSNDATTACK2_OPTIONS } from '@/types/database/skills-dwsndattack
 export { SKILLS_DWQUESTID_OPTIONS } from '@/types/database/skills-dwquestid';
 export { SKILLS_SZTEXTFILE_OPTIONS } from '@/types/database/skills-sztextfile';
 export { SKILLS_DWBUFFTICKTYPE_OPTIONS } from '@/types/database/skills-dwbuffticktype';
+
+// Sets-specific static options exports
+export { SETS_ELEM_PART_OPTIONS } from '@/types/database/sets-elem-part';
+export { SETS_AVAIL_DST_OPTIONS } from '@/types/database/sets-avail-dst';
