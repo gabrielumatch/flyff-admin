@@ -29,9 +29,6 @@ interface SetsSearchFiltersProps {
 export function SetsSearchFilters({
   searchTerm,
   onSearchChange,
-  numFilter,
-  onNumFilterChange,
-  numOptions,
 }: SetsSearchFiltersProps) {
   return (
     <Card className="mb-6">
@@ -42,7 +39,7 @@ export function SetsSearchFilters({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
           <div className="space-y-2">
             <Label htmlFor="search">Search</Label>
             <div className="relative">
@@ -55,22 +52,6 @@ export function SetsSearchFilters({
                 className="pl-8"
               />
             </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="num-filter">Set Number</Label>
-            <Select value={numFilter} onValueChange={onNumFilterChange}>
-              <SelectTrigger id="num-filter" className="w-full min-w-[200px]">
-                <SelectValue placeholder="All sets" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {numOptions.map((num) => (
-                  <SelectItem key={num} value={num}>
-                    Set {num}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
         </div>
       </CardContent>
