@@ -3,6 +3,13 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Table,
   TableBody,
   TableCell,
@@ -83,152 +90,165 @@ export function SetsTableContent({
 
   return (
     <>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Set Data</TableHead>
-              <TableHead className="w-24">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {records.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={2} className="text-center py-8 text-muted-foreground">
-                  No sets found
-                </TableCell>
-              </TableRow>
-            ) : (
-              records.map((record) => {
-                // Build elements section
-                const elements = [];
-                for (let i = 1; i <= 8; i++) {
-                  const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
-                  const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
-                  if (name) {
-                    const displayName = itemNameMap[name] || name; // Use translated name or fallback to ID
-                    elements.push(`\t\t${displayName}\t\t${part || ''}`);
-                  }
-                }
-
-                // Build bonuses section
-                const bonuses = [];
-                for (let i = 1; i <= 8; i++) {
-                  const dst = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
-                  const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
-                  const pieces = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
-                  if (dst && value) {
-                    bonuses.push(`\t\t${dst}\t\t${value}\t\t${pieces || ''}`);
-                  }
-                }
-
-                return (
-                  <TableRow key={record.id}>
-                    <TableCell className="font-mono text-sm whitespace-pre">
-                      {record.num || 'N/A'}&#9;{record.name_propitemetc || 'Unnamed Set'}
-                      {'\n'}{'{'}
-                      {'\n'}&#9;Elem
-                      {'\n'}&#9;{'{'}
-                      {elements.length > 0 ? '\n' + elements.join('\n') : ''}
-                      {'\n'}&#9;{'}'}
-                      {'\n'}&#9;Avail
-                      {'\n'}&#9;{'{'}
-                      {bonuses.length > 0 ? '\n' + bonuses.join('\n') : ''}
-                      {'\n'}&#9;{'}'}
-                      {'\n'}{'}'}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => onEdit(record)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(record.id.toString())}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Sets ({totalRecords})</CardTitle>
+          <CardDescription>
+            Showing{" "}
+            {(currentPage - 1) * itemsPerPage + (totalRecords === 0 ? 0 : 1)}{" "}
+            to {Math.min(currentPage * itemsPerPage, totalRecords)} of{" "}
+            {totalRecords} records
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Set Data</TableHead>
+                  <TableHead className="w-24">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {records.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={2} className="text-center py-8 text-muted-foreground">
+                      No sets found
                     </TableCell>
                   </TableRow>
-                );
-              })
-            )}
-          </TableBody>
-        </Table>
-      </div>
+                ) : (
+                  records.map((record) => {
+                    // Build elements section
+                    const elements = [];
+                    for (let i = 1; i <= 8; i++) {
+                      const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
+                      const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
+                      if (name) {
+                        const displayName = itemNameMap[name] || name; // Use translated name or fallback to ID
+                        elements.push(`\t\t${displayName}\t\t${part || ''}`);
+                      }
+                    }
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-6">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href={buildPageHref(Math.max(1, currentPage - 1))}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCurrentPage(Math.max(1, currentPage - 1));
-                  }}
-                  className={
-                    currentPage === 1
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
-              </PaginationItem>
-              {(() => {
-                const maxButtons = 5;
-                let start = Math.max(
-                  1,
-                  currentPage - Math.floor(maxButtons / 2)
-                );
-                const end = Math.min(totalPages, start + maxButtons - 1);
-                if (end - start + 1 < maxButtons)
-                  start = Math.max(1, end - maxButtons + 1);
-                const pages: number[] = [];
-                for (let p = start; p <= end; p++) pages.push(p);
-                return pages.map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      href={buildPageHref(page)}
+                    // Build bonuses section
+                    const bonuses = [];
+                    for (let i = 1; i <= 8; i++) {
+                      const dst = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
+                      const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
+                      const pieces = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
+                      if (dst && value) {
+                        bonuses.push(`\t\t${dst}\t\t${value}\t\t${pieces || ''}`);
+                      }
+                    }
+
+                    return (
+                      <TableRow key={record.id}>
+                        <TableCell className="font-mono text-sm whitespace-pre">
+                          {record.num || 'N/A'}&#9;{record.name_propitemetc || 'Unnamed Set'}
+                          {'\n'}{'{'}
+                          {'\n'}&#9;Elem
+                          {'\n'}&#9;{'{'}
+                          {elements.length > 0 ? '\n' + elements.join('\n') : ''}
+                          {'\n'}&#9;{'}'}
+                          {'\n'}&#9;Avail
+                          {'\n'}&#9;{'{'}
+                          {bonuses.length > 0 ? '\n' + bonuses.join('\n') : ''}
+                          {'\n'}&#9;{'}'}
+                          {'\n'}{'}'}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => onEdit(record)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDelete(record.id.toString())}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
+              </TableBody>
+            </Table>
+                    </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href={buildPageHref(Math.max(1, currentPage - 1))}
                       onClick={(e) => {
                         e.preventDefault();
-                        setCurrentPage(page);
+                        setCurrentPage(Math.max(1, currentPage - 1));
                       }}
-                      isActive={currentPage === page}
-                      className="cursor-pointer"
-                    >
-                      {page}
-                    </PaginationLink>
+                      className={
+                        currentPage === 1
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
+                      }
+                    />
                   </PaginationItem>
-                ));
-              })()}
-              <PaginationItem>
-                <PaginationNext
-                  href={buildPageHref(
-                    Math.min(totalPages, currentPage + 1)
-                  )}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCurrentPage(Math.min(totalPages, currentPage + 1));
-                  }}
-                  className={
-                    currentPage === totalPages
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
+                  {(() => {
+                    const maxButtons = 5;
+                    let start = Math.max(
+                      1,
+                      currentPage - Math.floor(maxButtons / 2)
+                    );
+                    const end = Math.min(totalPages, start + maxButtons - 1);
+                    if (end - start + 1 < maxButtons)
+                      start = Math.max(1, end - maxButtons + 1);
+                    const pages: number[] = [];
+                    for (let p = start; p <= end; p++) pages.push(p);
+                    return pages.map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href={buildPageHref(page)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(page);
+                          }}
+                          isActive={currentPage === page}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ));
+                  })()}
+                  <PaginationItem>
+                    <PaginationNext
+                      href={buildPageHref(
+                        Math.min(totalPages, currentPage + 1)
+                      )}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(Math.min(totalPages, currentPage + 1));
+                      }}
+                      className={
+                        currentPage === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!deletingId} onOpenChange={() => setDeletingId(null)}>

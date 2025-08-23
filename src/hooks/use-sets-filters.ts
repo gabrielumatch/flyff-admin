@@ -39,25 +39,20 @@ export function useSetsFilters() {
     const qParam = searchParams.get('q') || '';
     const numParam = searchParams.get('num') || 'all';
 
-    if (!Number.isNaN(pageParam) && pageParam > 0 && pageParam !== currentPage) {
+    if (!Number.isNaN(pageParam) && pageParam > 0) {
       setCurrentPage(pageParam);
     }
-    if (qParam !== searchTerm) {
-      setSearchTerm(qParam);
-    }
-    if (numParam !== numFilter) {
-      setNumFilter(numParam);
-    }
-  }, [searchParams, currentPage, searchTerm, numFilter]);
+    setSearchTerm(qParam);
+    setNumFilter(numParam);
+  }, [searchParams]);
 
   const buildPageHref = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    if (page > 1) {
-      params.set('page', String(page));
-    } else {
-      params.delete('page');
-    }
-    return `${pathname}?${params.toString()}`;
+    const params = new URLSearchParams();
+    if (page > 1) params.set("page", String(page));
+    if (debouncedSearchTerm) params.set("q", debouncedSearchTerm);
+    if (numFilter !== "all") params.set("num", numFilter);
+    const qs = params.toString();
+    return qs ? `${pathname}?${qs}` : pathname;
   };
 
   return {
