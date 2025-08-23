@@ -73,6 +73,12 @@ import {
   DWABILITYMAX_OPTIONS,
   EITEMTYPE_OPTIONS,
   WITEMEATK_OPTIONS,
+  DWPARRY_OPTIONS,
+  DWBLOCKRATING_OPTIONS,
+  NADDSKILLMIN_OPTIONS,
+  NADDSKILLMAX_OPTIONS,
+  DWATKSTYLE_OPTIONS,
+  DWWEAPONTYPE_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -139,6 +145,12 @@ export function ItemTable({
   const [abilitymaxOptions, setAbilitymaxOptions] = useState<string[]>([]);
   const [itemtypeOptions, setItemtypeOptions] = useState<string[]>([]);
   const [itemeatkOptions, setItemeatkOptions] = useState<string[]>([]);
+  const [parryOptions, setParryOptions] = useState<string[]>([]);
+  const [blockratingOptions, setBlockratingOptions] = useState<string[]>([]);
+  const [addskillminOptions, setAddskillminOptions] = useState<string[]>([]);
+  const [addskillmaxOptions, setAddskillmaxOptions] = useState<string[]>([]);
+  const [atkstyleOptions, setAtkstyleOptions] = useState<string[]>([]);
+  const [weapontypeOptions, setWeapontypeOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -169,6 +181,12 @@ export function ItemTable({
     dwabilitymax: abilitymaxOptions,
     eitemtype: itemtypeOptions,
     witemeatk: itemeatkOptions,
+    dwparry: parryOptions,
+    dwblockrating: blockratingOptions,
+    naddskillmin: addskillminOptions,
+    naddskillmax: addskillmaxOptions,
+    dwatkstyle: atkstyleOptions,
+    dwweapontype: weapontypeOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -200,6 +218,12 @@ export function ItemTable({
     dwabilitymax: "Select ability max",
     eitemtype: "Select item type",
     witemeatk: "Select item eatk",
+    dwparry: "Select parry",
+    dwblockrating: "Select block rating",
+    naddskillmin: "Select add skill min",
+    naddskillmax: "Select add skill max",
+    dwatkstyle: "Select attack style",
+    dwweapontype: "Select weapon type",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -279,6 +303,12 @@ export function ItemTable({
     setAbilitymaxOptions(DWABILITYMAX_OPTIONS);
     setItemtypeOptions(EITEMTYPE_OPTIONS);
     setItemeatkOptions(WITEMEATK_OPTIONS);
+    setParryOptions(DWPARRY_OPTIONS);
+    setBlockratingOptions(DWBLOCKRATING_OPTIONS);
+    setAddskillminOptions(NADDSKILLMIN_OPTIONS);
+    setAddskillmaxOptions(NADDSKILLMAX_OPTIONS);
+    setAtkstyleOptions(DWATKSTYLE_OPTIONS);
+    setWeapontypeOptions(DWWEAPONTYPE_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
