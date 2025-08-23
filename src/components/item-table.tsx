@@ -50,6 +50,15 @@ import {
   DWITEMKIND3_OPTIONS,
   DWITEMLV_OPTIONS,
   BPERMANENCE_OPTIONS,
+  DWPACKMAX_OPTIONS,
+  DWUSEABLE_OPTIONS,
+  DWITEMSEX_OPTIONS,
+  DWENDURANCE_OPTIONS,
+  NABRASION_OPTIONS,
+  NMAXREPAIR_OPTIONS,
+  DWHANDED_OPTIONS,
+  DWFLAG_OPTIONS,
+  DWPARTS_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -93,6 +102,14 @@ export function ItemTable({
   const [kind2Options, setKind2Options] = useState<string[]>([]);
   const [kind3Options, setKind3Options] = useState<string[]>([]);
   const [permanenceOptions, setPermanenceOptions] = useState<string[]>([]);
+  const [packmaxOptions, setPackmaxOptions] = useState<string[]>([]);
+  const [useableOptions, setUseableOptions] = useState<string[]>([]);
+  const [itemsexOptions, setItemsexOptions] = useState<string[]>([]);
+  const [enduranceOptions, setEnduranceOptions] = useState<string[]>([]);
+  const [abrasionOptions, setAbrasionOptions] = useState<string[]>([]);
+  const [maxrepairOptions, setMaxrepairOptions] = useState<string[]>([]);
+  const [handedOptions, setHandedOptions] = useState<string[]>([]);
+  const [partsOptions, setPartsOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -100,6 +117,14 @@ export function ItemTable({
     dwitemkind2: kind2Options,
     dwitemkind3: kind3Options,
     bpermanence: permanenceOptions,
+    dwpackmax: packmaxOptions,
+    dwuseable: useableOptions,
+    dwitemsex: itemsexOptions,
+    dwendurance: enduranceOptions,
+    nabrasion: abrasionOptions,
+    nmaxrepair: maxrepairOptions,
+    dwhanded: handedOptions,
+    dwparts: partsOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -108,6 +133,14 @@ export function ItemTable({
     dwitemkind2: "Select kind2",
     dwitemkind3: "Select kind3",
     bpermanence: "Select permanence",
+    dwpackmax: "Select pack max",
+    dwuseable: "Select useable",
+    dwitemsex: "Select item sex",
+    dwendurance: "Select endurance",
+    nabrasion: "Select abrasion",
+    nmaxrepair: "Select max repair",
+    dwhanded: "Select handed",
+    dwparts: "Select parts",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -164,6 +197,14 @@ export function ItemTable({
     setKind3Options(DWITEMKIND3_OPTIONS);
     setLevelOptions(DWITEMLV_OPTIONS);
     setPermanenceOptions(BPERMANENCE_OPTIONS);
+    setPackmaxOptions(DWPACKMAX_OPTIONS);
+    setUseableOptions(DWUSEABLE_OPTIONS);
+    setItemsexOptions(DWITEMSEX_OPTIONS);
+    setEnduranceOptions(DWENDURANCE_OPTIONS);
+    setAbrasionOptions(NABRASION_OPTIONS);
+    setMaxrepairOptions(NMAXREPAIR_OPTIONS);
+    setHandedOptions(DWHANDED_OPTIONS);
+    setPartsOptions(DWPARTS_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
