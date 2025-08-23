@@ -1,0 +1,4 @@
+export const SKILLS_DWACTIVESKILL_OPTIONS = [
+  "=",
+  "SI_GEN_FRAMEARROW_BURN"
+];
