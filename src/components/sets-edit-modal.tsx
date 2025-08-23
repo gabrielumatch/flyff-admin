@@ -81,20 +81,20 @@ export function SetsEditModal({
       }
       setElements(extractedElements);
       
-      // Extract bonuses
-      const extractedBonuses: Bonus[] = [];
-      for (let i = 1; i <= 8; i++) {
-        const attribute = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
-        const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
-        const parts = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
-        if (attribute && value) {
-          extractedBonuses.push({ 
-            attribute, 
-            value: value || 0, 
-            parts: parts || 0 
-          });
-        }
-      }
+             // Extract bonuses
+       const extractedBonuses: Bonus[] = [];
+       for (let i = 1; i <= 8; i++) {
+         const attribute = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
+         const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
+         const parts = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
+         if (attribute) {
+           extractedBonuses.push({ 
+             attribute, 
+             value: value || 0, 
+             parts: parts || 0 
+           });
+         }
+       }
       setBonuses(extractedBonuses);
     }
   }, [record]);
