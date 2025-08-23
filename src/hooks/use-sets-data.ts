@@ -89,56 +89,107 @@ export function useSetsData(tableName: string, debouncedSearchTerm: string, curr
 
       // Apply job, sex, and level filters by checking the items in the set
       if (jobFilter !== "all" || sexFilter !== "all" || levelFilter !== "all") {
-        // First, get all items that match the filters
-        let itemQuery = supabase.from("propitem").select("dwid");
-        
-        if (jobFilter !== "all") {
-          itemQuery = itemQuery.eq("dwitemjob", jobFilter);
-        }
-        if (sexFilter !== "all") {
-          itemQuery = itemQuery.eq("dwitemsex", sexFilter);
-        }
-        if (levelFilter !== "all") {
-          itemQuery = itemQuery.eq("dwitemlv", levelFilter);
-        }
+        try {
+          // First, get all items that match the filters
+          let itemQuery = supabase.from("propitem").select("dwid");
+          
+          if (jobFilter !== "all") {
+            itemQuery = itemQuery.eq("dwitemjob", jobFilter);
+          }
+          if (sexFilter !== "all") {
+            itemQuery = itemQuery.eq("dwitemsex", sexFilter);
+          }
+          if (levelFilter !== "all") {
+            itemQuery = itemQuery.eq("dwitemlv", levelFilter);
+          }
 
-        const { data: matchingItems, error: itemError } = await itemQuery;
-        
-        if (itemError) {
-          console.error("Error fetching matching items:", itemError);
-        } else if (matchingItems && matchingItems.length > 0) {
-          // Get the dwids of matching items
-          const matchingDwids = matchingItems.map(item => item.dwid).filter(Boolean);
+          const { data: matchingItems, error: itemError } = await itemQuery;
           
-          // Build conditions to check if any element in the set matches the filtered items
-          const elementConditions = [];
-          for (let i = 1; i <= 8; i++) {
-            for (const dwid of matchingDwids) {
-              elementConditions.push(`elem_${i}_name.eq.${dwid}`);
+          if (itemError) {
+            console.error("Error fetching matching items:", itemError);
+            // Continue without filtering if there's an error
+          } else if (matchingItems && matchingItems.length > 0) {
+            // Get the dwids of matching items
+            const matchingDwids = matchingItems.map(item => item.dwid).filter(Boolean);
+            
+            // Limit the number of conditions to avoid URL length issues
+            const limitedDwids = matchingDwids.slice(0, 50); // Limit to 50 items
+            
+            // Build conditions to check if any element in the set matches the filtered items
+            const elementConditions = [];
+            for (let i = 1; i <= 8; i++) {
+              for (const dwid of limitedDwids) {
+                elementConditions.push(`elem_${i}_name.eq.${dwid}`);
+              }
             }
+            
+            if (elementConditions.length > 0) {
+              // Limit the total number of OR conditions to avoid URL length issues
+              const limitedConditions = elementConditions.slice(0, 200);
+              query = query.or(limitedConditions.join(','));
+            }
+          } else {
+            // If no items match the filters, return empty result
+            setRecords([]);
+            setTotalRecords(0);
+            setTotalPages(1);
+            setLoading(false);
+            return;
           }
-          
-          if (elementConditions.length > 0) {
-            query = query.or(elementConditions.join(','));
-          }
-        } else {
-          // If no items match the filters, return empty result
-          setRecords([]);
-          setTotalRecords(0);
-          setTotalPages(1);
-          setLoading(false);
-          return;
+        } catch (filterError) {
+          console.error("Error in filter logic:", filterError);
+          // Continue without filtering if there's an error
         }
       }
 
-      const { data, error, count } = await query.range(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage - 1
-      );
+      let data: TPropItemEtcItem[] | null = null;
+      let count: number | null = null;
+      
+      try {
+        const result = await query.range(
+          (currentPage - 1) * itemsPerPage,
+          currentPage * itemsPerPage - 1
+        );
 
-      if (error) {
-        console.error("Error fetching sets:", error);
-        console.error("Error details:", JSON.stringify(error, null, 2));
+        if (result.error) {
+          console.error("Error fetching sets:", result.error);
+          console.error("Error details:", JSON.stringify(result.error, null, 2));
+          
+          // If the query is too complex, try a simpler approach
+          if (result.error.message?.includes('Failed to fetch') || result.error.message?.includes('timeout')) {
+            console.log("Trying simpler query approach...");
+            
+            // Try a basic query without complex filters
+            const simpleQuery = supabase
+              .from(tableName)
+              .select("*", { count: "exact" })
+              .is("deleted_at", null)
+              .order("num")
+              .range(
+                (currentPage - 1) * itemsPerPage,
+                currentPage * itemsPerPage - 1
+              );
+            
+            const simpleResult = await simpleQuery;
+            
+            if (simpleResult.error) {
+              console.error("Simple query also failed:", simpleResult.error);
+              toast.error("Failed to load sets");
+              return;
+            }
+            
+            data = simpleResult.data;
+            count = simpleResult.count;
+          } else {
+            toast.error("Failed to load sets");
+            return;
+          }
+        } else {
+          data = result.data;
+          count = result.count;
+        }
+      } catch (queryError) {
+        console.error("Error executing query:", queryError);
         toast.error("Failed to load sets");
         return;
       }
