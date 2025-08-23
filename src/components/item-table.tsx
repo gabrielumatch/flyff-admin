@@ -79,6 +79,11 @@ import {
   NADDSKILLMAX_OPTIONS,
   DWATKSTYLE_OPTIONS,
   DWWEAPONTYPE_OPTIONS,
+  DWITEMATKORDER1_OPTIONS,
+  DWITEMATKORDER2_OPTIONS,
+  DWITEMATKORDER3_OPTIONS,
+  DWITEMATKORDER4_OPTIONS,
+  TMCONTINUOUSPAIN_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -151,6 +156,11 @@ export function ItemTable({
   const [addskillmaxOptions, setAddskillmaxOptions] = useState<string[]>([]);
   const [atkstyleOptions, setAtkstyleOptions] = useState<string[]>([]);
   const [weapontypeOptions, setWeapontypeOptions] = useState<string[]>([]);
+  const [itematkorder1Options, setItematkorder1Options] = useState<string[]>([]);
+  const [itematkorder2Options, setItematkorder2Options] = useState<string[]>([]);
+  const [itematkorder3Options, setItematkorder3Options] = useState<string[]>([]);
+  const [itematkorder4Options, setItematkorder4Options] = useState<string[]>([]);
+  const [continuouspainOptions, setContinuouspainOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -187,6 +197,11 @@ export function ItemTable({
     naddskillmax: addskillmaxOptions,
     dwatkstyle: atkstyleOptions,
     dwweapontype: weapontypeOptions,
+    dwitematkorder1: itematkorder1Options,
+    dwitematkorder2: itematkorder2Options,
+    dwitematkorder3: itematkorder3Options,
+    dwitematkorder4: itematkorder4Options,
+    tmcontinuouspain: continuouspainOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -224,6 +239,11 @@ export function ItemTable({
     naddskillmax: "Select add skill max",
     dwatkstyle: "Select attack style",
     dwweapontype: "Select weapon type",
+    dwitematkorder1: "Select item attack order 1",
+    dwitematkorder2: "Select item attack order 2",
+    dwitematkorder3: "Select item attack order 3",
+    dwitematkorder4: "Select item attack order 4",
+    tmcontinuouspain: "Select continuous pain",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -309,6 +329,11 @@ export function ItemTable({
     setAddskillmaxOptions(NADDSKILLMAX_OPTIONS);
     setAtkstyleOptions(DWATKSTYLE_OPTIONS);
     setWeapontypeOptions(DWWEAPONTYPE_OPTIONS);
+    setItematkorder1Options(DWITEMATKORDER1_OPTIONS);
+    setItematkorder2Options(DWITEMATKORDER2_OPTIONS);
+    setItematkorder3Options(DWITEMATKORDER3_OPTIONS);
+    setItematkorder4Options(DWITEMATKORDER4_OPTIONS);
+    setContinuouspainOptions(TMCONTINUOUSPAIN_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
