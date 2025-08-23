@@ -1,0 +1,13 @@
+export const DWUSEMOTION_OPTIONS = [
+  "=",
+  "MTI_ATK1",
+  "MTI_ATK2",
+  "MTI_ATK3",
+  "MTI_ATK4",
+  "MTI_FSTAND1_A",
+  "MTI_FSTAND1_B",
+  "MTI_FSTAND1_C",
+  "MTI_FSTAND1_D",
+  "MTI_FSTAND1_F",
+  "MTI_GENFSTAND1_D"
+];

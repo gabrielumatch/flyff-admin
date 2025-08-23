@@ -118,6 +118,13 @@ import {
   DWSKILLREADY_OPTIONS,
   _DWSKILLRANGE_OPTIONS,
   DWSFXELEMENTAL_OPTIONS,
+  DWSFXOBJ_OPTIONS,
+  DWSFXOBJ2_OPTIONS,
+  DWSFXOBJ3_OPTIONS,
+  DWSFXOBJ4_OPTIONS,
+  DWSFXOBJ5_OPTIONS,
+  DWUSEMOTION_OPTIONS,
+  DWCIRCLETIME_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -229,6 +236,13 @@ export function ItemTable({
   const [skillreadyOptions, setSkillreadyOptions] = useState<string[]>([]);
   const [skillrangeOptions, setSkillrangeOptions] = useState<string[]>([]);
   const [sfxelementalOptions, setSfxelementalOptions] = useState<string[]>([]);
+  const [sfxobjOptions, setSfxobjOptions] = useState<string[]>([]);
+  const [sfxobj2Options, setSfxobj2Options] = useState<string[]>([]);
+  const [sfxobj3Options, setSfxobj3Options] = useState<string[]>([]);
+  const [sfxobj4Options, setSfxobj4Options] = useState<string[]>([]);
+  const [sfxobj5Options, setSfxobj5Options] = useState<string[]>([]);
+  const [usemotionOptions, setUsemotionOptions] = useState<string[]>([]);
+  const [circletimeOptions, setCircletimeOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -304,6 +318,13 @@ export function ItemTable({
     dwskillready: skillreadyOptions,
     _dwskillrange: skillrangeOptions,
     dwsfxelemental: sfxelementalOptions,
+    dwsfxobj: sfxobjOptions,
+    dwsfxobj2: sfxobj2Options,
+    dwsfxobj3: sfxobj3Options,
+    dwsfxobj4: sfxobj4Options,
+    dwsfxobj5: sfxobj5Options,
+    dwusemotion: usemotionOptions,
+    dwcircletime: circletimeOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -380,6 +401,13 @@ export function ItemTable({
     dwskillready: "Select skill ready",
     _dwskillrange: "Select skill range",
     dwsfxelemental: "Select SFX elemental",
+    dwsfxobj: "Select SFX object",
+    dwsfxobj2: "Select SFX object 2",
+    dwsfxobj3: "Select SFX object 3",
+    dwsfxobj4: "Select SFX object 4",
+    dwsfxobj5: "Select SFX object 5",
+    dwusemotion: "Select use motion",
+    dwcircletime: "Select circle time",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -504,6 +532,13 @@ export function ItemTable({
     setSkillreadyOptions(DWSKILLREADY_OPTIONS);
     setSkillrangeOptions(_DWSKILLRANGE_OPTIONS);
     setSfxelementalOptions(DWSFXELEMENTAL_OPTIONS);
+    setSfxobjOptions(DWSFXOBJ_OPTIONS);
+    setSfxobj2Options(DWSFXOBJ2_OPTIONS);
+    setSfxobj3Options(DWSFXOBJ3_OPTIONS);
+    setSfxobj4Options(DWSFXOBJ4_OPTIONS);
+    setSfxobj5Options(DWSFXOBJ5_OPTIONS);
+    setUsemotionOptions(DWUSEMOTION_OPTIONS);
+    setCircletimeOptions(DWCIRCLETIME_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {

@@ -1,0 +1,7 @@
+export const DWSFXOBJ_OPTIONS = [
+  "=",
+  "XI_BLINKWING_READY",
+  "XI_FLIGHT_READY",
+  "XI_MON_BEHEMOTH_ATK1",
+  "XI_MON_DEVIL_ATK3"
+];
