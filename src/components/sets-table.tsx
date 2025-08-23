@@ -50,7 +50,7 @@ export function SetsTable({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Get num options for filters
-  const numOptions = Array.from(new Set(records.map(r => r.num?.toString()).filter(Boolean))).sort();
+  const numOptions = Array.from(new Set(records.map(r => r.num?.toString()).filter((num): num is string => Boolean(num)))).sort();
 
   const handleEdit = (record: TPropItemEtcItem) => {
     setEditingRecord(record);

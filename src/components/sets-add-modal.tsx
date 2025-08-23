@@ -79,7 +79,13 @@ export function SetsAddModal({
   };
 
   // Define the form fields for sets
-  const formFields = [
+  const formFields: Array<{
+    name: string;
+    label: string;
+    type: 'text' | 'number' | 'select';
+    required: boolean;
+    options?: string;
+  }> = [
     { name: 'num', label: 'Set Number', type: 'number', required: true },
     { name: 'name_propitemetc', label: 'Set Name', type: 'text', required: false },
   ];
