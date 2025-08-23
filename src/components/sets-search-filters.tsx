@@ -9,13 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchableCombobox } from "@/components/searchable-combobox";
 
 import { Search } from "lucide-react";
 
@@ -77,67 +71,47 @@ export function SetsSearchFilters({
           </div>
           <div className="space-y-2">
             <Label htmlFor="num">Set Number</Label>
-            <Select value={numFilter} onValueChange={onNumFilterChange}>
-              <SelectTrigger id="num" className="w-full">
-                <SelectValue placeholder="All sets" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {numOptions.map((num) => (
-                  <SelectItem key={num} value={num}>
-                    {num}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchableCombobox
+              options={["all", ...numOptions]}
+              value={numFilter}
+              onValueChange={onNumFilterChange}
+              placeholder="All sets"
+              searchPlaceholder="Search set numbers..."
+              emptyMessage="No set numbers found."
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="job">Job</Label>
-            <Select value={jobFilter} onValueChange={onJobFilterChange}>
-              <SelectTrigger id="job" className="w-full">
-                <SelectValue placeholder="All jobs" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {jobOptions.map((job) => (
-                  <SelectItem key={job} value={job}>
-                    {job}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchableCombobox
+              options={["all", ...jobOptions]}
+              value={jobFilter}
+              onValueChange={onJobFilterChange}
+              placeholder="All jobs"
+              searchPlaceholder="Search jobs..."
+              emptyMessage="No jobs found."
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="sex">Sex</Label>
-            <Select value={sexFilter} onValueChange={onSexFilterChange}>
-              <SelectTrigger id="sex" className="w-full">
-                <SelectValue placeholder="All sexes" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {sexOptions.map((sex) => (
-                  <SelectItem key={sex} value={sex}>
-                    {sex}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchableCombobox
+              options={["all", ...sexOptions]}
+              value={sexFilter}
+              onValueChange={onSexFilterChange}
+              placeholder="All sexes"
+              searchPlaceholder="Search sexes..."
+              emptyMessage="No sexes found."
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="level">Level</Label>
-            <Select value={levelFilter} onValueChange={onLevelFilterChange}>
-              <SelectTrigger id="level" className="w-full">
-                <SelectValue placeholder="All levels" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {levelOptions.map((level) => (
-                  <SelectItem key={level} value={level}>
-                    {level}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchableCombobox
+              options={["all", ...levelOptions]}
+              value={levelFilter}
+              onValueChange={onLevelFilterChange}
+              placeholder="All levels"
+              searchPlaceholder="Search levels..."
+              emptyMessage="No levels found."
+            />
           </div>
         </div>
       </CardContent>
