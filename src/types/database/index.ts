@@ -265,3 +265,7 @@ export { SKILLS_DWFUELRE_OPTIONS } from '@/types/database/skills-dwfuelre';
 export { SKILLS_DWLIMITLEVEL1_OPTIONS } from '@/types/database/skills-dwlimitlevel1';
 export { SKILLS_DWREFLECT_OPTIONS } from '@/types/database/skills-dwreflect';
 export { SKILLS_DWSNDATTACK1_OPTIONS } from '@/types/database/skills-dwsndattack1';
+export { SKILLS_DWSNDATTACK2_OPTIONS } from '@/types/database/skills-dwsndattack2';
+export { SKILLS_DWQUESTID_OPTIONS } from '@/types/database/skills-dwquestid';
+export { SKILLS_SZTEXTFILE_OPTIONS } from '@/types/database/skills-sztextfile';
+export { SKILLS_DWBUFFTICKTYPE_OPTIONS } from '@/types/database/skills-dwbuffticktype';
