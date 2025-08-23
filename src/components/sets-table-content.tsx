@@ -105,55 +105,80 @@ export function SetsTableContent({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Set Data</TableHead>
+                  <TableHead>Set #</TableHead>
+                  <TableHead>Set Name</TableHead>
+                  <TableHead>Elements</TableHead>
+                  <TableHead>Bonuses</TableHead>
                   <TableHead className="w-24">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {records.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={2} className="text-center py-8 text-muted-foreground">
+                    <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
                       No sets found
                     </TableCell>
                   </TableRow>
                 ) : (
                   records.map((record) => {
-                    // Build elements section
+                    // Build elements data
                     const elements = [];
                     for (let i = 1; i <= 8; i++) {
                       const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
                       const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
                       if (name) {
-                        const displayName = itemNameMap[name] || name; // Use translated name or fallback to ID
-                        elements.push(`\t\t${displayName}\t\t${part || ''}`);
+                        const displayName = itemNameMap[name] || name;
+                        elements.push({ name: displayName, part: part || '' });
                       }
                     }
 
-                    // Build bonuses section
+                    // Build bonuses data
                     const bonuses = [];
                     for (let i = 1; i <= 8; i++) {
                       const dst = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
                       const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
                       const pieces = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
                       if (dst && value) {
-                        bonuses.push(`\t\t${dst}\t\t${value}\t\t${pieces || ''}`);
+                        bonuses.push({ attribute: dst, value: value, parts: pieces || 0 });
                       }
                     }
 
                     return (
                       <TableRow key={record.id}>
-                        <TableCell className="font-mono text-sm whitespace-pre">
-                          {record.num || 'N/A'}&#9;{record.name_propitemetc || 'Unnamed Set'}
-                          {'\n'}{'{'}
-                          {'\n'}&#9;Elem
-                          {'\n'}&#9;{'{'}
-                          {elements.length > 0 ? '\n' + elements.join('\n') : ''}
-                          {'\n'}&#9;{'}'}
-                          {'\n'}&#9;Avail
-                          {'\n'}&#9;{'{'}
-                          {bonuses.length > 0 ? '\n' + bonuses.join('\n') : ''}
-                          {'\n'}&#9;{'}'}
-                          {'\n'}{'}'}
+                        <TableCell className="font-medium">
+                          {record.num || 'N/A'}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {record.name_propitemetc || 'Unnamed Set'}
+                        </TableCell>
+                        <TableCell>
+                          {elements.length > 0 ? (
+                            <div className="space-y-1">
+                              {elements.map((elem, index) => (
+                                <div key={index} className="flex gap-2 text-sm">
+                                  <span className="font-medium">{elem.name}</span>
+                                  <span className="text-muted-foreground">({elem.part})</span>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">No elements</span>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {bonuses.length > 0 ? (
+                            <div className="space-y-1">
+                              {bonuses.map((bonus, index) => (
+                                <div key={index} className="flex gap-2 text-sm">
+                                  <span className="font-medium">{bonus.attribute}</span>
+                                  <span className="text-blue-600">+{bonus.value}</span>
+                                  <span className="text-muted-foreground">({bonus.parts} parts)</span>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">No bonuses</span>
+                          )}
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
