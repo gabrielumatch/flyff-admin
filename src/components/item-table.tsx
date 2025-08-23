@@ -48,6 +48,7 @@ import { DWITEMKIND1_OPTIONS } from "@/types/database/dwitemkind1";
 import { DWITEMKIND2_OPTIONS } from "@/types/database/dwitemkind2";
 import { DWITEMKIND3_OPTIONS } from "@/types/database/dwitemkind3";
 import { DWITEMLV_OPTIONS } from "@/types/database/dwitemlv";
+import { BPERMANENCE_OPTIONS } from "@/types/database/bpermanence";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
   "dwid",
@@ -89,12 +90,14 @@ export function ItemTable({
   const [kind1Options, setKind1Options] = useState<string[]>([]);
   const [kind2Options, setKind2Options] = useState<string[]>([]);
   const [kind3Options, setKind3Options] = useState<string[]>([]);
+  const [permanenceOptions, setPermanenceOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
     dwitemkind1: kind1Options,
     dwitemkind2: kind2Options,
     dwitemkind3: kind3Options,
+    bpermanence: permanenceOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -102,6 +105,7 @@ export function ItemTable({
     dwitemkind1: "Select kind1",
     dwitemkind2: "Select kind2",
     dwitemkind3: "Select kind3",
+    bpermanence: "Select permanence",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -157,6 +161,7 @@ export function ItemTable({
     setKind2Options(DWITEMKIND2_OPTIONS);
     setKind3Options(DWITEMKIND3_OPTIONS);
     setLevelOptions(DWITEMLV_OPTIONS);
+    setPermanenceOptions(BPERMANENCE_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
