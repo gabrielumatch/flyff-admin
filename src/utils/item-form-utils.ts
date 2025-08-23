@@ -1,0 +1,187 @@
+import type { TPropItem } from '@/types/database';
+
+// Common form field types that should be rendered as select dropdowns
+export const SELECT_FIELDS: Array<keyof TPropItem> = [
+  'dwitemjob',
+  'dwitemlv',
+  'dwitemkind1',
+  'dwitemkind2',
+  'dwitemkind3',
+  'bpermanence',
+  'dwpackmax',
+  'dwuseable',
+  'dwitemsex',
+  'dwendurance',
+  'nabrasion',
+  'nmaxrepair',
+  'dwhanded',
+  'dwflag',
+  'dwparts',
+  'dwpartsub',
+  'bpartsfile',
+  'dwexclusive',
+  'dwbasepartsignore',
+  'dwshopable',
+  'dwitemrare',
+  'nlog',
+  'bcharged',
+  'dwlinkkindbullet',
+  'dwlinkkind',
+  'dwabilitymin',
+  'dwabilitymax',
+  'eitemtype',
+  'witemeatk',
+  'dwparry',
+  'dwblockrating',
+  'naddskillmin',
+  'naddskillmax',
+  'dwatkstyle',
+  'dwweapontype',
+  'dwitematkorder1',
+  'dwitematkorder2',
+  'dwitematkorder3',
+  'dwitematkorder4',
+  'tmcontinuouspain',
+  'nshellquantity',
+  'dwrecoil',
+  'dwloadingtime',
+  'nadjhitrate',
+  'fattackspeed',
+  'dwdmgshift',
+  'dwattackrange',
+  'nprobability',
+  'dwdestparam0',
+  'dwdestparam1',
+  'dwdestparam2',
+  'nadjparamval0',
+  'nadjparamval1',
+  'nadjparamval2',
+  'dwchgparamval0',
+  'dwchgparamval1',
+  'dwchgparamval2',
+  'ndestdata10',
+  'ndestdata11',
+  'ndestdata12',
+  'dwactiveskill',
+  'dwactiveskilllv',
+  'dwactiveskillrate',
+  'dwreqmp',
+  'dwreqfp',
+  'dwreqdislv',
+  'dwreskill1',
+  'dwreskilllevel1',
+  'dwreskill2',
+  'dwreskilllevel2',
+  'dwskillreadytype',
+  'dwskillready',
+  '_dwskillrange',
+  'dwsfxelemental',
+  'dwsfxobj',
+  'dwsfxobj2',
+  'dwsfxobj3',
+  'dwsfxobj4',
+  'dwsfxobj5',
+  'dwusemotion',
+  'dwcircletime',
+  'dwskilltime',
+  'dwexetarget',
+  'dwusechance',
+  'dwspellregion',
+  'dwspelltype',
+  'dwreferstat1',
+  'dwreferstat2',
+  'dwrefertarget1',
+  'dwrefertarget2',
+  'dwrefervalue1',
+  'dwrefervalue2',
+  'dwskilltype',
+  'nitemresistelecricity',
+  'nitemresistfire',
+  'nitemresistwind',
+  'nitemresistwater',
+  'nitemresistearth',
+  'nevildoing',
+  'dwexpertlv',
+  'dwexpertmax',
+  'dwsubdefine',
+  'dwexp',
+  'dwcombostyle',
+  'fflightspeed',
+  'fflightlrangle',
+  'fflighttbangle',
+  'dwflightlimit',
+  'dwffuelremax',
+  'dwafuelremax',
+  'dwfuelre',
+  'dwlimitlevel1',
+  'nreflect',
+  'dwsndattack1',
+  'dwsndattack2',
+  'dwquestid',
+  'sztextfilename',
+  'nminlimitlevel',
+  'nmaxlimitlevel',
+  'nitemgroup',
+  'nuselimitgroup',
+  'nmaxduplication',
+  'neffectvalue',
+  'ntargetminenchant',
+  'ntargetmaxenchant',
+  'bresetbind',
+  'nbindcondition',
+  'nresetbindcondition',
+  'dwhitactiveskillid',
+  'dwhitactiveskilllv',
+  'dwhitactiveskillprob',
+  'dwhitactiveskilltarget',
+  'dwdamageactiveskillid',
+  'dwdamageactiveskilllv',
+  'dwdamageactiveskillprob',
+  'dwdamageactiveskilltarget',
+  'dwequipactiveskillid',
+  'dwequipactiveskilllv',
+  'dwsmelting',
+  'dwattsmelting',
+  'dwgemsmelting',
+  'dwpierce',
+  'dwuprouse',
+  'babsolutetime',
+];
+
+// Fields that should be hidden or not editable
+export const HIDDEN_FIELDS: Array<keyof TPropItem> = [
+  'dwid',
+  'created_at',
+  'updated_at',
+  'deleted_at',
+];
+
+// Required fields for validation
+export const REQUIRED_FIELDS: Array<keyof TPropItem> = [
+  'szname',
+  'dwitemjob',
+  'dwitemlv',
+];
+
+// Helper function to check if a field should be rendered as a select
+export function isSelectField(fieldName: keyof TPropItem): boolean {
+  return SELECT_FIELDS.includes(fieldName);
+}
+
+// Helper function to check if a field should be hidden
+export function isHiddenField(fieldName: keyof TPropItem): boolean {
+  return HIDDEN_FIELDS.includes(fieldName);
+}
+
+// Helper function to check if a field is required
+export function isRequiredField(fieldName: keyof TPropItem): boolean {
+  return REQUIRED_FIELDS.includes(fieldName);
+}
+
+// Helper function to get field display name
+export function getFieldDisplayName(fieldName: string): string {
+  return fieldName
+    .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+    .replace(/^./, str => str.toUpperCase()) // Capitalize first letter
+    .replace(/\b\w/g, l => l.toUpperCase()); // Capitalize each word
+}
