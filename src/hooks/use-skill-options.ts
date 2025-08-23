@@ -6,11 +6,12 @@ export function useSkillOptions() {
   const [placeholders, setPlaceholders] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    // Get all exported options from the database types
+    // Get only SKILLS_ prefixed options from the database types
     const allOptions = Object.entries(SkillOptions)
-      .filter(([key]) => key.endsWith('_OPTIONS'))
+      .filter(([key]) => key.startsWith('SKILLS_') && key.endsWith('_OPTIONS'))
       .reduce((acc, [key, value]) => {
-        const fieldName = key.replace('_OPTIONS', '').toLowerCase();
+        // Remove 'SKILLS_' prefix and '_OPTIONS' suffix, then convert to lowercase
+        const fieldName = key.replace('SKILLS_', '').replace('_OPTIONS', '').toLowerCase();
         acc[fieldName] = value as string[];
         return acc;
       }, {} as Record<string, string[]>);

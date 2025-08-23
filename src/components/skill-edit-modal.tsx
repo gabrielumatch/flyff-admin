@@ -81,8 +81,31 @@ export function SkillEditModal({
     if (!loading) onOpenChange(false);
   };
 
-  // Get all skill fields dynamically
-  const skillFields = Object.keys(selectOptionsByField) as Array<keyof TPropSkill>;
+  // Get all skill fields from the database schema
+  const skillFields: Array<keyof TPropSkill> = [
+    'ver', 'dwid', 'szname', 'dwnum', 'dwpackmax', 'dwitemkind1', 'dwitemkind2', 'dwitemkind3',
+    'dwitemjob', 'bpermanence', 'dwuseable', 'dwitemsex', 'dwcost', 'dwendurance', 'nabrasion',
+    'nhardness', 'dwhanded', 'dwheelh', 'dwparts', 'dwpartsub', 'bpartfile', 'dwexclusive',
+    'dwbasepartsignore', 'dwitemlv', 'dwitemrare', 'dwshopable', 'blog', 'bcharged',
+    'dwlinkkindbullet', 'dwlinkkind', 'dwabilitymin', 'dwabilitymax', 'eitemtype', 'witemeatk',
+    'dwparry', 'dwblockrating', 'dwaddskillmin', 'dwaddskillmax', 'dwatkstyle', 'dwweapontype',
+    'dwitematkorder1', 'dwitematkorder2', 'dwitematkorder3', 'dwitematkorder4', 'tmcontinuouspain',
+    'dwshellquantity', 'dwrecoil', 'dwloadingtime', 'nadjhitrate', 'dwattackspeed', 'dwdmgshift',
+    'dwattackrange', 'dwprobability', 'dwdestparam1', 'dwdestparam2', 'dwdestparam3',
+    'nadjparamval1', 'nadjparamval2', 'nadjparamval3', 'dwchgparamval1', 'dwchgparamval2',
+    'dwchgparamval3', 'dwdestdata1', 'dwdestdata2', 'dwdestdata3', 'dwactiveskill', 'dwactiveskilllv',
+    'dwactiveskillper', 'dwreqmp', 'dwrepfp', 'dwreqdislv', 'dwreskill1', 'dwreskilllevel1',
+    'dwreskill2', 'dwreskilllevel2', 'dwskillreadytype', 'dwskillready', 'dwskillrange',
+    'dwsfxelemental', 'dwsfxobj', 'dwsfxobj2', 'dwsfxobj3', 'dwsfxobj4', 'dwsfxobj5',
+    'dwusemotion', 'dwcircletime', 'dwskilltime', 'dwexetarget', 'dwusechance', 'dwspellregion',
+    'dwspelltype', 'dwreferstat1', 'dwreferstat2', 'dwrefertarget1', 'dwrefertarget2',
+    'dwrefervalue1', 'dwrefervalue2', 'dwskilltype', 'fitemresistelecricity', 'fitemresistfire',
+    'fitemresistwind', 'fitemresistwater', 'fitemresistearth', 'nevildoing', 'dwexpertlv',
+    'expertmax', 'dwsubdefine', 'dwexp', 'dwcombostyle', 'fflightspeed', 'fflightlrangle',
+    'fflighttbangle', 'dwflightlimit', 'dwffuelremax', 'dwafuelremax', 'dwfuelre', 'dwlimitlevel1',
+    'dwreflect', 'dwsndattack1', 'dwsndattack2', 'szicon', 'dwquestid', 'sztextfile', 'szcomment',
+    'dwbuffticktype'
+  ];
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>

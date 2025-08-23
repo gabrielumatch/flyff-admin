@@ -149,3 +149,28 @@ export { DWPIERCE_OPTIONS } from '@/types/database/dwpierce';
 export { DWUPROUSE_OPTIONS } from '@/types/database/dwuprouse';
 export { BABSOLUTETIME_OPTIONS } from '@/types/database/babsolutetime';
 export { DWCOST_OPTIONS } from '@/types/database/dwcost';
+
+// Skills-specific static options exports
+export { SKILLS_DWPACKMAX_OPTIONS } from '@/types/database/skills-dwpackmax';
+export { SKILLS_DWITEMKIND1_OPTIONS } from '@/types/database/skills-dwitemkind1';
+export { SKILLS_DWITEMKIND2_OPTIONS } from '@/types/database/skills-dwitemkind2';
+export { SKILLS_DWITEMKIND3_OPTIONS } from '@/types/database/skills-dwitemkind3';
+export { SKILLS_DWITEMJOB_OPTIONS } from '@/types/database/skills-dwitemjob';
+export { SKILLS_BPERMANENCE_OPTIONS } from '@/types/database/skills-bpermanence';
+export { SKILLS_DWUSEABLE_OPTIONS } from '@/types/database/skills-dwuseable';
+export { SKILLS_DWITEMSEX_OPTIONS } from '@/types/database/skills-dwitemsex';
+export { SKILLS_DWCOST_OPTIONS } from '@/types/database/skills-dwcost';
+export { SKILLS_DWENDURANCE_OPTIONS } from '@/types/database/skills-dwendurance';
+export { SKILLS_NABRASION_OPTIONS } from '@/types/database/skills-nabrasion';
+export { SKILLS_NHARDNESS_OPTIONS } from '@/types/database/skills-nhardness';
+export { SKILLS_DWHANDED_OPTIONS } from '@/types/database/skills-dwhanded';
+export { SKILLS_DWHEELH_OPTIONS } from '@/types/database/skills-dwheelh';
+export { SKILLS_DWPARTS_OPTIONS } from '@/types/database/skills-dwparts';
+export { SKILLS_DWPARTSUB_OPTIONS } from '@/types/database/skills-dwpartsub';
+export { SKILLS_BPARTFILE_OPTIONS } from '@/types/database/skills-bpartfile';
+export { SKILLS_DWEXCLUSIVE_OPTIONS } from '@/types/database/skills-dwexclusive';
+export { SKILLS_DWBASEPARTSIGNORE_OPTIONS } from '@/types/database/skills-dwbasepartsignore';
+export { SKILLS_DWITEMLV_OPTIONS } from '@/types/database/skills-dwitemlv';
+export { SKILLS_DWITEMRARE_OPTIONS } from '@/types/database/skills-dwitemrare';
+export { SKILLS_DWSHOPABLE_OPTIONS } from '@/types/database/skills-dwshopable';
+export { SKILLS_BLOG_OPTIONS } from '@/types/database/skills-blog';
