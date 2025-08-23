@@ -165,45 +165,64 @@ export function SetsTableContent({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            Showing {((currentPage - 1) * itemsPerPage) + 1} to{" "}
-            {Math.min(currentPage * itemsPerPage, totalRecords)} of {totalRecords} sets
-          </p>
+        <div className="mt-6">
           <Pagination>
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
-                  href={buildPageHref(currentPage - 1)}
+                  href={buildPageHref(Math.max(1, currentPage - 1))}
                   onClick={(e) => {
                     e.preventDefault();
-                    if (currentPage > 1) setCurrentPage(currentPage - 1);
+                    setCurrentPage(Math.max(1, currentPage - 1));
                   }}
-                  className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    currentPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
                 />
               </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    href={buildPageHref(page)}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setCurrentPage(page);
-                    }}
-                    isActive={currentPage === page}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+              {(() => {
+                const maxButtons = 5;
+                let start = Math.max(
+                  1,
+                  currentPage - Math.floor(maxButtons / 2)
+                );
+                const end = Math.min(totalPages, start + maxButtons - 1);
+                if (end - start + 1 < maxButtons)
+                  start = Math.max(1, end - maxButtons + 1);
+                const pages: number[] = [];
+                for (let p = start; p <= end; p++) pages.push(p);
+                return pages.map((page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href={buildPageHref(page)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(page);
+                      }}
+                      isActive={currentPage === page}
+                      className="cursor-pointer"
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ));
+              })()}
               <PaginationItem>
                 <PaginationNext
-                  href={buildPageHref(currentPage + 1)}
+                  href={buildPageHref(
+                    Math.min(totalPages, currentPage + 1)
+                  )}
                   onClick={(e) => {
                     e.preventDefault();
-                    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+                    setCurrentPage(Math.min(totalPages, currentPage + 1));
                   }}
-                  className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+                  className={
+                    currentPage === totalPages
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
                 />
               </PaginationItem>
             </PaginationContent>
