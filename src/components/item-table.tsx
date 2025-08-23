@@ -109,6 +109,15 @@ import {
   DWACTIVESKILLRATE_OPTIONS,
   DWREQMP_OPTIONS,
   DWREQFP_OPTIONS,
+  DWREQDISLV_OPTIONS,
+  DWRESKILL1_OPTIONS,
+  DWRESKILLLEVEL1_OPTIONS,
+  DWRESKILL2_OPTIONS,
+  DWRESKILLLEVEL2_OPTIONS,
+  DWSKILLREADYTYPE_OPTIONS,
+  DWSKILLREADY_OPTIONS,
+  _DWSKILLRANGE_OPTIONS,
+  DWSFXELEMENTAL_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -211,6 +220,15 @@ export function ItemTable({
   const [activeskillrateOptions, setActiveskillrateOptions] = useState<string[]>([]);
   const [reqmpOptions, setReqmpOptions] = useState<string[]>([]);
   const [reqfpOptions, setReqfpOptions] = useState<string[]>([]);
+  const [reqdislvOptions, setReqdislvOptions] = useState<string[]>([]);
+  const [reskill1Options, setReskill1Options] = useState<string[]>([]);
+  const [reskilllevel1Options, setReskilllevel1Options] = useState<string[]>([]);
+  const [reskill2Options, setReskill2Options] = useState<string[]>([]);
+  const [reskilllevel2Options, setReskilllevel2Options] = useState<string[]>([]);
+  const [skillreadytypeOptions, setSkillreadytypeOptions] = useState<string[]>([]);
+  const [skillreadyOptions, setSkillreadyOptions] = useState<string[]>([]);
+  const [skillrangeOptions, setSkillrangeOptions] = useState<string[]>([]);
+  const [sfxelementalOptions, setSfxelementalOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -277,6 +295,15 @@ export function ItemTable({
     dwactiveskillrate: activeskillrateOptions,
     dwreqmp: reqmpOptions,
     dwreqfp: reqfpOptions,
+    dwreqdislv: reqdislvOptions,
+    dwreskill1: reskill1Options,
+    dwreskilllevel1: reskilllevel1Options,
+    dwreskill2: reskill2Options,
+    dwreskilllevel2: reskilllevel2Options,
+    dwskillreadytype: skillreadytypeOptions,
+    dwskillready: skillreadyOptions,
+    _dwskillrange: skillrangeOptions,
+    dwsfxelemental: sfxelementalOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -344,6 +371,15 @@ export function ItemTable({
     dwactiveskillrate: "Select active skill rate",
     dwreqmp: "Select required MP",
     dwreqfp: "Select required FP",
+    dwreqdislv: "Select required discipline level",
+    dwreskill1: "Select required skill 1",
+    dwreskilllevel1: "Select required skill level 1",
+    dwreskill2: "Select required skill 2",
+    dwreskilllevel2: "Select required skill level 2",
+    dwskillreadytype: "Select skill ready type",
+    dwskillready: "Select skill ready",
+    _dwskillrange: "Select skill range",
+    dwsfxelemental: "Select SFX elemental",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -459,6 +495,15 @@ export function ItemTable({
     setActiveskillrateOptions(DWACTIVESKILLRATE_OPTIONS);
     setReqmpOptions(DWREQMP_OPTIONS);
     setReqfpOptions(DWREQFP_OPTIONS);
+    setReqdislvOptions(DWREQDISLV_OPTIONS);
+    setReskill1Options(DWRESKILL1_OPTIONS);
+    setReskilllevel1Options(DWRESKILLLEVEL1_OPTIONS);
+    setReskill2Options(DWRESKILL2_OPTIONS);
+    setReskilllevel2Options(DWRESKILLLEVEL2_OPTIONS);
+    setSkillreadytypeOptions(DWSKILLREADYTYPE_OPTIONS);
+    setSkillreadyOptions(DWSKILLREADY_OPTIONS);
+    setSkillrangeOptions(_DWSKILLRANGE_OPTIONS);
+    setSfxelementalOptions(DWSFXELEMENTAL_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
