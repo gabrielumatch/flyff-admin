@@ -19,15 +19,13 @@ export function useItemFilters() {
     const jobParam = searchParams.get("job") || "all";
     const lvParam = searchParams.get("lv") || "all";
     
-    if (!Number.isNaN(pageParam) && pageParam > 0 && pageParam !== currentPage) {
+    if (!Number.isNaN(pageParam) && pageParam > 0) {
       setCurrentPage(pageParam);
     }
-    if (qParam !== searchTerm) {
-      setSearchTerm(qParam);
-    }
-    if (jobParam !== jobFilter) setJobFilter(jobParam);
-    if (lvParam !== levelFilter) setLevelFilter(lvParam);
-  }, [searchParams, currentPage, searchTerm, jobFilter, levelFilter]);
+    setSearchTerm(qParam);
+    setJobFilter(jobParam);
+    setLevelFilter(lvParam);
+  }, [searchParams]);
 
   // Debounce search term
   useEffect(() => {
