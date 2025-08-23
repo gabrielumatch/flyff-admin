@@ -1,0 +1,4 @@
+export const DWDAMAGEACTIVESKILLID_OPTIONS = [
+  "=",
+  "SI_RIN_SUP_PROTECT"
+];

@@ -1,0 +1,4 @@
+export const DWHITACTIVESKILLTARGET_OPTIONS = [
+  "=",
+  "IST_ANOTHER"
+];

@@ -173,6 +173,19 @@ import {
   NBINDCONDITION_OPTIONS,
   NRESETBINDCONDITION_OPTIONS,
   DWHITACTIVESKILLID_OPTIONS,
+  DWHITACTIVESKILLLV_OPTIONS,
+  DWHITACTIVESKILLPROB_OPTIONS,
+  DWHITACTIVESKILLTARGET_OPTIONS,
+  DWDAMAGEACTIVESKILLID_OPTIONS,
+  DWDAMAGEACTIVESKILLLV_OPTIONS,
+  DWDAMAGEACTIVESKILLPROB_OPTIONS,
+  DWDAMAGEACTIVESKILLTARGET_OPTIONS,
+  DWEQUIPACTIVESKILLID_OPTIONS,
+  DWEQUIPACTIVESKILLLV_OPTIONS,
+  DWSMELTING_OPTIONS,
+  DWATTSMELTING_OPTIONS,
+  DWGEMSMELTING_OPTIONS,
+  DWPIERCE_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -339,6 +352,19 @@ export function ItemTable({
   const [bindconditionOptions, setBindconditionOptions] = useState<string[]>([]);
   const [resetbindconditionOptions, setResetbindconditionOptions] = useState<string[]>([]);
   const [hitactiveskillidOptions, setHitactiveskillidOptions] = useState<string[]>([]);
+  const [hitactiveskilllvOptions, setHitactiveskilllvOptions] = useState<string[]>([]);
+  const [hitactiveskillprobOptions, setHitactiveskillprobOptions] = useState<string[]>([]);
+  const [hitactiveskilltargetOptions, setHitactiveskilltargetOptions] = useState<string[]>([]);
+  const [damageactiveskillidOptions, setDamageactiveskillidOptions] = useState<string[]>([]);
+  const [damageactiveskilllvOptions, setDamageactiveskilllvOptions] = useState<string[]>([]);
+  const [damageactiveskillprobOptions, setDamageactiveskillprobOptions] = useState<string[]>([]);
+  const [damageactiveskilltargetOptions, setDamageactiveskilltargetOptions] = useState<string[]>([]);
+  const [equipactiveskillidOptions, setEquipactiveskillidOptions] = useState<string[]>([]);
+  const [equipactiveskilllvOptions, setEquipactiveskilllvOptions] = useState<string[]>([]);
+  const [smeltingOptions, setSmeltingOptions] = useState<string[]>([]);
+  const [attsmeltingOptions, setAttsmeltingOptions] = useState<string[]>([]);
+  const [gemsmeltingOptions, setGemsmeltingOptions] = useState<string[]>([]);
+  const [pierceOptions, setPierceOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -469,6 +495,19 @@ export function ItemTable({
     nbindcondition: bindconditionOptions,
     nresetbindcondition: resetbindconditionOptions,
     dwhitactiveskillid: hitactiveskillidOptions,
+    dwhitactiveskilllv: hitactiveskilllvOptions,
+    dwhitactiveskillprob: hitactiveskillprobOptions,
+    dwhitactiveskilltarget: hitactiveskilltargetOptions,
+    dwdamageactiveskillid: damageactiveskillidOptions,
+    dwdamageactiveskilllv: damageactiveskilllvOptions,
+    dwdamageactiveskillprob: damageactiveskillprobOptions,
+    dwdamageactiveskilltarget: damageactiveskilltargetOptions,
+    dwequipactiveskillid: equipactiveskillidOptions,
+    dwequipactiveskilllv: equipactiveskilllvOptions,
+    dwsmelting: smeltingOptions,
+    dwattsmelting: attsmeltingOptions,
+    dwgemsmelting: gemsmeltingOptions,
+    dwpierce: pierceOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -600,6 +639,19 @@ export function ItemTable({
     nbindcondition: "Select bind condition",
     nresetbindcondition: "Select reset bind condition",
     dwhitactiveskillid: "Select hit active skill ID",
+    dwhitactiveskilllv: "Select hit active skill level",
+    dwhitactiveskillprob: "Select hit active skill probability",
+    dwhitactiveskilltarget: "Select hit active skill target",
+    dwdamageactiveskillid: "Select damage active skill ID",
+    dwdamageactiveskilllv: "Select damage active skill level",
+    dwdamageactiveskillprob: "Select damage active skill probability",
+    dwdamageactiveskilltarget: "Select damage active skill target",
+    dwequipactiveskillid: "Select equip active skill ID",
+    dwequipactiveskilllv: "Select equip active skill level",
+    dwsmelting: "Select smelting",
+    dwattsmelting: "Select att smelting",
+    dwgemsmelting: "Select gem smelting",
+    dwpierce: "Select pierce",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -779,6 +831,19 @@ export function ItemTable({
     setBindconditionOptions(NBINDCONDITION_OPTIONS);
     setResetbindconditionOptions(NRESETBINDCONDITION_OPTIONS);
     setHitactiveskillidOptions(DWHITACTIVESKILLID_OPTIONS);
+    setHitactiveskilllvOptions(DWHITACTIVESKILLLV_OPTIONS);
+    setHitactiveskillprobOptions(DWHITACTIVESKILLPROB_OPTIONS);
+    setHitactiveskilltargetOptions(DWHITACTIVESKILLTARGET_OPTIONS);
+    setDamageactiveskillidOptions(DWDAMAGEACTIVESKILLID_OPTIONS);
+    setDamageactiveskilllvOptions(DWDAMAGEACTIVESKILLLV_OPTIONS);
+    setDamageactiveskillprobOptions(DWDAMAGEACTIVESKILLPROB_OPTIONS);
+    setDamageactiveskilltargetOptions(DWDAMAGEACTIVESKILLTARGET_OPTIONS);
+    setEquipactiveskillidOptions(DWEQUIPACTIVESKILLID_OPTIONS);
+    setEquipactiveskilllvOptions(DWEQUIPACTIVESKILLLV_OPTIONS);
+    setSmeltingOptions(DWSMELTING_OPTIONS);
+    setAttsmeltingOptions(DWATTSMELTING_OPTIONS);
+    setGemsmeltingOptions(DWGEMSMELTING_OPTIONS);
+    setPierceOptions(DWPIERCE_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
