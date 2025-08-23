@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
-import type { TPropItem } from "@/types/database";
+
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getItemFieldDescription } from "@/lib/item-field-descriptions";
@@ -104,7 +104,6 @@ export function ItemAddModal({
       setFormData((prev) => ({ ...init, ...prev }));
     };
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, supabase, tableName]);
 
   return (

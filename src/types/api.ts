@@ -1,10 +1,9 @@
-import { TPropTranslation, TPropItem, TPropSkill } from '@/types/database';
-import { PaginationParams, PaginationResponse } from '@/types/common';
+import { PaginationParams } from '@/types/common';
 
 // Supabase response types
 export interface SupabaseResponse<T> {
   data: T[] | null;
-  error: any;
+  error: unknown;
   count: number | null;
 }
 

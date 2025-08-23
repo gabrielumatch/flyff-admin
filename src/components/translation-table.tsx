@@ -79,7 +79,7 @@ export function TranslationTable({
     if (qParam !== searchTerm) {
       setSearchTerm(qParam);
     }
-  }, [searchParams]);
+  }, [searchParams, currentPage, searchTerm]);
 
   // Debounce search term to reduce query churn
   useEffect(() => {

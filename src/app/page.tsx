@@ -19,7 +19,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
   const { supabase } = useSupabase();
   const router = useRouter();
 
@@ -40,7 +40,7 @@ export default function LoginPage() {
         // Redirect to dashboard or home after successful login
         router.push("/dashboard");
       }
-    } catch (error) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

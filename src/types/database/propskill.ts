@@ -63,4 +63,7 @@ export interface TPropSkill extends BaseRecord {
     dwchgparamval1?: string | null;
     dwchgparamval2?: string | null;
     dwchgparamval3?: string | null;
+    dwdestdata1?: string | null;
+    dwdestdata2?: string | null;
+    dwdestdata3?: string | null;
   }
