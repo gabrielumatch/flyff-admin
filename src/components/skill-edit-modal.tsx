@@ -17,23 +17,25 @@ import type { TPropSkill } from "@/types/database";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getSkillFieldDescription } from "@/lib/skill-field-descriptions";
+import { OptionsSelect } from "@/components/options-select";
+import { isSelectField, isHiddenField } from "@/utils/skill-form-utils";
 
 interface SkillEditModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  record: TPropSkill | null;
-  tableName: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  record: TPropSkill;
   onSuccess: () => void;
-  allFields: Array<keyof TPropSkill>;
+  selectOptionsByField: Record<string, string[]>;
+  selectPlaceholdersByField: Record<string, string>;
 }
 
 export function SkillEditModal({
-  isOpen,
-  onClose,
+  open,
+  onOpenChange,
   record,
-  tableName,
   onSuccess,
-  allFields,
+  selectOptionsByField,
+  selectPlaceholdersByField,
 }: SkillEditModalProps) {
   const { supabase } = useSupabase();
   const [formData, setFormData] = useState<Partial<TPropSkill>>({});
@@ -49,11 +51,10 @@ export function SkillEditModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!record) return;
     setLoading(true);
     try {
       const { error } = await supabase
-        .from(tableName)
+        .from("propskill")
         .update({
           ...formData,
         })
@@ -67,7 +68,7 @@ export function SkillEditModal({
 
       toast.success("Skill updated");
       onSuccess();
-      onClose();
+      onOpenChange(false);
     } catch (error) {
       console.error("Error:", error);
       toast.error("Unexpected error");
@@ -77,13 +78,14 @@ export function SkillEditModal({
   };
 
   const handleClose = () => {
-    if (!loading) onClose();
+    if (!loading) onOpenChange(false);
   };
 
-  if (!record) return null;
+  // Get all skill fields dynamically
+  const skillFields = Object.keys(selectOptionsByField) as Array<keyof TPropSkill>;
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-6xl md:max-w-7xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Skill</DialogTitle>
@@ -95,32 +97,43 @@ export function SkillEditModal({
         <form onSubmit={handleSubmit} className="space-y-6">
           <TooltipProvider>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {allFields.map((field) => {
+              {skillFields.map((field) => {
+                if (isHiddenField(field)) return null;
+                
                 const key = String(field);
+                const options = selectOptionsByField[key] || [];
+                const placeholder = selectPlaceholdersByField[key] || `Enter ${key}`;
+
                 return (
                   <div key={key} className="space-y-2">
                     <FieldHelpTooltip
                       label={<Label htmlFor={key}>{key}</Label>}
                       help={getSkillFieldDescription(key)}
                     />
-                    <Input
-                      id={key}
-                      value={(formData[field] as string) ?? ""}
-                      onChange={(e) => handleInputChange(field, e.target.value)}
-                    />
+                    {isSelectField(field) && options.length > 0 ? (
+                      <OptionsSelect
+                        id={key}
+                        value={formData[field] || ""}
+                        onChange={(value: string) => handleInputChange(field, value)}
+                        placeholder={placeholder}
+                        options={options}
+                      />
+                    ) : (
+                      <Input
+                        id={key}
+                        value={formData[field] || ""}
+                        onChange={(e) => handleInputChange(field, e.target.value)}
+                        placeholder={placeholder}
+                      />
+                    )}
                   </div>
                 );
               })}
             </div>
           </TooltipProvider>
 
-          <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={loading}
-            >
+          <div className="flex justify-end space-x-2">
+            <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>

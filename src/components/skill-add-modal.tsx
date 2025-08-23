@@ -17,21 +17,23 @@ import type { TPropSkill } from "@/types/database";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getSkillFieldDescription } from "@/lib/skill-field-descriptions";
+import { OptionsSelect } from "@/components/options-select";
+import { isSelectField, isHiddenField } from "@/utils/skill-form-utils";
 
 interface SkillAddModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  tableName: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
-  allFields: Array<keyof TPropSkill>;
+  selectOptionsByField: Record<string, string[]>;
+  selectPlaceholdersByField: Record<string, string>;
 }
 
 export function SkillAddModal({
-  isOpen,
-  onClose,
-  tableName,
+  open,
+  onOpenChange,
   onSuccess,
-  allFields,
+  selectOptionsByField,
+  selectPlaceholdersByField,
 }: SkillAddModalProps) {
   const { supabase } = useSupabase();
   const [formData, setFormData] = useState<Partial<TPropSkill>>({});
@@ -50,12 +52,12 @@ export function SkillAddModal({
 
     setLoading(true);
     try {
-      const { error } = await supabase.from(tableName).insert({
+      const { error } = await supabase.from("propskill").insert({
         ...formData,
       });
 
       if (error) {
-        console.error("Error creating skill:");
+        console.error("Error creating skill:", error);
         toast.error("Failed to create skill");
         return;
       }
@@ -74,12 +76,15 @@ export function SkillAddModal({
   const handleClose = () => {
     if (!loading) {
       setFormData({});
-      onClose();
+      onOpenChange(false);
     }
   };
 
+  // Get all skill fields dynamically
+  const skillFields = Object.keys(selectOptionsByField) as Array<keyof TPropSkill>;
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-6xl md:max-w-7xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Skill</DialogTitle>
@@ -89,32 +94,43 @@ export function SkillAddModal({
         <form onSubmit={handleSubmit} className="space-y-6">
           <TooltipProvider>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {allFields.map((field) => {
+              {skillFields.map((field) => {
+                if (isHiddenField(field)) return null;
+                
                 const key = String(field);
+                const options = selectOptionsByField[key] || [];
+                const placeholder = selectPlaceholdersByField[key] || `Enter ${key}`;
+
                 return (
                   <div key={key} className="space-y-2">
                     <FieldHelpTooltip
                       label={<Label htmlFor={key}>{key}</Label>}
                       help={getSkillFieldDescription(key)}
                     />
-                    <Input
-                      id={key}
-                      value={(formData[field] as string) ?? ""}
-                      onChange={(e) => handleInputChange(field, e.target.value)}
-                    />
+                    {isSelectField(field) && options.length > 0 ? (
+                      <OptionsSelect
+                        id={key}
+                        value={formData[field] || ""}
+                        onChange={(value: string) => handleInputChange(field, value)}
+                        placeholder={placeholder}
+                        options={options}
+                      />
+                    ) : (
+                      <Input
+                        id={key}
+                        value={formData[field] || ""}
+                        onChange={(e) => handleInputChange(field, e.target.value)}
+                        placeholder={placeholder}
+                      />
+                    )}
                   </div>
                 );
               })}
             </div>
           </TooltipProvider>
 
-          <div className="flex justify-end gap-2 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={loading}
-            >
+          <div className="flex justify-end space-x-2">
+            <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
