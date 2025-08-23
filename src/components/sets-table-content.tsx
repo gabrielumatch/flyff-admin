@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -71,31 +71,6 @@ export function SetsTableContent({
     }
   };
 
-  const getElementDisplay = (record: TPropItemEtcItem) => {
-    const elements = [];
-    for (let i = 1; i <= 8; i++) {
-      const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
-      const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
-      if (name) {
-        elements.push(`${name} (${part || 'N/A'})`);
-      }
-    }
-    return elements.slice(0, 3).join(', ') + (elements.length > 3 ? '...' : '');
-  };
-
-  const getAvailableBonuses = (record: TPropItemEtcItem) => {
-    const bonuses = [];
-    for (let i = 1; i <= 8; i++) {
-      const dst = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
-      const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
-      const pieces = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
-      if (dst && value) {
-        bonuses.push(`${dst}: +${value} (${pieces} pieces)`);
-      }
-    }
-    return bonuses.slice(0, 2).join(', ') + (bonuses.length > 2 ? '...' : '');
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -110,55 +85,76 @@ export function SetsTableContent({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Number</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Elements</TableHead>
-              <TableHead>Bonuses</TableHead>
+              <TableHead>Set Data</TableHead>
               <TableHead className="w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {records.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={2} className="text-center py-8 text-muted-foreground">
                   No sets found
                 </TableCell>
               </TableRow>
             ) : (
-              records.map((record) => (
-                <TableRow key={record.id}>
-                  <TableCell className="font-mono text-sm">{record.id}</TableCell>
-                  <TableCell>{record.num || 'N/A'}</TableCell>
-                  <TableCell className="font-medium">
-                    {record.name_propitemetc || 'Unnamed Set'}
-                  </TableCell>
-                  <TableCell className="max-w-xs truncate">
-                    {getElementDisplay(record)}
-                  </TableCell>
-                  <TableCell className="max-w-xs truncate">
-                    {getAvailableBonuses(record)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onEdit(record)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(record.id.toString())}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
+              records.map((record) => {
+                // Build elements section
+                const elements = [];
+                for (let i = 1; i <= 8; i++) {
+                  const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
+                  const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
+                  if (name) {
+                    elements.push(`\t\t${name}\t\t${part || ''}`);
+                  }
+                }
+
+                // Build bonuses section
+                const bonuses = [];
+                for (let i = 1; i <= 8; i++) {
+                  const dst = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
+                  const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
+                  const pieces = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
+                  if (dst && value) {
+                    bonuses.push(`\t\t${dst}\t\t${value}\t\t${pieces || ''}`);
+                  }
+                }
+
+                return (
+                  <TableRow key={record.id}>
+                    <TableCell className="font-mono text-sm whitespace-pre">
+                      {record.num || 'N/A'}&#9;{record.name_propitemetc || 'Unnamed Set'}
+                      {'\n'}{'{'}
+                      {'\n'}&#9;Elem
+                      {'\n'}&#9;{'{'}
+                      {elements.length > 0 ? '\n' + elements.join('\n') : ''}
+                      {'\n'}&#9;{'}'}
+                      {'\n'}&#9;Avail
+                      {'\n'}&#9;{'{'}
+                      {bonuses.length > 0 ? '\n' + bonuses.join('\n') : ''}
+                      {'\n'}&#9;{'}'}
+                      {'\n'}{'}'}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onEdit(record)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDelete(record.id.toString())}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
