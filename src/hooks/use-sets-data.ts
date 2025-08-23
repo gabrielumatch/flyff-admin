@@ -26,7 +26,7 @@ export function useSetsData(tableName: string, debouncedSearchTerm: string, curr
       if (debouncedSearchTerm) {
         const term = debouncedSearchTerm;
         query = query.or(
-          `name_propitemetc.ilike.%${term}%,elem_1_name.ilike.%${term}%,elem_2_name.ilike.%${term}%`
+          `name_propitemetc.ilike.%${term}%,elem_1_name.ilike.%${term}%`
         );
       }
 
