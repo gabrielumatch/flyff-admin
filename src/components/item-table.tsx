@@ -43,12 +43,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { TPropItem } from "@/types/database";
-import { DWITEMJOB_OPTIONS } from "@/types/database/dwitemjob";
-import { DWITEMKIND1_OPTIONS } from "@/types/database/dwitemkind1";
-import { DWITEMKIND2_OPTIONS } from "@/types/database/dwitemkind2";
-import { DWITEMKIND3_OPTIONS } from "@/types/database/dwitemkind3";
-import { DWITEMLV_OPTIONS } from "@/types/database/dwitemlv";
-import { BPERMANENCE_OPTIONS } from "@/types/database/bpermanence";
+import {
+  DWITEMJOB_OPTIONS,
+  DWITEMKIND1_OPTIONS,
+  DWITEMKIND2_OPTIONS,
+  DWITEMKIND3_OPTIONS,
+  DWITEMLV_OPTIONS,
+  BPERMANENCE_OPTIONS,
+} from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
   "dwid",
