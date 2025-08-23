@@ -22,7 +22,7 @@ import {
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
 import type { TPropItemEtcItem } from "@/types/database";
-import { OptionsSelect } from "@/components/options-select";
+import { SearchableCombobox } from "@/components/searchable-combobox";
 import { Plus, Trash2 } from "lucide-react";
 
 interface SetsAddModalProps {
@@ -286,12 +286,13 @@ export function SetsAddModal({
                            />
                          </TableCell>
                          <TableCell>
-                           <OptionsSelect
-                             id={`element-part-${index}`}
+                           <SearchableCombobox
                              options={selectOptionsByField['elem_part'] || []}
-                             placeholder="Select part"
                              value={element.part}
-                             onChange={(value) => updateElement(index, 'part', value)}
+                             onValueChange={(value) => updateElement(index, 'part', value)}
+                             placeholder="Select part"
+                             searchPlaceholder="Search parts..."
+                             emptyMessage="No parts found."
                            />
                          </TableCell>
                         <TableCell>
@@ -351,12 +352,13 @@ export function SetsAddModal({
                       <TableRow key={index}>
                         <TableCell className="font-medium">{index + 1}</TableCell>
                         <TableCell>
-                          <OptionsSelect
-                            id={`bonus-attribute-${index}`}
+                          <SearchableCombobox
                             options={selectOptionsByField['avail_dst'] || []}
-                            placeholder="Select attribute"
                             value={bonus.attribute}
-                            onChange={(value) => updateBonus(index, 'attribute', value)}
+                            onValueChange={(value) => updateBonus(index, 'attribute', value)}
+                            placeholder="Select attribute"
+                            searchPlaceholder="Search attributes..."
+                            emptyMessage="No attributes found."
                           />
                         </TableCell>
                         <TableCell>
