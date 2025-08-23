@@ -101,6 +101,14 @@ import {
   DWCHGPARAMVAL0_OPTIONS,
   DWCHGPARAMVAL1_OPTIONS,
   DWCHGPARAMVAL2_OPTIONS,
+  NDESTDATA10_OPTIONS,
+  NDESTDATA11_OPTIONS,
+  NDESTDATA12_OPTIONS,
+  DWACTIVESKILL_OPTIONS,
+  DWACTIVESKILLLV_OPTIONS,
+  DWACTIVESKILLRATE_OPTIONS,
+  DWREQMP_OPTIONS,
+  DWREQFP_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -195,6 +203,14 @@ export function ItemTable({
   const [chgparamval0Options, setChgparamval0Options] = useState<string[]>([]);
   const [chgparamval1Options, setChgparamval1Options] = useState<string[]>([]);
   const [chgparamval2Options, setChgparamval2Options] = useState<string[]>([]);
+  const [destdata10Options, setDestdata10Options] = useState<string[]>([]);
+  const [destdata11Options, setDestdata11Options] = useState<string[]>([]);
+  const [destdata12Options, setDestdata12Options] = useState<string[]>([]);
+  const [activeskillOptions, setActiveskillOptions] = useState<string[]>([]);
+  const [activeskilllvOptions, setActiveskilllvOptions] = useState<string[]>([]);
+  const [activeskillrateOptions, setActiveskillrateOptions] = useState<string[]>([]);
+  const [reqmpOptions, setReqmpOptions] = useState<string[]>([]);
+  const [reqfpOptions, setReqfpOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -253,6 +269,14 @@ export function ItemTable({
     dwchgparamval0: chgparamval0Options,
     dwchgparamval1: chgparamval1Options,
     dwchgparamval2: chgparamval2Options,
+    ndestdata10: destdata10Options,
+    ndestdata11: destdata11Options,
+    ndestdata12: destdata12Options,
+    dwactiveskill: activeskillOptions,
+    dwactiveskilllv: activeskilllvOptions,
+    dwactiveskillrate: activeskillrateOptions,
+    dwreqmp: reqmpOptions,
+    dwreqfp: reqfpOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -312,6 +336,14 @@ export function ItemTable({
     dwchgparamval0: "Select change parameter value 0",
     dwchgparamval1: "Select change parameter value 1",
     dwchgparamval2: "Select change parameter value 2",
+    ndestdata10: "Select destination data 10",
+    ndestdata11: "Select destination data 11",
+    ndestdata12: "Select destination data 12",
+    dwactiveskill: "Select active skill",
+    dwactiveskilllv: "Select active skill level",
+    dwactiveskillrate: "Select active skill rate",
+    dwreqmp: "Select required MP",
+    dwreqfp: "Select required FP",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -419,6 +451,14 @@ export function ItemTable({
     setChgparamval0Options(DWCHGPARAMVAL0_OPTIONS);
     setChgparamval1Options(DWCHGPARAMVAL1_OPTIONS);
     setChgparamval2Options(DWCHGPARAMVAL2_OPTIONS);
+    setDestdata10Options(NDESTDATA10_OPTIONS);
+    setDestdata11Options(NDESTDATA11_OPTIONS);
+    setDestdata12Options(NDESTDATA12_OPTIONS);
+    setActiveskillOptions(DWACTIVESKILL_OPTIONS);
+    setActiveskilllvOptions(DWACTIVESKILLLV_OPTIONS);
+    setActiveskillrateOptions(DWACTIVESKILLRATE_OPTIONS);
+    setReqmpOptions(DWREQMP_OPTIONS);
+    setReqfpOptions(DWREQFP_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
