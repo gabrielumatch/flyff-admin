@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
-import type { ItemRecord } from "./item-table";
+import type { TPropItem } from "@/types/database";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getItemFieldDescription } from "@/lib/item-field-descriptions";

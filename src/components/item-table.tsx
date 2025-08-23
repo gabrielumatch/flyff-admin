@@ -43,18 +43,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { fetchDistinctOptions } from "@/lib/supabase-distinct";
+import type { TPropItem } from "@/types/database";
 
-export type ItemRecord = {
-  dwid: string;
-  szname: string;
-  dwitemjob?: string | null;
-  dwitemlv?: string | null;
-  eitemtype?: string | null;
-  dwitemrare?: string | null;
-  deleted_at?: string | null;
-} & Record<string, string | null | undefined>;
-
-const MAIN_COLUMNS: Array<keyof ItemRecord> = [
+const MAIN_COLUMNS: Array<keyof TPropItem> = [
   "dwid",
   "szname",
   "dwitemjob",
@@ -76,14 +67,14 @@ export function ItemTable({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [records, setRecords] = useState<ItemRecord[]>([]);
+  const [records, setRecords] = useState<TPropItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [editingRecord, setEditingRecord] = useState<ItemRecord | null>(null);
+  const [editingRecord, setEditingRecord] = useState<TPropItem | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [nameByKey, setNameByKey] = useState<Record<string, string>>({});
@@ -260,7 +251,7 @@ export function ItemTable({
         return;
       }
 
-      const items = (data as ItemRecord[]) || [];
+      const items = (data as TPropItem[]) || [];
       setRecords(items);
       const total = count || 0;
       setTotalRecords(total);
@@ -305,7 +296,7 @@ export function ItemTable({
     fetchRecords();
   }, [fetchRecords]);
 
-  const handleEdit = (record: ItemRecord) => {
+  const handleEdit = (record: TPropItem) => {
     setEditingRecord(record);
     setIsEditModalOpen(true);
   };
@@ -334,8 +325,8 @@ export function ItemTable({
   };
 
   const displayValue = (
-    record: ItemRecord,
-    key: keyof ItemRecord
+    record: TPropItem,
+    key: keyof TPropItem
   ): ReactNode => {
     if (key === "szname") {
       const translated = record.szname ? nameByKey[record.szname] : undefined;

@@ -31,52 +31,14 @@ import { useSupabase } from "./supabase-provider";
 import { TranslationEditModal } from "./translation-edit-modal";
 import { TranslationAddModal } from "./translation-add-modal";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
-interface TranslationRecord {
-  szname: string;
-  lang_10_pt?: string;
-  lang_1_us?: string;
-  lang_7_es?: string;
-  lang_0_kr?: string;
-  lang_2_jp?: string;
-  lang_3_cn?: string;
-  lang_4_th?: string;
-  lang_5_tw?: string;
-  lang_6_de?: string;
-  lang_8_fr?: string;
-  lang_9_hk?: string;
-  lang_11_vn?: string;
-  lang_12_ru?: string;
-  lang_13_ph?: string;
-  lang_14_id?: string;
-  created_at?: string;
-  updated_at?: string;
-  deleted_at?: string;
-}
+import type { TPropTranslation } from "@/types/database";
+import { LANGUAGES } from "@/types/common";
 
 interface TranslationTableProps {
   tableName: string;
   title: string;
   description: string;
 }
-
-const LANGUAGES = [
-  { code: "10_pt", name: "Portuguese", flag: "🇧🇷" },
-  { code: "1_us", name: "English", flag: "🇺🇸" },
-  { code: "7_es", name: "Spanish", flag: "🇪🇸" },
-  { code: "0_kr", name: "Korean", flag: "🇰🇷" },
-  { code: "2_jp", name: "Japanese", flag: "🇯🇵" },
-  { code: "3_cn", name: "Chinese", flag: "🇨🇳" },
-  { code: "4_th", name: "Thai", flag: "🇹🇭" },
-  { code: "5_tw", name: "Taiwanese", flag: "🇹🇼" },
-  { code: "6_de", name: "German", flag: "🇩🇪" },
-  { code: "8_fr", name: "French", flag: "🇫🇷" },
-  { code: "9_hk", name: "Hong Kong", flag: "🇭🇰" },
-  { code: "11_vn", name: "Vietnamese", flag: "🇻🇳" },
-  { code: "12_ru", name: "Russian", flag: "🇷🇺" },
-  { code: "13_ph", name: "Filipino", flag: "🇵🇭" },
-  { code: "14_id", name: "Indonesian", flag: "🇮🇩" },
-];
 
 export function TranslationTable({
   tableName,
@@ -87,14 +49,14 @@ export function TranslationTable({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [records, setRecords] = useState<TranslationRecord[]>([]);
+  const [records, setRecords] = useState<TPropTranslation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [editingRecord, setEditingRecord] = useState<TranslationRecord | null>(
+  const [editingRecord, setEditingRecord] = useState<TPropTranslation | null>(
     null
   );
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -102,7 +64,7 @@ export function TranslationTable({
   const itemsPerPage = 20;
 
   // Initialize state from URL on mount or when URL changes (via back/forward)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   useEffect(() => {
     const pageParam = Number(searchParams.get("page") || "1");
     const qParam = searchParams.get("q") || "";
@@ -171,7 +133,7 @@ export function TranslationTable({
     fetchRecords();
   }, [fetchRecords]);
 
-  const handleEdit = (record: TranslationRecord) => {
+  const handleEdit = (record: TPropTranslation) => {
     setEditingRecord(record);
     setIsEditModalOpen(true);
   };
@@ -204,8 +166,8 @@ export function TranslationTable({
     }
   };
 
-  const getLanguageValue = (record: TranslationRecord, langCode: string) => {
-    const key = `lang_${langCode}` as keyof TranslationRecord;
+  const getLanguageValue = (record: TPropTranslation, langCode: string) => {
+    const key = `lang_${langCode}` as keyof TPropTranslation;
     return record[key] || "";
   };
 

@@ -8,54 +8,16 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Textarea } from "@/components/ui/textarea"
 import { useSupabase } from "./supabase-provider"
 import { toast } from "sonner"
-
-interface TranslationRecord {
-  szname: string
-  lang_10_pt?: string
-  lang_1_us?: string
-  lang_7_es?: string
-  lang_0_kr?: string
-  lang_2_jp?: string
-  lang_3_cn?: string
-  lang_4_th?: string
-  lang_5_tw?: string
-  lang_6_de?: string
-  lang_8_fr?: string
-  lang_9_hk?: string
-  lang_11_vn?: string
-  lang_12_ru?: string
-  lang_13_ph?: string
-  lang_14_id?: string
-  created_at?: string
-  updated_at?: string
-  deleted_at?: string
-}
+import type { TPropTranslation } from "@/types/database"
+import { LANGUAGES } from "@/types/common"
 
 interface TranslationEditModalProps {
   isOpen: boolean
   onClose: () => void
-  record: TranslationRecord | null
+  record: TPropTranslation | null
   tableName: string
   onSuccess: () => void
 }
-
-const LANGUAGES = [
-  { code: '10_pt', name: 'Portuguese', flag: '🇧🇷' },
-  { code: '1_us', name: 'English', flag: '🇺🇸' },
-  { code: '7_es', name: 'Spanish', flag: '🇪🇸' },
-  { code: '0_kr', name: 'Korean', flag: '🇰🇷' },
-  { code: '2_jp', name: 'Japanese', flag: '🇯🇵' },
-  { code: '3_cn', name: 'Chinese', flag: '🇨🇳' },
-  { code: '4_th', name: 'Thai', flag: '🇹🇭' },
-  { code: '5_tw', name: 'Taiwanese', flag: '🇹🇼' },
-  { code: '6_de', name: 'German', flag: '🇩🇪' },
-  { code: '8_fr', name: 'French', flag: '🇫🇷' },
-  { code: '9_hk', name: 'Hong Kong', flag: '🇭🇰' },
-  { code: '11_vn', name: 'Vietnamese', flag: '🇻🇳' },
-  { code: '12_ru', name: 'Russian', flag: '🇷🇺' },
-  { code: '13_ph', name: 'Filipino', flag: '🇵🇭' },
-  { code: '14_id', name: 'Indonesian', flag: '🇮🇩' },
-]
 
 export function TranslationEditModal({ 
   isOpen, 
@@ -65,7 +27,7 @@ export function TranslationEditModal({
   onSuccess 
 }: TranslationEditModalProps) {
   const { supabase } = useSupabase()
-  const [formData, setFormData] = useState<Partial<TranslationRecord>>({})
+  const [formData, setFormData] = useState<Partial<TPropTranslation>>({})
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -145,7 +107,7 @@ export function TranslationEditModal({
           {/* Language fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {LANGUAGES.map((lang) => {
-              const fieldName = `lang_${lang.code}` as keyof TranslationRecord
+              const fieldName = `lang_${lang.code}` as keyof TPropTranslation
               return (
                 <div key={lang.code} className="space-y-2">
                   <Label htmlFor={fieldName} className="flex items-center gap-2">

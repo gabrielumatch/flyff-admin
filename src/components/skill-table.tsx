@@ -34,136 +34,9 @@ import { toast } from "sonner";
 import { SkillEditModal } from "@/components/skill-edit-modal";
 import { SkillAddModal } from "@/components/skill-add-modal";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import type { TPropSkill } from "@/types/database";
 
-export type SkillRecord = {
-  ver?: string | null;
-  dwid: string;
-  szname?: string | null;
-  dwnum?: string | null;
-  dwpackmax?: string | null;
-  dwitemkind1?: string | null;
-  dwitemkind2?: string | null;
-  dwitemkind3?: string | null;
-  dwitemjob?: string | null;
-  bpermanence?: string | null;
-  dwuseable?: string | null;
-  dwitemsex?: string | null;
-  dwcost?: string | null;
-  dwendurance?: string | null;
-  nabrasion?: string | null;
-  nhardness?: string | null;
-  dwhanded?: string | null;
-  dwheelh?: string | null;
-  dwparts?: string | null;
-  dwpartsub?: string | null;
-  bpartfile?: string | null;
-  dwexclusive?: string | null;
-  dwbasepartsignore?: string | null;
-  dwitemlv?: string | null;
-  dwitemrare?: string | null;
-  dwshopable?: string | null;
-  blog?: string | null;
-  bcharged?: string | null;
-  dwlinkkindbullet?: string | null;
-  dwlinkkind?: string | null;
-  dwabilitymin?: string | null;
-  dwabilitymax?: string | null;
-  eitemtype?: string | null;
-  witemeatk?: string | null;
-  dwparry?: string | null;
-  dwblockrating?: string | null;
-  dwaddskillmin?: string | null;
-  dwaddskillmax?: string | null;
-  dwatkstyle?: string | null;
-  dwweapontype?: string | null;
-  dwitematkorder1?: string | null;
-  dwitematkorder2?: string | null;
-  dwitematkorder3?: string | null;
-  dwitematkorder4?: string | null;
-  tmcontinuouspain?: string | null;
-  dwshellquantity?: string | null;
-  dwrecoil?: string | null;
-  dwloadingtime?: string | null;
-  nadjhitrate?: string | null;
-  dwattackspeed?: string | null;
-  dwdmgshift?: string | null;
-  dwattackrange?: string | null;
-  dwprobability?: string | null;
-  dwdestparam1?: string | null;
-  dwdestparam2?: string | null;
-  dwdestparam3?: string | null;
-  nadjparamval1?: string | null;
-  nadjparamval2?: string | null;
-  nadjparamval3?: string | null;
-  dwchgparamval1?: string | null;
-  dwchgparamval2?: string | null;
-  dwchgparamval3?: string | null;
-  dwdestdata1?: string | null;
-  dwdestdata2?: string | null;
-  dwdestdata3?: string | null;
-  dwactiveskill?: string | null;
-  dwactiveskilllv?: string | null;
-  dwactiveskillper?: string | null;
-  dwreqmp?: string | null;
-  dwrepfp?: string | null;
-  dwreqdislv?: string | null;
-  dwreskill1?: string | null;
-  dwreskilllevel1?: string | null;
-  dwreskill2?: string | null;
-  dwreskilllevel2?: string | null;
-  dwskillreadytype?: string | null;
-  dwskillready?: string | null;
-  dwskillrange?: string | null;
-  dwsfxelemental?: string | null;
-  dwsfxobj?: string | null;
-  dwsfxobj2?: string | null;
-  dwsfxobj3?: string | null;
-  dwsfxobj4?: string | null;
-  dwsfxobj5?: string | null;
-  dwusemotion?: string | null;
-  dwcircletime?: string | null;
-  dwskilltime?: string | null;
-  dwexetarget?: string | null;
-  dwusechance?: string | null;
-  dwspellregion?: string | null;
-  dwspelltype?: string | null;
-  dwreferstat1?: string | null;
-  dwreferstat2?: string | null;
-  dwrefertarget1?: string | null;
-  dwrefertarget2?: string | null;
-  dwrefervalue1?: string | null;
-  dwrefervalue2?: string | null;
-  dwskilltype?: string | null;
-  fitemresistelecricity?: string | null;
-  fitemresistfire?: string | null;
-  fitemresistwind?: string | null;
-  fitemresistwater?: string | null;
-  fitemresistearth?: string | null;
-  nevildoing?: string | null;
-  dwexpertlv?: string | null;
-  expertmax?: string | null;
-  dwsubdefine?: string | null;
-  dwexp?: string | null;
-  dwcombostyle?: string | null;
-  fflightspeed?: string | null;
-  fflightlrangle?: string | null;
-  fflighttbangle?: string | null;
-  dwflightlimit?: string | null;
-  dwffuelremax?: string | null;
-  dwafuelremax?: string | null;
-  dwfuelre?: string | null;
-  dwlimitlevel1?: string | null;
-  dwreflect?: string | null;
-  dwsndattack1?: string | null;
-  dwsndattack2?: string | null;
-  szicon?: string | null;
-  dwquestid?: string | null;
-  sztextfile?: string | null;
-  szcomment?: string | null;
-  dwbuffticktype?: string | null;
-};
-
-const ALL_FIELDS: Array<keyof SkillRecord> = [
+const ALL_FIELDS: Array<keyof TPropSkill> = [
   "ver",
   "dwid",
   "szname",
@@ -291,7 +164,7 @@ const ALL_FIELDS: Array<keyof SkillRecord> = [
   "dwbuffticktype",
 ];
 
-const MAIN_COLUMNS: Array<keyof SkillRecord> = [
+const MAIN_COLUMNS: Array<keyof TPropSkill> = [
   "dwid",
   "szname",
   "dwitemjob",
@@ -312,14 +185,14 @@ export function SkillTable({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [records, setRecords] = useState<SkillRecord[]>([]);
+  const [records, setRecords] = useState<TPropSkill[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [editingRecord, setEditingRecord] = useState<SkillRecord | null>(null);
+  const [editingRecord, setEditingRecord] = useState<TPropSkill | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const itemsPerPage = 20;
@@ -381,7 +254,7 @@ export function SkillTable({
         return;
       }
 
-      const skills = (data as SkillRecord[]) || [];
+      const skills = (data as TPropSkill[]) || [];
       setRecords(skills);
       setTotalRecords(count || 0);
       setTotalPages(Math.max(1, Math.ceil((count || 0) / itemsPerPage)));
@@ -422,7 +295,7 @@ export function SkillTable({
     fetchRecords();
   }, [fetchRecords]);
 
-  const handleEdit = (record: SkillRecord) => {
+  const handleEdit = (record: TPropSkill) => {
     setEditingRecord(record);
     setIsEditModalOpen(true);
   };
@@ -459,8 +332,8 @@ export function SkillTable({
   };
 
   const displayValue = (
-    record: SkillRecord,
-    key: keyof SkillRecord
+    record: TPropSkill,
+    key: keyof TPropSkill
   ): ReactNode => {
     if (key === "szname") {
       const translated = record.szname ? nameById[record.szname] : undefined;

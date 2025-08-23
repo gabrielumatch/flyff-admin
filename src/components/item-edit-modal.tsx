@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
-import type { ItemRecord } from "./item-table";
+import type { TPropItem } from "@/types/database";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getItemFieldDescription } from "@/lib/item-field-descriptions";
@@ -22,7 +22,7 @@ import { OptionsSelect } from "@/components/options-select";
 interface ItemEditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  record: ItemRecord | null;
+  record: TPropItem | null;
   tableName: string;
   onSuccess: () => void;
   selectOptionsByField: Record<string, string[]>;
@@ -39,14 +39,14 @@ export function ItemEditModal({
   selectPlaceholdersByField,
 }: ItemEditModalProps) {
   const { supabase } = useSupabase();
-  const [formData, setFormData] = useState<Partial<ItemRecord>>({});
+  const [formData, setFormData] = useState<Partial<TPropItem>>({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (record) setFormData(record);
   }, [record]);
 
-  const handleInputChange = (field: keyof ItemRecord, value: string) => {
+  const handleInputChange = (field: keyof TPropItem, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -80,7 +80,7 @@ export function ItemEditModal({
   };
   if (!record) return null;
 
-  const fields = Object.keys(record) as Array<keyof ItemRecord>;
+  const fields = Object.keys(record) as Array<keyof TPropItem>;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>

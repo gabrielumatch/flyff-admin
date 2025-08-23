@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useSupabase } from "./supabase-provider";
 import { toast } from "sonner";
-import type { SkillRecord } from "./skill-table";
+import type { TPropSkill } from "@/types/database";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getSkillFieldDescription } from "@/lib/skill-field-descriptions";
@@ -21,10 +21,10 @@ import { getSkillFieldDescription } from "@/lib/skill-field-descriptions";
 interface SkillEditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  record: SkillRecord | null;
+  record: TPropSkill | null;
   tableName: string;
   onSuccess: () => void;
-  allFields: Array<keyof SkillRecord>;
+  allFields: Array<keyof TPropSkill>;
 }
 
 export function SkillEditModal({
@@ -36,14 +36,14 @@ export function SkillEditModal({
   allFields,
 }: SkillEditModalProps) {
   const { supabase } = useSupabase();
-  const [formData, setFormData] = useState<Partial<SkillRecord>>({});
+  const [formData, setFormData] = useState<Partial<TPropSkill>>({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (record) setFormData(record);
   }, [record]);
 
-  const handleInputChange = (field: keyof SkillRecord, value: string) => {
+  const handleInputChange = (field: keyof TPropSkill, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
