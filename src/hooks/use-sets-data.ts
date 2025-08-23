@@ -3,7 +3,7 @@ import { useSupabase } from '@/components/supabase-provider';
 import { toast } from 'sonner';
 import type { TPropItemEtcItem } from '@/types/database';
 
-export function useSetsData(tableName: string, debouncedSearchTerm: string, currentPage: number, numFilter: string) {
+export function useSetsData(tableName: string, debouncedSearchTerm: string, currentPage: number, numFilter: string, jobFilter: string, sexFilter: string, levelFilter: string) {
   const { supabase } = useSupabase();
   const [records, setRecords] = useState<TPropItemEtcItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,6 +85,50 @@ export function useSetsData(tableName: string, debouncedSearchTerm: string, curr
       // Apply filters
       if (numFilter !== "all") {
         query = query.eq("num", numFilter);
+      }
+
+      // Apply job, sex, and level filters by checking the items in the set
+      if (jobFilter !== "all" || sexFilter !== "all" || levelFilter !== "all") {
+        // First, get all items that match the filters
+        let itemQuery = supabase.from("propitem").select("dwid");
+        
+        if (jobFilter !== "all") {
+          itemQuery = itemQuery.eq("dwitemjob", jobFilter);
+        }
+        if (sexFilter !== "all") {
+          itemQuery = itemQuery.eq("dwitemsex", sexFilter);
+        }
+        if (levelFilter !== "all") {
+          itemQuery = itemQuery.eq("dwitemlv", levelFilter);
+        }
+
+        const { data: matchingItems, error: itemError } = await itemQuery;
+        
+        if (itemError) {
+          console.error("Error fetching matching items:", itemError);
+        } else if (matchingItems && matchingItems.length > 0) {
+          // Get the dwids of matching items
+          const matchingDwids = matchingItems.map(item => item.dwid).filter(Boolean);
+          
+          // Build conditions to check if any element in the set matches the filtered items
+          const elementConditions = [];
+          for (let i = 1; i <= 8; i++) {
+            for (const dwid of matchingDwids) {
+              elementConditions.push(`elem_${i}_name.eq.${dwid}`);
+            }
+          }
+          
+          if (elementConditions.length > 0) {
+            query = query.or(elementConditions.join(','));
+          }
+        } else {
+          // If no items match the filters, return empty result
+          setRecords([]);
+          setTotalRecords(0);
+          setTotalPages(1);
+          setLoading(false);
+          return;
+        }
       }
 
       const { data, error, count } = await query.range(
@@ -186,7 +230,7 @@ export function useSetsData(tableName: string, debouncedSearchTerm: string, curr
     } finally {
       setLoading(false);
     }
-  }, [supabase, tableName, debouncedSearchTerm, currentPage, numFilter]);
+  }, [supabase, tableName, debouncedSearchTerm, currentPage, numFilter, jobFilter, sexFilter, levelFilter]);
 
   const deleteRecord = useCallback(async (id: string) => {
     try {

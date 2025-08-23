@@ -22,7 +22,14 @@ export function SetsTable({
   description: string;
 }) {
   // Custom hooks for clean state management
-  const { options: selectOptionsByField, placeholders: selectPlaceholdersByField } = useSetsOptions();
+  const { 
+    options: selectOptionsByField, 
+    placeholders: selectPlaceholdersByField,
+    numOptions: dbNumOptions,
+    jobOptions,
+    sexOptions,
+    levelOptions
+  } = useSetsOptions();
   const {
     searchTerm,
     setSearchTerm,
@@ -31,6 +38,12 @@ export function SetsTable({
     setCurrentPage,
     numFilter,
     setNumFilter,
+    jobFilter,
+    setJobFilter,
+    sexFilter,
+    setSexFilter,
+    levelFilter,
+    setLevelFilter,
     buildPageHref,
   } = useSetsFilters();
   const {
@@ -43,15 +56,14 @@ export function SetsTable({
     itemsPerPage,
     fetchRecords,
     deleteRecord,
-  } = useSetsData(tableName, debouncedSearchTerm, currentPage, numFilter);
+  } = useSetsData(tableName, debouncedSearchTerm, currentPage, numFilter, jobFilter, sexFilter, levelFilter);
 
   // Modal state
   const [editingRecord, setEditingRecord] = useState<TPropItemEtcItem | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // Get num options for filters
-  const numOptions = Array.from(new Set(records.map(r => r.num?.toString()).filter((num): num is string => Boolean(num)))).sort();
+
 
   const handleEdit = (record: TPropItemEtcItem) => {
     setEditingRecord(record);
@@ -96,7 +108,16 @@ export function SetsTable({
         onSearchChange={setSearchTerm}
         numFilter={numFilter}
         onNumFilterChange={setNumFilter}
-        numOptions={numOptions}
+        numOptions={dbNumOptions}
+        jobFilter={jobFilter}
+        onJobFilterChange={setJobFilter}
+        sexFilter={sexFilter}
+        onSexFilterChange={setSexFilter}
+        levelFilter={levelFilter}
+        onLevelFilterChange={setLevelFilter}
+        jobOptions={jobOptions}
+        sexOptions={sexOptions}
+        levelOptions={levelOptions}
       />
 
       {/* Table Content */}
