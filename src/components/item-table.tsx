@@ -186,6 +186,8 @@ import {
   DWATTSMELTING_OPTIONS,
   DWGEMSMELTING_OPTIONS,
   DWPIERCE_OPTIONS,
+  DWUPROUSE_OPTIONS,
+  BABSOLUTETIME_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -365,6 +367,8 @@ export function ItemTable({
   const [attsmeltingOptions, setAttsmeltingOptions] = useState<string[]>([]);
   const [gemsmeltingOptions, setGemsmeltingOptions] = useState<string[]>([]);
   const [pierceOptions, setPierceOptions] = useState<string[]>([]);
+  const [uprouseOptions, setUprouseOptions] = useState<string[]>([]);
+  const [absolutetimeOptions, setAbsolutetimeOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -508,6 +512,8 @@ export function ItemTable({
     dwattsmelting: attsmeltingOptions,
     dwgemsmelting: gemsmeltingOptions,
     dwpierce: pierceOptions,
+    dwuprouse: uprouseOptions,
+    babsolutetime: absolutetimeOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -652,6 +658,8 @@ export function ItemTable({
     dwattsmelting: "Select att smelting",
     dwgemsmelting: "Select gem smelting",
     dwpierce: "Select pierce",
+    dwuprouse: "Select uprouse",
+    babsolutetime: "Select absolute time",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -844,6 +852,8 @@ export function ItemTable({
     setAttsmeltingOptions(DWATTSMELTING_OPTIONS);
     setGemsmeltingOptions(DWGEMSMELTING_OPTIONS);
     setPierceOptions(DWPIERCE_OPTIONS);
+    setUprouseOptions(DWUPROUSE_OPTIONS);
+    setAbsolutetimeOptions(BABSOLUTETIME_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {

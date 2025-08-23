@@ -146,3 +146,5 @@ export { DWSMELTING_OPTIONS } from '@/types/database/dwsmelting';
 export { DWATTSMELTING_OPTIONS } from '@/types/database/dwattsmelting';
 export { DWGEMSMELTING_OPTIONS } from '@/types/database/dwgemsmelting';
 export { DWPIERCE_OPTIONS } from '@/types/database/dwpierce';
+export { DWUPROUSE_OPTIONS } from '@/types/database/dwuprouse';
+export { BABSOLUTETIME_OPTIONS } from '@/types/database/babsolutetime';
