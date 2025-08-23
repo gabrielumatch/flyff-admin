@@ -84,6 +84,17 @@ import {
   DWITEMATKORDER3_OPTIONS,
   DWITEMATKORDER4_OPTIONS,
   TMCONTINUOUSPAIN_OPTIONS,
+  NSHELLQUANTITY_OPTIONS,
+  DWRECOIL_OPTIONS,
+  DWLOADINGTIME_OPTIONS,
+  NADJHITRATE_OPTIONS,
+  FATTACKSPEED_OPTIONS,
+  DWDMGSHIFT_OPTIONS,
+  DWATTACKRANGE_OPTIONS,
+  NPROBABILITY_OPTIONS,
+  DWDESTPARAM0_OPTIONS,
+  DWDESTPARAM1_OPTIONS,
+  DWDESTPARAM2_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -161,6 +172,17 @@ export function ItemTable({
   const [itematkorder3Options, setItematkorder3Options] = useState<string[]>([]);
   const [itematkorder4Options, setItematkorder4Options] = useState<string[]>([]);
   const [continuouspainOptions, setContinuouspainOptions] = useState<string[]>([]);
+  const [shellquantityOptions, setShellquantityOptions] = useState<string[]>([]);
+  const [recoilOptions, setRecoilOptions] = useState<string[]>([]);
+  const [loadingtimeOptions, setLoadingtimeOptions] = useState<string[]>([]);
+  const [adjhitrateOptions, setAdjhitrateOptions] = useState<string[]>([]);
+  const [attackspeedOptions, setAttackspeedOptions] = useState<string[]>([]);
+  const [dmgshiftOptions, setDmgshiftOptions] = useState<string[]>([]);
+  const [attackrangeOptions, setAttackrangeOptions] = useState<string[]>([]);
+  const [probabilityOptions, setProbabilityOptions] = useState<string[]>([]);
+  const [destparam0Options, setDestparam0Options] = useState<string[]>([]);
+  const [destparam1Options, setDestparam1Options] = useState<string[]>([]);
+  const [destparam2Options, setDestparam2Options] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -202,6 +224,17 @@ export function ItemTable({
     dwitematkorder3: itematkorder3Options,
     dwitematkorder4: itematkorder4Options,
     tmcontinuouspain: continuouspainOptions,
+    nshellquantity: shellquantityOptions,
+    dwrecoil: recoilOptions,
+    dwloadingtime: loadingtimeOptions,
+    nadjhitrate: adjhitrateOptions,
+    fattackspeed: attackspeedOptions,
+    dwdmgshift: dmgshiftOptions,
+    dwattackrange: attackrangeOptions,
+    nprobability: probabilityOptions,
+    dwdestparam0: destparam0Options,
+    dwdestparam1: destparam1Options,
+    dwdestparam2: destparam2Options,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -244,6 +277,17 @@ export function ItemTable({
     dwitematkorder3: "Select item attack order 3",
     dwitematkorder4: "Select item attack order 4",
     tmcontinuouspain: "Select continuous pain",
+    nshellquantity: "Select shell quantity",
+    dwrecoil: "Select recoil",
+    dwloadingtime: "Select loading time",
+    nadjhitrate: "Select adjusted hit rate",
+    fattackspeed: "Select attack speed",
+    dwdmgshift: "Select damage shift",
+    dwattackrange: "Select attack range",
+    nprobability: "Select probability",
+    dwdestparam0: "Select destination parameter 0",
+    dwdestparam1: "Select destination parameter 1",
+    dwdestparam2: "Select destination parameter 2",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -334,6 +378,17 @@ export function ItemTable({
     setItematkorder3Options(DWITEMATKORDER3_OPTIONS);
     setItematkorder4Options(DWITEMATKORDER4_OPTIONS);
     setContinuouspainOptions(TMCONTINUOUSPAIN_OPTIONS);
+    setShellquantityOptions(NSHELLQUANTITY_OPTIONS);
+    setRecoilOptions(DWRECOIL_OPTIONS);
+    setLoadingtimeOptions(DWLOADINGTIME_OPTIONS);
+    setAdjhitrateOptions(NADJHITRATE_OPTIONS);
+    setAttackspeedOptions(FATTACKSPEED_OPTIONS);
+    setDmgshiftOptions(DWDMGSHIFT_OPTIONS);
+    setAttackrangeOptions(DWATTACKRANGE_OPTIONS);
+    setProbabilityOptions(NPROBABILITY_OPTIONS);
+    setDestparam0Options(DWDESTPARAM0_OPTIONS);
+    setDestparam1Options(DWDESTPARAM1_OPTIONS);
+    setDestparam2Options(DWDESTPARAM2_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
