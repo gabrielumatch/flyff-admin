@@ -1,0 +1,5 @@
+export const DWEXCLUSIVE_OPTIONS = [
+  "=",
+  "PARTS_LOWER_BODY",
+  "PARTS_LWEAPON"
+];

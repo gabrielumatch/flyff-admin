@@ -59,6 +59,20 @@ import {
   DWHANDED_OPTIONS,
   DWFLAG_OPTIONS,
   DWPARTS_OPTIONS,
+  DWPARTSUB_OPTIONS,
+  BPARTSFILE_OPTIONS,
+  DWEXCLUSIVE_OPTIONS,
+  DWBASEPARTSIGNORE_OPTIONS,
+  DWSHOPABLE_OPTIONS,
+  DWITEMRARE_OPTIONS,
+  NLOG_OPTIONS,
+  BCHARGED_OPTIONS,
+  DWLINKKINDBULLET_OPTIONS,
+  DWLINKKIND_OPTIONS,
+  DWABILITYMIN_OPTIONS,
+  DWABILITYMAX_OPTIONS,
+  EITEMTYPE_OPTIONS,
+  WITEMEATK_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -109,7 +123,22 @@ export function ItemTable({
   const [abrasionOptions, setAbrasionOptions] = useState<string[]>([]);
   const [maxrepairOptions, setMaxrepairOptions] = useState<string[]>([]);
   const [handedOptions, setHandedOptions] = useState<string[]>([]);
+  const [flagOptions, setFlagOptions] = useState<string[]>([]);
   const [partsOptions, setPartsOptions] = useState<string[]>([]);
+  const [partsubOptions, setPartsubOptions] = useState<string[]>([]);
+  const [partsfileOptions, setPartsfileOptions] = useState<string[]>([]);
+  const [exclusiveOptions, setExclusiveOptions] = useState<string[]>([]);
+  const [basepartsignoreOptions, setBasepartsignoreOptions] = useState<string[]>([]);
+  const [shopableOptions, setShopableOptions] = useState<string[]>([]);
+  const [itemrareOptions, setItemrareOptions] = useState<string[]>([]);
+  const [logOptions, setLogOptions] = useState<string[]>([]);
+  const [chargedOptions, setChargedOptions] = useState<string[]>([]);
+  const [linkkindbulletOptions, setLinkkindbulletOptions] = useState<string[]>([]);
+  const [linkkindOptions, setLinkkindOptions] = useState<string[]>([]);
+  const [abilityminOptions, setAbilityminOptions] = useState<string[]>([]);
+  const [abilitymaxOptions, setAbilitymaxOptions] = useState<string[]>([]);
+  const [itemtypeOptions, setItemtypeOptions] = useState<string[]>([]);
+  const [itemeatkOptions, setItemeatkOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -124,7 +153,22 @@ export function ItemTable({
     nabrasion: abrasionOptions,
     nmaxrepair: maxrepairOptions,
     dwhanded: handedOptions,
+    dwflag: flagOptions,
     dwparts: partsOptions,
+    dwpartsub: partsubOptions,
+    bpartsfile: partsfileOptions,
+    dwexclusive: exclusiveOptions,
+    dwbasepartsignore: basepartsignoreOptions,
+    dwshopable: shopableOptions,
+    dwitemrare: itemrareOptions,
+    nlog: logOptions,
+    bcharged: chargedOptions,
+    dwlinkkindbullet: linkkindbulletOptions,
+    dwlinkkind: linkkindOptions,
+    dwabilitymin: abilityminOptions,
+    dwabilitymax: abilitymaxOptions,
+    eitemtype: itemtypeOptions,
+    witemeatk: itemeatkOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -140,7 +184,22 @@ export function ItemTable({
     nabrasion: "Select abrasion",
     nmaxrepair: "Select max repair",
     dwhanded: "Select handed",
+    dwflag: "Select flag",
     dwparts: "Select parts",
+    dwpartsub: "Select part sub",
+    bpartsfile: "Select parts file",
+    dwexclusive: "Select exclusive",
+    dwbasepartsignore: "Select base parts ignore",
+    dwshopable: "Select shopable",
+    dwitemrare: "Select item rare",
+    nlog: "Select log",
+    bcharged: "Select charged",
+    dwlinkkindbullet: "Select link kind bullet",
+    dwlinkkind: "Select link kind",
+    dwabilitymin: "Select ability min",
+    dwabilitymax: "Select ability max",
+    eitemtype: "Select item type",
+    witemeatk: "Select item eatk",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -204,7 +263,22 @@ export function ItemTable({
     setAbrasionOptions(NABRASION_OPTIONS);
     setMaxrepairOptions(NMAXREPAIR_OPTIONS);
     setHandedOptions(DWHANDED_OPTIONS);
+    setFlagOptions(DWFLAG_OPTIONS);
     setPartsOptions(DWPARTS_OPTIONS);
+    setPartsubOptions(DWPARTSUB_OPTIONS);
+    setPartsfileOptions(BPARTSFILE_OPTIONS);
+    setExclusiveOptions(DWEXCLUSIVE_OPTIONS);
+    setBasepartsignoreOptions(DWBASEPARTSIGNORE_OPTIONS);
+    setShopableOptions(DWSHOPABLE_OPTIONS);
+    setItemrareOptions(DWITEMRARE_OPTIONS);
+    setLogOptions(NLOG_OPTIONS);
+    setChargedOptions(BCHARGED_OPTIONS);
+    setLinkkindbulletOptions(DWLINKKINDBULLET_OPTIONS);
+    setLinkkindOptions(DWLINKKIND_OPTIONS);
+    setAbilityminOptions(DWABILITYMIN_OPTIONS);
+    setAbilitymaxOptions(DWABILITYMAX_OPTIONS);
+    setItemtypeOptions(EITEMTYPE_OPTIONS);
+    setItemeatkOptions(WITEMEATK_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {

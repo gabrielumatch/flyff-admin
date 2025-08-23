@@ -1,0 +1,6 @@
+export const DWBASEPARTSIGNORE_OPTIONS = [
+  "=",
+  "PARTS_CAP",
+  "PARTS_HAIR",
+  "PARTS_HEAD"
+];
