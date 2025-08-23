@@ -36,6 +36,7 @@ interface SetsEditModalProps {
 
 interface Element {
   name: string;
+  lang_1_us: string;
   part: string;
 }
 
@@ -64,56 +65,132 @@ export function SetsEditModal({
   const [elements, setElements] = useState<Element[]>([]);
   const [bonuses, setBonuses] = useState<Bonus[]>([]);
 
-  // Initialize form data when record changes
+    // Initialize form data when record changes
   useEffect(() => {
-    if (record) {
-      setSetNumber(record.num?.toString() || '');
-      setSetName(record.name_propitemetc || '');
-      
-      // Extract elements
-      const extractedElements: Element[] = [];
-      for (let i = 1; i <= 8; i++) {
-        const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
-        const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
-        if (name) {
-          extractedElements.push({ name, part: part || '' });
+    const initializeForm = async () => {
+      if (record) {
+        setSetNumber(record.num?.toString() || '');
+        setSetName(record.name_propitemetc || '');
+        
+        // Extract elements
+        const extractedElements: Element[] = [];
+        for (let i = 1; i <= 8; i++) {
+          const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
+          const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
+          if (name) {
+            // Try to get the translation for this item
+            let lang_1_us = '';
+            try {
+              // First get the szname from propitem
+              const { data: items, error: itemsError } = await supabase
+                .from('propitem')
+                .select('dwid, szname')
+                .eq('dwid', name)
+                .single();
+
+              if (!itemsError && items?.szname) {
+                // Then get the translation
+                const { data: translations, error: translationError } = await supabase
+                  .from('propitem_translation')
+                  .select('szname, lang_1_us')
+                  .eq('szname', items.szname)
+                  .single();
+
+                if (!translationError && translations?.lang_1_us) {
+                  lang_1_us = translations.lang_1_us;
+                } else {
+                  lang_1_us = name; // Fallback to dwid
+                }
+              } else {
+                lang_1_us = name; // Fallback to dwid
+              }
+            } catch (error) {
+              console.error("Error fetching translation:", error);
+              lang_1_us = name; // Fallback to dwid
+            }
+            
+            extractedElements.push({ name, lang_1_us, part: part || '' });
+          }
         }
+        setElements(extractedElements);
+        
+        // Extract bonuses
+        const extractedBonuses: Bonus[] = [];
+        for (let i = 1; i <= 8; i++) {
+          const attribute = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
+          const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
+          const parts = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
+          if (attribute) {
+            extractedBonuses.push({ 
+              attribute, 
+              value: value || 0, 
+              parts: parts || 0 
+            });
+          }
+        }
+        setBonuses(extractedBonuses);
       }
-      setElements(extractedElements);
-      
-             // Extract bonuses
-       const extractedBonuses: Bonus[] = [];
-       for (let i = 1; i <= 8; i++) {
-         const attribute = record[`avail_${i}_dst` as keyof TPropItemEtcItem] as string;
-         const value = record[`avail_${i}_value` as keyof TPropItemEtcItem] as number;
-         const parts = record[`avail_${i}_required_pieces` as keyof TPropItemEtcItem] as number;
-         if (attribute) {
-           extractedBonuses.push({ 
-             attribute, 
-             value: value || 0, 
-             parts: parts || 0 
-           });
-         }
-       }
-      setBonuses(extractedBonuses);
-    }
-  }, [record]);
+    };
+
+    initializeForm();
+  }, [record, supabase]);
 
   const addElement = () => {
-    setElements([...elements, { name: '', part: '' }]);
+    if (elements.length >= 8) {
+      toast.error("Maximum 8 elements allowed");
+      return;
+    }
+    setElements([...elements, { name: '', lang_1_us: '', part: '' }]);
   };
 
   const removeElement = (index: number) => {
     setElements(elements.filter((_, i) => i !== index));
   };
 
-  const updateElement = (index: number, field: keyof Element, value: string) => {
+  const updateElement = async (index: number, field: keyof Element, value: string) => {
     const newElements = [...elements];
     newElements[index] = { ...newElements[index], [field]: value };
+    
+    // If updating the name field, fetch the translation
+    if (field === 'name' && value) {
+      try {
+        // First get the szname from propitem
+        const { data: items, error: itemsError } = await supabase
+          .from('propitem')
+          .select('dwid, szname')
+          .eq('dwid', value)
+          .single();
+
+        if (!itemsError && items?.szname) {
+          // Then get the translation
+          const { data: translations, error: translationError } = await supabase
+            .from('propitem_translation')
+            .select('szname, lang_1_us')
+            .eq('szname', items.szname)
+            .single();
+
+          if (!translationError && translations?.lang_1_us) {
+            newElements[index].lang_1_us = translations.lang_1_us;
+          } else {
+            newElements[index].lang_1_us = value; // Fallback to dwid
+          }
+        } else {
+          newElements[index].lang_1_us = value; // Fallback to dwid
+        }
+      } catch (error) {
+        console.error("Error fetching translation:", error);
+        newElements[index].lang_1_us = value; // Fallback to dwid
+      }
+    }
+    
     setElements(newElements);
   };
 
   const addBonus = () => {
+    if (bonuses.length >= 8) {
+      toast.error("Maximum 8 bonuses allowed");
+      return;
+    }
     setBonuses([...bonuses, { attribute: '', value: 0, parts: 0 }]);
   };
 
@@ -233,16 +310,17 @@ export function SetsEditModal({
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2">
               <h3 className="text-lg font-semibold">Elements</h3>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={addElement}
-                className="flex items-center gap-2"
-              >
-                <Plus className="h-4 w-4" />
-                Add Element
-              </Button>
+                             <Button
+                 type="button"
+                 variant="outline"
+                 size="sm"
+                 onClick={addElement}
+                 disabled={elements.length >= 8}
+                 className="flex items-center gap-2"
+               >
+                 <Plus className="h-4 w-4" />
+                 Add Element
+               </Button>
             </div>
             
             {elements.length === 0 ? (
@@ -253,33 +331,42 @@ export function SetsEditModal({
               <div className="border rounded-lg">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-12">#</TableHead>
-                      <TableHead>Item</TableHead>
-                      <TableHead>Part</TableHead>
-                      <TableHead className="w-20">Actions</TableHead>
-                    </TableRow>
+                                         <TableRow>
+                       <TableHead className="w-12">#</TableHead>
+                       <TableHead>Item</TableHead>
+                       <TableHead>Name</TableHead>
+                       <TableHead>Part</TableHead>
+                       <TableHead className="w-20">Actions</TableHead>
+                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {elements.map((element, index) => (
                       <TableRow key={index}>
                         <TableCell className="font-medium">{index + 1}</TableCell>
-                        <TableCell>
-                          <Input
-                            value={element.name}
-                            onChange={(e) => updateElement(index, 'name', e.target.value)}
-                            placeholder="Item name or ID"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <OptionsSelect
-                            id={`element-part-${index}`}
-                            options={selectOptionsByField['elem_part'] || []}
-                            placeholder="Select part"
-                            value={element.part}
-                            onChange={(value) => updateElement(index, 'part', value)}
-                          />
-                        </TableCell>
+                                                 <TableCell>
+                           <Input
+                             value={element.name}
+                             onChange={(e) => updateElement(index, 'name', e.target.value)}
+                             placeholder="Item name or ID"
+                           />
+                         </TableCell>
+                         <TableCell>
+                           <Input
+                             value={element.lang_1_us}
+                             disabled
+                             placeholder="Auto-populated from item ID"
+                             className="bg-muted"
+                           />
+                         </TableCell>
+                         <TableCell>
+                           <OptionsSelect
+                             id={`element-part-${index}`}
+                             options={selectOptionsByField['elem_part'] || []}
+                             placeholder="Select part"
+                             value={element.part}
+                             onChange={(value) => updateElement(index, 'part', value)}
+                           />
+                         </TableCell>
                         <TableCell>
                           <Button
                             type="button"
@@ -303,16 +390,17 @@ export function SetsEditModal({
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2">
               <h3 className="text-lg font-semibold">Bonuses</h3>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={addBonus}
-                className="flex items-center gap-2"
-              >
-                <Plus className="h-4 w-4" />
-                Add Bonus
-              </Button>
+                             <Button
+                 type="button"
+                 variant="outline"
+                 size="sm"
+                 onClick={addBonus}
+                 disabled={bonuses.length >= 8}
+                 className="flex items-center gap-2"
+               >
+                 <Plus className="h-4 w-4" />
+                 Add Bonus
+               </Button>
             </div>
             
             {bonuses.length === 0 ? (

@@ -35,6 +35,7 @@ interface SetsAddModalProps {
 
 interface Element {
   name: string;
+  lang_1_us: string;
   part: string;
 }
 
@@ -63,20 +64,61 @@ export function SetsAddModal({
   const [bonuses, setBonuses] = useState<Bonus[]>([]);
 
   const addElement = () => {
-    setElements([...elements, { name: '', part: '' }]);
+    if (elements.length >= 8) {
+      toast.error("Maximum 8 elements allowed");
+      return;
+    }
+    setElements([...elements, { name: '', lang_1_us: '', part: '' }]);
   };
 
   const removeElement = (index: number) => {
     setElements(elements.filter((_, i) => i !== index));
   };
 
-  const updateElement = (index: number, field: keyof Element, value: string) => {
+  const updateElement = async (index: number, field: keyof Element, value: string) => {
     const newElements = [...elements];
     newElements[index] = { ...newElements[index], [field]: value };
+    
+    // If updating the name field, fetch the translation
+    if (field === 'name' && value) {
+      try {
+        // First get the szname from propitem
+        const { data: items, error: itemsError } = await supabase
+          .from('propitem')
+          .select('dwid, szname')
+          .eq('dwid', value)
+          .single();
+
+        if (!itemsError && items?.szname) {
+          // Then get the translation
+          const { data: translations, error: translationError } = await supabase
+            .from('propitem_translation')
+            .select('szname, lang_1_us')
+            .eq('szname', items.szname)
+            .single();
+
+          if (!translationError && translations?.lang_1_us) {
+            newElements[index].lang_1_us = translations.lang_1_us;
+          } else {
+            newElements[index].lang_1_us = value; // Fallback to dwid
+          }
+        } else {
+          newElements[index].lang_1_us = value; // Fallback to dwid
+        }
+      } catch (error) {
+        console.error("Error fetching translation:", error);
+        newElements[index].lang_1_us = value; // Fallback to dwid
+      }
+    }
+    
     setElements(newElements);
   };
 
   const addBonus = () => {
+    if (bonuses.length >= 8) {
+      toast.error("Maximum 8 bonuses allowed");
+      return;
+    }
     setBonuses([...bonuses, { attribute: '', value: 0, parts: 0 }]);
   };
 
@@ -195,16 +237,17 @@ export function SetsAddModal({
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2">
               <h3 className="text-lg font-semibold">Elements</h3>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={addElement}
-                className="flex items-center gap-2"
-              >
-                <Plus className="h-4 w-4" />
-                Add Element
-              </Button>
+                             <Button
+                 type="button"
+                 variant="outline"
+                 size="sm"
+                 onClick={addElement}
+                 disabled={elements.length >= 8}
+                 className="flex items-center gap-2"
+               >
+                 <Plus className="h-4 w-4" />
+                 Add Element
+               </Button>
             </div>
             
             {elements.length === 0 ? (
@@ -215,33 +258,42 @@ export function SetsAddModal({
               <div className="border rounded-lg">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-12">#</TableHead>
-                      <TableHead>Item</TableHead>
-                      <TableHead>Part</TableHead>
-                      <TableHead className="w-20">Actions</TableHead>
-                    </TableRow>
+                                         <TableRow>
+                       <TableHead className="w-12">#</TableHead>
+                       <TableHead>Item</TableHead>
+                       <TableHead>Name</TableHead>
+                       <TableHead>Part</TableHead>
+                       <TableHead className="w-20">Actions</TableHead>
+                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {elements.map((element, index) => (
                       <TableRow key={index}>
                         <TableCell className="font-medium">{index + 1}</TableCell>
-                        <TableCell>
-                          <Input
-                            value={element.name}
-                            onChange={(e) => updateElement(index, 'name', e.target.value)}
-                            placeholder="Item name or ID"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <OptionsSelect
-                            id={`element-part-${index}`}
-                            options={selectOptionsByField['elem_part'] || []}
-                            placeholder="Select part"
-                            value={element.part}
-                            onChange={(value) => updateElement(index, 'part', value)}
-                          />
-                        </TableCell>
+                                                 <TableCell>
+                           <Input
+                             value={element.name}
+                             onChange={(e) => updateElement(index, 'name', e.target.value)}
+                             placeholder="Item name or ID"
+                           />
+                         </TableCell>
+                         <TableCell>
+                           <Input
+                             value={element.lang_1_us}
+                             disabled
+                             placeholder="Auto-populated from item ID"
+                             className="bg-muted"
+                           />
+                         </TableCell>
+                         <TableCell>
+                           <OptionsSelect
+                             id={`element-part-${index}`}
+                             options={selectOptionsByField['elem_part'] || []}
+                             placeholder="Select part"
+                             value={element.part}
+                             onChange={(value) => updateElement(index, 'part', value)}
+                           />
+                         </TableCell>
                         <TableCell>
                           <Button
                             type="button"
@@ -265,16 +317,17 @@ export function SetsAddModal({
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b pb-2">
               <h3 className="text-lg font-semibold">Bonuses</h3>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={addBonus}
-                className="flex items-center gap-2"
-              >
-                <Plus className="h-4 w-4" />
-                Add Bonus
-              </Button>
+                             <Button
+                 type="button"
+                 variant="outline"
+                 size="sm"
+                 onClick={addBonus}
+                 disabled={bonuses.length >= 8}
+                 className="flex items-center gap-2"
+               >
+                 <Plus className="h-4 w-4" />
+                 Add Bonus
+               </Button>
             </div>
             
             {bonuses.length === 0 ? (
