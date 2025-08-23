@@ -10,5 +10,5 @@ export const DWITEMKIND1_OPTIONS = [
   "IK1_PASSIVE",
   "IK1_RIDE",
   "IK1_SYSTEM",
-  "IK1_WEAPON",
+  "IK1_WEAPON"
 ];
