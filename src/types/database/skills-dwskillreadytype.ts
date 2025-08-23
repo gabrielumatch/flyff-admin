@@ -1,0 +1,5 @@
+export const SKILLS_DWSKILLREADYTYPE_OPTIONS = [
+  "=",
+  "SR_AFTER",
+  "SR_BEFORE"
+];
