@@ -1,116 +1,40 @@
-export default DwItemJob = [
-    {
-      "dwitemjob": "="
-    },
-    {
-      "dwitemjob": "JOB_ACROBAT"
-    },
-    {
-      "dwitemjob": "JOB_ASSIST"
-    },
-    {
-      "dwitemjob": "JOB_BILLPOSTER"
-    },
-    {
-      "dwitemjob": "JOB_BILLPOSTER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_BILLPOSTER_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_BLADE"
-    },
-    {
-      "dwitemjob": "JOB_BLADE_HERO"
-    },
-    {
-      "dwitemjob": "JOB_BLADE_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_CRACKSHOOTER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_ELEMENTOR"
-    },
-    {
-      "dwitemjob": "JOB_ELEMENTOR_HERO"
-    },
-    {
-      "dwitemjob": "JOB_ELEMENTOR_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_ELEMENTORLORD_HERO"
-    },
-    {
-      "dwitemjob": "JOB_FLORIST_HERO"
-    },
-    {
-      "dwitemjob": "JOB_FORCEMASTER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_JESTER"
-    },
-    {
-      "dwitemjob": "JOB_JESTER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_JESTER_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_KNIGHT"
-    },
-    {
-      "dwitemjob": "JOB_KNIGHT_HERO"
-    },
-    {
-      "dwitemjob": "JOB_KNIGHT_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_LORDTEMPLER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_MAGICIAN"
-    },
-    {
-      "dwitemjob": "JOB_MENTALIST_HERO"
-    },
-    {
-      "dwitemjob": "JOB_MERCENARY"
-    },
-    {
-      "dwitemjob": "JOB_PSYCHIKEEPER"
-    },
-    {
-      "dwitemjob": "JOB_PSYCHIKEEPER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_PSYCHIKEEPER_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_RANGER"
-    },
-    {
-      "dwitemjob": "JOB_RANGER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_RANGER_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_RINGMASTER"
-    },
-    {
-      "dwitemjob": "JOB_RINGMASTER_HERO"
-    },
-    {
-      "dwitemjob": "JOB_RINGMASTER_MASTER"
-    },
-    {
-      "dwitemjob": "JOB_STORMBLADE_HERO"
-    },
-    {
-      "dwitemjob": "JOB_VAGRANT"
-    },
-    {
-      "dwitemjob": "JOB_WINDLURKER_HERO"
-    }
-  ]
+export const DWITEMJOB_OPTIONS = [
+  "=",
+  "JOB_ACROBAT",
+  "JOB_ASSIST",
+  "JOB_BILLPOSTER",
+  "JOB_BILLPOSTER_HERO",
+  "JOB_BILLPOSTER_MASTER",
+  "JOB_BLADE",
+  "JOB_BLADE_HERO",
+  "JOB_BLADE_MASTER",
+  "JOB_CRACKSHOOTER_HERO",
+  "JOB_ELEMENTOR",
+  "JOB_ELEMENTOR_HERO",
+  "JOB_ELEMENTOR_MASTER",
+  "JOB_ELEMENTORLORD_HERO",
+  "JOB_FLORIST_HERO",
+  "JOB_FORCEMASTER_HERO",
+  "JOB_JESTER",
+  "JOB_JESTER_HERO",
+  "JOB_JESTER_MASTER",
+  "JOB_KNIGHT",
+  "JOB_KNIGHT_HERO",
+  "JOB_KNIGHT_MASTER",
+  "JOB_LORDTEMPLER_HERO",
+  "JOB_MAGICIAN",
+  "JOB_MENTALIST_HERO",
+  "JOB_MERCENARY",
+  "JOB_PSYCHIKEEPER",
+  "JOB_PSYCHIKEEPER_HERO",
+  "JOB_PSYCHIKEEPER_MASTER",
+  "JOB_RANGER",
+  "JOB_RANGER_HERO",
+  "JOB_RANGER_MASTER",
+  "JOB_RINGMASTER",
+  "JOB_RINGMASTER_HERO",
+  "JOB_RINGMASTER_MASTER",
+  "JOB_STORMBLADE_HERO",
+  "JOB_VAGRANT",
+  "JOB_WINDLURKER_HERO",
+];

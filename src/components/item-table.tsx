@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect,  useState } from "react";
 import type { ReactNode } from "react";
 import { TwoLineText } from "@/components/two-line-text";
 import { Button } from "@/components/ui/button";
@@ -42,8 +42,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { fetchDistinctOptions } from "@/lib/supabase-distinct";
 import type { TPropItem } from "@/types/database";
+import { DWITEMJOB_OPTIONS } from "@/types/database/dwitemjob";
+import { DWITEMKIND1_OPTIONS } from "@/types/database/dwitemkind1";
+import { DWITEMKIND2_OPTIONS } from "@/types/database/dwitemkind2";
+import { DWITEMKIND3_OPTIONS } from "@/types/database/dwitemkind3";
+import { DWITEMLV_OPTIONS } from "@/types/database/dwitemlv";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
   "dwid",
@@ -147,47 +151,13 @@ export function ItemTable({
 
   // Load filter options once (generic by column)
   useEffect(() => {
-    const loadOptions = async () => {
-      const [jobs, levels, kinds1, kinds2, kinds3] = await Promise.all([
-        fetchDistinctOptions(
-          supabase,
-          tableName,
-          "dwitemjob",
-          "distinct_propitem_dwitemjob"
-        ),
-        fetchDistinctOptions(
-          supabase,
-          tableName,
-          "dwitemlv",
-          "distinct_propitem_dwitemlv"
-        ),
-        fetchDistinctOptions(
-          supabase,
-          tableName,
-          "dwitemkind1",
-          "distinct_propitem_dwitemkind1"
-        ),
-        fetchDistinctOptions(
-          supabase,
-          tableName,
-          "dwitemkind2",
-          "distinct_propitem_dwitemkind2"
-        ),
-        fetchDistinctOptions(
-          supabase,
-          tableName,
-          "dwitemkind3",
-          "distinct_propitem_dwitemkind3"
-        ),
-      ]);
-      setJobOptions(jobs);
-      setLevelOptions(levels);
-      setKind1Options(kinds1);
-      setKind2Options(kinds2);
-      setKind3Options(kinds3);
-    };
-    loadOptions();
-  }, [supabase, tableName]);
+    // Use static options instead of fetching from database
+    setJobOptions(DWITEMJOB_OPTIONS);
+    setKind1Options(DWITEMKIND1_OPTIONS);
+    setKind2Options(DWITEMKIND2_OPTIONS);
+    setKind3Options(DWITEMKIND3_OPTIONS);
+    setLevelOptions(DWITEMLV_OPTIONS);
+  }, []);
 
   const fetchRecords = useCallback(async () => {
     setLoading(true);

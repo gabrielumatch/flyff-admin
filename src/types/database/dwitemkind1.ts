@@ -1,0 +1,14 @@
+export const DWITEMKIND1_OPTIONS = [
+  "IK1_ACTIVE",
+  "IK1_ACTIVEUI",
+  "IK1_ARMOR",
+  "IK1_CHARGED",
+  "IK1_EFFECT",
+  "IK1_GENERAL",
+  "IK1_GOLD",
+  "IK1_HOUSING",
+  "IK1_PASSIVE",
+  "IK1_RIDE",
+  "IK1_SYSTEM",
+  "IK1_WEAPON",
+];
