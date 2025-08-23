@@ -161,6 +161,18 @@ import {
   DWSNDATTACK2_OPTIONS,
   DWQUESTID_OPTIONS,
   SZTEXTFILENAME_OPTIONS,
+  NMINLIMITLEVEL_OPTIONS,
+  NMAXLIMITLEVEL_OPTIONS,
+  NITEMGROUP_OPTIONS,
+  NUSELIMITGROUP_OPTIONS,
+  NMAXDUPLICATION_OPTIONS,
+  NEFFECTVALUE_OPTIONS,
+  NTARGETMINENCHANT_OPTIONS,
+  NTARGETMAXENCHANT_OPTIONS,
+  BRESETBIND_OPTIONS,
+  NBINDCONDITION_OPTIONS,
+  NRESETBINDCONDITION_OPTIONS,
+  DWHITACTIVESKILLID_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -315,6 +327,18 @@ export function ItemTable({
   const [sndattack2Options, setSndattack2Options] = useState<string[]>([]);
   const [questidOptions, setQuestidOptions] = useState<string[]>([]);
   const [textfilenameOptions, setTextfilenameOptions] = useState<string[]>([]);
+  const [minlimitlevelOptions, setMinlimitlevelOptions] = useState<string[]>([]);
+  const [maxlimitlevelOptions, setMaxlimitlevelOptions] = useState<string[]>([]);
+  const [itemgroupOptions, setItemgroupOptions] = useState<string[]>([]);
+  const [uselimitgroupOptions, setUselimitgroupOptions] = useState<string[]>([]);
+  const [maxduplicationOptions, setMaxduplicationOptions] = useState<string[]>([]);
+  const [effectvalueOptions, setEffectvalueOptions] = useState<string[]>([]);
+  const [targetminenchantOptions, setTargetminenchantOptions] = useState<string[]>([]);
+  const [targetmaxenchantOptions, setTargetmaxenchantOptions] = useState<string[]>([]);
+  const [resetbindOptions, setResetbindOptions] = useState<string[]>([]);
+  const [bindconditionOptions, setBindconditionOptions] = useState<string[]>([]);
+  const [resetbindconditionOptions, setResetbindconditionOptions] = useState<string[]>([]);
+  const [hitactiveskillidOptions, setHitactiveskillidOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -433,6 +457,18 @@ export function ItemTable({
     dwsndattack2: sndattack2Options,
     dwquestid: questidOptions,
     sztextfilename: textfilenameOptions,
+    nminlimitlevel: minlimitlevelOptions,
+    nmaxlimitlevel: maxlimitlevelOptions,
+    nitemgroup: itemgroupOptions,
+    nuselimitgroup: uselimitgroupOptions,
+    nmaxduplication: maxduplicationOptions,
+    neffectvalue: effectvalueOptions,
+    ntargetminenchant: targetminenchantOptions,
+    ntargetmaxenchant: targetmaxenchantOptions,
+    bresetbind: resetbindOptions,
+    nbindcondition: bindconditionOptions,
+    nresetbindcondition: resetbindconditionOptions,
+    dwhitactiveskillid: hitactiveskillidOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -552,6 +588,18 @@ export function ItemTable({
     dwsndattack2: "Select sound attack 2",
     dwquestid: "Select quest ID",
     sztextfilename: "Select text filename",
+    nminlimitlevel: "Select min limit level",
+    nmaxlimitlevel: "Select max limit level",
+    nitemgroup: "Select item group",
+    nuselimitgroup: "Select use limit group",
+    nmaxduplication: "Select max duplication",
+    neffectvalue: "Select effect value",
+    ntargetminenchant: "Select target min enchant",
+    ntargetmaxenchant: "Select target max enchant",
+    bresetbind: "Select reset bind",
+    nbindcondition: "Select bind condition",
+    nresetbindcondition: "Select reset bind condition",
+    dwhitactiveskillid: "Select hit active skill ID",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -719,6 +767,18 @@ export function ItemTable({
     setSndattack2Options(DWSNDATTACK2_OPTIONS);
     setQuestidOptions(DWQUESTID_OPTIONS);
     setTextfilenameOptions(SZTEXTFILENAME_OPTIONS);
+    setMinlimitlevelOptions(NMINLIMITLEVEL_OPTIONS);
+    setMaxlimitlevelOptions(NMAXLIMITLEVEL_OPTIONS);
+    setItemgroupOptions(NITEMGROUP_OPTIONS);
+    setUselimitgroupOptions(NUSELIMITGROUP_OPTIONS);
+    setMaxduplicationOptions(NMAXDUPLICATION_OPTIONS);
+    setEffectvalueOptions(NEFFECTVALUE_OPTIONS);
+    setTargetminenchantOptions(NTARGETMINENCHANT_OPTIONS);
+    setTargetmaxenchantOptions(NTARGETMAXENCHANT_OPTIONS);
+    setResetbindOptions(BRESETBIND_OPTIONS);
+    setBindconditionOptions(NBINDCONDITION_OPTIONS);
+    setResetbindconditionOptions(NRESETBINDCONDITION_OPTIONS);
+    setHitactiveskillidOptions(DWHITACTIVESKILLID_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
