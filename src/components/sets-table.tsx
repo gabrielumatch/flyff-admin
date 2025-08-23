@@ -73,8 +73,9 @@ export function SetsTable({
   };
 
   return (
-    <div className="p-4">
-      <div className="max-w-none mx-auto">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
           <p className="text-muted-foreground">{description}</p>

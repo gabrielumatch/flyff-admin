@@ -149,10 +149,11 @@ export function SetsAddModal({
                   <Label htmlFor={field.name}>{field.label}</Label>
                   {field.type === 'select' ? (
                     <OptionsSelect
+                      id={field.name}
                       options={selectOptionsByField[field.options || ''] || []}
                       placeholder={selectPlaceholdersByField[field.options || ''] || `Select ${field.label}`}
-                      value={formData[field.name as keyof TPropItemEtcItem] || ''}
-                      onValueChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
+                      value={String(formData[field.name as keyof TPropItemEtcItem] || '')}
+                      onChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
                     />
                   ) : (
                     <Input
@@ -176,10 +177,11 @@ export function SetsAddModal({
                   <Label htmlFor={field.name}>{field.label}</Label>
                   {field.type === 'select' ? (
                     <OptionsSelect
+                      id={field.name}
                       options={selectOptionsByField[field.options || ''] || []}
                       placeholder={selectPlaceholdersByField[field.options || ''] || `Select ${field.label}`}
-                      value={formData[field.name as keyof TPropItemEtcItem] || ''}
-                      onValueChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
+                      value={String(formData[field.name as keyof TPropItemEtcItem] || '')}
+                      onChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
                     />
                   ) : (
                     <Input
@@ -203,10 +205,11 @@ export function SetsAddModal({
                   <Label htmlFor={field.name}>{field.label}</Label>
                   {field.type === 'select' ? (
                     <OptionsSelect
+                      id={field.name}
                       options={selectOptionsByField[field.options || ''] || []}
                       placeholder={selectPlaceholdersByField[field.options || ''] || `Select ${field.label}`}
-                      value={formData[field.name as keyof TPropItemEtcItem] || ''}
-                      onValueChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
+                      value={String(formData[field.name as keyof TPropItemEtcItem] || '')}
+                      onChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
                     />
                   ) : (
                     <Input
@@ -230,10 +233,11 @@ export function SetsAddModal({
                   <Label htmlFor={field.name}>{field.label}</Label>
                   {field.type === 'select' ? (
                     <OptionsSelect
+                      id={field.name}
                       options={selectOptionsByField[field.options || ''] || []}
                       placeholder={selectPlaceholdersByField[field.options || ''] || `Select ${field.label}`}
-                      value={formData[field.name as keyof TPropItemEtcItem] || ''}
-                      onValueChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
+                      value={String(formData[field.name as keyof TPropItemEtcItem] || '')}
+                      onChange={(value) => handleInputChange(field.name as keyof TPropItemEtcItem, value)}
                     />
                   ) : (
                     <Input
