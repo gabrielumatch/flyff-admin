@@ -132,6 +132,16 @@ import {
   DWSPELLTYPE_OPTIONS,
   DWREFERSTAT1_OPTIONS,
   DWREFERSTAT2_OPTIONS,
+  DWREFERTARGET1_OPTIONS,
+  DWREFERTARGET2_OPTIONS,
+  DWREFERVALUE1_OPTIONS,
+  DWREFERVALUE2_OPTIONS,
+  DWSKILLTYPE_OPTIONS,
+  NITEMRESISTELECRICITY_OPTIONS,
+  NITEMRESISTFIRE_OPTIONS,
+  NITEMRESISTWIND_OPTIONS,
+  NITEMRESISTWATER_OPTIONS,
+  NITEMRESISTEARTH_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -257,6 +267,16 @@ export function ItemTable({
   const [spelltypeOptions, setSpelltypeOptions] = useState<string[]>([]);
   const [referstat1Options, setReferstat1Options] = useState<string[]>([]);
   const [referstat2Options, setReferstat2Options] = useState<string[]>([]);
+  const [refertarget1Options, setRefertarget1Options] = useState<string[]>([]);
+  const [refertarget2Options, setRefertarget2Options] = useState<string[]>([]);
+  const [refervalue1Options, setRefervalue1Options] = useState<string[]>([]);
+  const [refervalue2Options, setRefervalue2Options] = useState<string[]>([]);
+  const [skilltypeOptions, setSkilltypeOptions] = useState<string[]>([]);
+  const [itemresistelecricityOptions, setItemresistelecricityOptions] = useState<string[]>([]);
+  const [itemresistfireOptions, setItemresistfireOptions] = useState<string[]>([]);
+  const [itemresistwindOptions, setItemresistwindOptions] = useState<string[]>([]);
+  const [itemresistwaterOptions, setItemresistwaterOptions] = useState<string[]>([]);
+  const [itemresistearthOptions, setItemresistearthOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -346,6 +366,16 @@ export function ItemTable({
     dwspelltype: spelltypeOptions,
     dwreferstat1: referstat1Options,
     dwreferstat2: referstat2Options,
+    dwrefertarget1: refertarget1Options,
+    dwrefertarget2: refertarget2Options,
+    dwrefervalue1: refervalue1Options,
+    dwrefervalue2: refervalue2Options,
+    dwskilltype: skilltypeOptions,
+    nitemresistelecricity: itemresistelecricityOptions,
+    nitemresistfire: itemresistfireOptions,
+    nitemresistwind: itemresistwindOptions,
+    nitemresistwater: itemresistwaterOptions,
+    nitemresistearth: itemresistearthOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -436,6 +466,16 @@ export function ItemTable({
     dwspelltype: "Select spell type",
     dwreferstat1: "Select refer stat 1",
     dwreferstat2: "Select refer stat 2",
+    dwrefertarget1: "Select refer target 1",
+    dwrefertarget2: "Select refer target 2",
+    dwrefervalue1: "Select refer value 1",
+    dwrefervalue2: "Select refer value 2",
+    dwskilltype: "Select skill type",
+    nitemresistelecricity: "Select item resist electricity",
+    nitemresistfire: "Select item resist fire",
+    nitemresistwind: "Select item resist wind",
+    nitemresistwater: "Select item resist water",
+    nitemresistearth: "Select item resist earth",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -574,6 +614,16 @@ export function ItemTable({
     setSpelltypeOptions(DWSPELLTYPE_OPTIONS);
     setReferstat1Options(DWREFERSTAT1_OPTIONS);
     setReferstat2Options(DWREFERSTAT2_OPTIONS);
+    setRefertarget1Options(DWREFERTARGET1_OPTIONS);
+    setRefertarget2Options(DWREFERTARGET2_OPTIONS);
+    setRefervalue1Options(DWREFERVALUE1_OPTIONS);
+    setRefervalue2Options(DWREFERVALUE2_OPTIONS);
+    setSkilltypeOptions(DWSKILLTYPE_OPTIONS);
+    setItemresistelecricityOptions(NITEMRESISTELECRICITY_OPTIONS);
+    setItemresistfireOptions(NITEMRESISTFIRE_OPTIONS);
+    setItemresistwindOptions(NITEMRESISTWIND_OPTIONS);
+    setItemresistwaterOptions(NITEMRESISTWATER_OPTIONS);
+    setItemresistearthOptions(NITEMRESISTEARTH_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
