@@ -39,6 +39,7 @@ export function SetsTable({
     totalPages,
     totalRecords,
     nameByKey,
+    itemNameMap,
     itemsPerPage,
     fetchRecords,
     deleteRecord,
@@ -104,6 +105,7 @@ export function SetsTable({
         totalPages={totalPages}
         itemsPerPage={itemsPerPage}
         nameByKey={nameByKey}
+        itemNameMap={itemNameMap}
         onEdit={handleEdit}
         onDelete={handleDelete}
         buildPageHref={buildPageHref}

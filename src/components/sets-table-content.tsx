@@ -39,6 +39,7 @@ interface SetsTableContentProps {
   totalPages: number;
   itemsPerPage: number;
   nameByKey: Record<string, string>;
+  itemNameMap: Record<string, string>;
   onEdit: (record: TPropItemEtcItem) => void;
   onDelete: (id: string) => void;
   buildPageHref: (page: number) => string;
@@ -53,6 +54,7 @@ export function SetsTableContent({
   totalPages,
   itemsPerPage,
   nameByKey,
+  itemNameMap,
   onEdit,
   onDelete,
   buildPageHref,
@@ -104,7 +106,8 @@ export function SetsTableContent({
                   const name = record[`elem_${i}_name` as keyof TPropItemEtcItem] as string;
                   const part = record[`elem_${i}_part` as keyof TPropItemEtcItem] as string;
                   if (name) {
-                    elements.push(`\t\t${name}\t\t${part || ''}`);
+                    const displayName = itemNameMap[name] || name; // Use translated name or fallback to ID
+                    elements.push(`\t\t${displayName}\t\t${part || ''}`);
                   }
                 }
 
