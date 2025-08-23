@@ -7,13 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SearchableCombobox } from "@/components/searchable-combobox";
 import { Search } from "lucide-react";
 
 interface SkillSearchFiltersProps {
@@ -62,35 +56,25 @@ export function SkillSearchFilters({
           </div>
           <div className="space-y-2">
             <Label htmlFor="job">Job</Label>
-            <Select value={jobFilter} onValueChange={onJobFilterChange}>
-              <SelectTrigger id="job" className="w-full min-w-[200px]">
-                <SelectValue placeholder="All jobs" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {jobOptions.map((job) => (
-                  <SelectItem key={job} value={job}>
-                    {job}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchableCombobox
+              options={["all", ...jobOptions]}
+              value={jobFilter}
+              onValueChange={onJobFilterChange}
+              placeholder="All jobs"
+              searchPlaceholder="Search jobs..."
+              emptyMessage="No jobs found."
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="level">Level</Label>
-            <Select value={levelFilter} onValueChange={onLevelFilterChange}>
-              <SelectTrigger id="level" className="w-full min-w-[200px]">
-                <SelectValue placeholder="All levels" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {levelOptions.map((lv) => (
-                  <SelectItem key={lv} value={lv}>
-                    {lv}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SearchableCombobox
+              options={["all", ...levelOptions]}
+              value={levelFilter}
+              onValueChange={onLevelFilterChange}
+              placeholder="All levels"
+              searchPlaceholder="Search levels..."
+              emptyMessage="No levels found."
+            />
           </div>
         </div>
       </CardContent>

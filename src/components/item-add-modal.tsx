@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getItemFieldDescription } from "@/lib/item-field-descriptions";
-import { OptionsSelect } from "@/components/options-select";
+import { SearchableCombobox } from "@/components/searchable-combobox";
 
 interface ItemAddModalProps {
   isOpen: boolean;
@@ -129,14 +129,15 @@ export function ItemAddModal({
                       help={getItemFieldDescription(key)}
                     />
                     {selectOptionsByField[key] ? (
-                      <OptionsSelect
-                        id={key}
-                        value={formData[key] ?? ""}
-                        onChange={(v) => handleInputChange(key, v)}
+                      <SearchableCombobox
                         options={selectOptionsByField[key]}
+                        value={formData[key] ?? ""}
+                        onValueChange={(v) => handleInputChange(key, v)}
                         placeholder={
                           selectPlaceholdersByField?.[key] || `Select ${key}`
                         }
+                        searchPlaceholder={`Search ${key}...`}
+                        emptyMessage={`No ${key} options found.`}
                       />
                     ) : (
                       <Input

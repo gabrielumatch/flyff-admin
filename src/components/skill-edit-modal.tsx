@@ -17,7 +17,7 @@ import type { TPropSkill } from "@/types/database";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getSkillFieldDescription } from "@/lib/skill-field-descriptions";
-import { OptionsSelect } from "@/components/options-select";
+import { SearchableCombobox } from "@/components/searchable-combobox";
 import { isSelectField, isHiddenField } from "@/utils/skill-form-utils";
 
 interface SkillEditModalProps {
@@ -134,12 +134,13 @@ export function SkillEditModal({
                       help={getSkillFieldDescription(key)}
                     />
                     {isSelectField(field) && options.length > 0 ? (
-                      <OptionsSelect
-                        id={key}
-                        value={formData[field] || ""}
-                        onChange={(value: string) => handleInputChange(field, value)}
-                        placeholder={placeholder}
+                      <SearchableCombobox
                         options={options}
+                        value={formData[field] || ""}
+                        onValueChange={(value: string) => handleInputChange(field, value)}
+                        placeholder={placeholder}
+                        searchPlaceholder={`Search ${key}...`}
+                        emptyMessage={`No ${key} options found.`}
                       />
                     ) : (
                       <Input

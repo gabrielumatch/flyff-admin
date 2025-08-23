@@ -17,7 +17,7 @@ import type { TPropItem } from "@/types/database";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getItemFieldDescription } from "@/lib/item-field-descriptions";
-import { OptionsSelect } from "@/components/options-select";
+import { SearchableCombobox } from "@/components/searchable-combobox";
 
 interface ItemEditModalProps {
   isOpen: boolean;
@@ -111,14 +111,15 @@ export function ItemEditModal({
                       help={getItemFieldDescription(key)}
                     />
                     {selectOptionsByField[key] ? (
-                      <OptionsSelect
-                        id={key}
-                        value={(formData[field] as string) ?? ""}
-                        onChange={(v) => handleInputChange(field, v)}
+                      <SearchableCombobox
                         options={selectOptionsByField[key]}
+                        value={(formData[field] as string) ?? ""}
+                        onValueChange={(v) => handleInputChange(field, v)}
                         placeholder={
                           selectPlaceholdersByField?.[key] || `Select ${key}`
                         }
+                        searchPlaceholder={`Search ${key}...`}
+                        emptyMessage={`No ${key} options found.`}
                       />
                     ) : (
                       <Input
