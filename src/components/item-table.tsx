@@ -95,6 +95,12 @@ import {
   DWDESTPARAM0_OPTIONS,
   DWDESTPARAM1_OPTIONS,
   DWDESTPARAM2_OPTIONS,
+  NADJPARAMVAL0_OPTIONS,
+  NADJPARAMVAL1_OPTIONS,
+  NADJPARAMVAL2_OPTIONS,
+  DWCHGPARAMVAL0_OPTIONS,
+  DWCHGPARAMVAL1_OPTIONS,
+  DWCHGPARAMVAL2_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -183,6 +189,12 @@ export function ItemTable({
   const [destparam0Options, setDestparam0Options] = useState<string[]>([]);
   const [destparam1Options, setDestparam1Options] = useState<string[]>([]);
   const [destparam2Options, setDestparam2Options] = useState<string[]>([]);
+  const [adjparamval0Options, setAdjparamval0Options] = useState<string[]>([]);
+  const [adjparamval1Options, setAdjparamval1Options] = useState<string[]>([]);
+  const [adjparamval2Options, setAdjparamval2Options] = useState<string[]>([]);
+  const [chgparamval0Options, setChgparamval0Options] = useState<string[]>([]);
+  const [chgparamval1Options, setChgparamval1Options] = useState<string[]>([]);
+  const [chgparamval2Options, setChgparamval2Options] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -235,6 +247,12 @@ export function ItemTable({
     dwdestparam0: destparam0Options,
     dwdestparam1: destparam1Options,
     dwdestparam2: destparam2Options,
+    nadjparamval0: adjparamval0Options,
+    nadjparamval1: adjparamval1Options,
+    nadjparamval2: adjparamval2Options,
+    dwchgparamval0: chgparamval0Options,
+    dwchgparamval1: chgparamval1Options,
+    dwchgparamval2: chgparamval2Options,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -288,6 +306,12 @@ export function ItemTable({
     dwdestparam0: "Select destination parameter 0",
     dwdestparam1: "Select destination parameter 1",
     dwdestparam2: "Select destination parameter 2",
+    nadjparamval0: "Select adjusted parameter value 0",
+    nadjparamval1: "Select adjusted parameter value 1",
+    nadjparamval2: "Select adjusted parameter value 2",
+    dwchgparamval0: "Select change parameter value 0",
+    dwchgparamval1: "Select change parameter value 1",
+    dwchgparamval2: "Select change parameter value 2",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -389,6 +413,12 @@ export function ItemTable({
     setDestparam0Options(DWDESTPARAM0_OPTIONS);
     setDestparam1Options(DWDESTPARAM1_OPTIONS);
     setDestparam2Options(DWDESTPARAM2_OPTIONS);
+    setAdjparamval0Options(NADJPARAMVAL0_OPTIONS);
+    setAdjparamval1Options(NADJPARAMVAL1_OPTIONS);
+    setAdjparamval2Options(NADJPARAMVAL2_OPTIONS);
+    setChgparamval0Options(DWCHGPARAMVAL0_OPTIONS);
+    setChgparamval1Options(DWCHGPARAMVAL1_OPTIONS);
+    setChgparamval2Options(DWCHGPARAMVAL2_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
