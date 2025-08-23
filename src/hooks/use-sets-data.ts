@@ -25,9 +25,61 @@ export function useSetsData(tableName: string, debouncedSearchTerm: string, curr
       // Search functionality
       if (debouncedSearchTerm) {
         const term = debouncedSearchTerm;
-        query = query.or(
-          `name_propitemetc.ilike.%${term}%,elem_1_name.ilike.%${term}%`
-        );
+        
+        // First, find matching item IDs from translations and items table
+        const { data: trows } = await supabase
+          .from("propitem_translation")
+          .select("szname")
+          .or(`lang_1_us.ilike.%${term}%`);
+
+        const { data: nrows } = await supabase
+          .from("propitem")
+          .select("dwid, szname")
+          .or(`dwid.ilike.%${term}%,szname.ilike.%${term}%`);
+
+        // Collect all matching dwids
+        const matchingDwids = new Set<string>();
+        
+        // Add dwids from translations (via szname lookup)
+        if (trows && trows.length > 0) {
+          const sznames = trows.map(row => row.szname).filter(Boolean);
+          if (sznames.length > 0) {
+            const { data: itemsFromSznames } = await supabase
+              .from("propitem")
+              .select("dwid")
+              .in("szname", sznames);
+            
+            if (itemsFromSznames) {
+              for (const item of itemsFromSznames) {
+                if (item.dwid) matchingDwids.add(item.dwid);
+              }
+            }
+          }
+        }
+        
+        // Add dwids from direct item search
+        if (nrows) {
+          for (const row of nrows) {
+            if (row.dwid) matchingDwids.add(row.dwid);
+          }
+        }
+
+        // Build search conditions
+        const searchConditions = [`name_propitemetc.ilike.%${term}%`];
+        
+        // Add element name conditions for matching dwids
+        if (matchingDwids.size > 0) {
+          const dwidArray = Array.from(matchingDwids);
+          // Use individual OR conditions instead of .in()
+          for (const dwid of dwidArray) {
+            for (let i = 1; i <= 8; i++) {
+              searchConditions.push(`elem_${i}_name.eq.${dwid}`);
+            }
+          }
+        }
+
+        // Apply the search
+        query = query.or(searchConditions.join(','));
       }
 
       // Apply filters
@@ -42,6 +94,7 @@ export function useSetsData(tableName: string, debouncedSearchTerm: string, curr
 
       if (error) {
         console.error("Error fetching sets:", error);
+        console.error("Error details:", JSON.stringify(error, null, 2));
         toast.error("Failed to load sets");
         return;
       }
@@ -66,48 +119,52 @@ export function useSetsData(tableName: string, debouncedSearchTerm: string, curr
       // Fetch item translations for all elem names
       const itemNameMap: Record<string, string> = {};
       if (elemNames.size > 0) {
-        console.log("Fetching translations for elem names:", Array.from(elemNames));
-        // First, let's try a simpler approach - check if the tables exist
-        // Query both tables separately and join in JavaScript
-        const { data: items, error: itemsError } = await supabase
-          .from('propitem')
-          .select('dwid, szname')
-          .in('dwid', Array.from(elemNames));
+        try {
+          console.log("Fetching translations for elem names:", Array.from(elemNames));
+          // First, let's try a simpler approach - check if the tables exist
+          // Query both tables separately and join in JavaScript
+          const { data: items, error: itemsError } = await supabase
+            .from('propitem')
+            .select('dwid, szname')
+            .in('dwid', Array.from(elemNames));
 
-        if (itemsError) {
-          console.error("Error fetching items:", itemsError);
-        } else if (items && items.length > 0) {
-          // Get all sznames from the items
-          const sznames = items.map(item => item.szname).filter(Boolean);
-          
-          if (sznames.length > 0) {
-            const { data: translations, error: translationError } = await supabase
-              .from('propitem_translation')
-              .select('szname, lang_1_us')
-              .in('szname', sznames);
+          if (itemsError) {
+            console.error("Error fetching items:", itemsError);
+          } else if (items && items.length > 0) {
+            // Get all sznames from the items
+            const sznames = items.map(item => item.szname).filter(Boolean);
+            
+            if (sznames.length > 0) {
+              const { data: translations, error: translationError } = await supabase
+                .from('propitem_translation')
+                .select('szname, lang_1_us')
+                .in('szname', sznames);
 
-            if (translationError) {
-              console.error("Error fetching translations:", translationError);
-            } else if (translations) {
-              // Create a map of szname to translation
-              const translationMap: Record<string, string> = {};
-              for (const trans of translations) {
-                if (trans.lang_1_us) {
-                  translationMap[trans.szname] = trans.lang_1_us;
+              if (translationError) {
+                console.error("Error fetching translations:", translationError);
+              } else if (translations) {
+                // Create a map of szname to translation
+                const translationMap: Record<string, string> = {};
+                for (const trans of translations) {
+                  if (trans.lang_1_us) {
+                    translationMap[trans.szname] = trans.lang_1_us;
+                  }
                 }
-              }
 
-              // Create the final mapping of dwid to translated name
-              for (const item of items) {
-                const translation = translationMap[item.szname];
-                if (translation) {
-                  itemNameMap[item.dwid] = translation;
-                } else {
-                  itemNameMap[item.dwid] = item.dwid; // Fallback to dwid
+                // Create the final mapping of dwid to translated name
+                for (const item of items) {
+                  const translation = translationMap[item.szname];
+                  if (translation) {
+                    itemNameMap[item.dwid] = translation;
+                  } else {
+                    itemNameMap[item.dwid] = item.dwid; // Fallback to dwid
+                  }
                 }
               }
             }
           }
+        } catch (translationError) {
+          console.error("Error in translation fetching:", translationError);
         }
       }
 
