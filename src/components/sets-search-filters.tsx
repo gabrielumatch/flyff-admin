@@ -27,6 +27,7 @@ export function SetsSearchFilters({
   numOptions,
 }: SetsSearchFiltersProps) {
   return (
+    <>
     <div className="flex flex-col gap-4 md:flex-row md:items-end">
       {/* Search */}
       <div className="flex-1">
@@ -63,5 +64,7 @@ export function SetsSearchFilters({
         </Select>
       </div>
     </div>
+    
+    </>
   );
 }
