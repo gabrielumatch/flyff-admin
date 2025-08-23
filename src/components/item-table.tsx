@@ -152,6 +152,15 @@ import {
   FFLIGHTLRANGLE_OPTIONS,
   FFLIGHTTBANGLE_OPTIONS,
   DWFLIGHTLIMIT_OPTIONS,
+  DWFFUELREMAX_OPTIONS,
+  DWAFUELREMAX_OPTIONS,
+  DWFUELRE_OPTIONS,
+  DWLIMITLEVEL1_OPTIONS,
+  NREFLECT_OPTIONS,
+  DWSNDATTACK1_OPTIONS,
+  DWSNDATTACK2_OPTIONS,
+  DWQUESTID_OPTIONS,
+  SZTEXTFILENAME_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -297,6 +306,15 @@ export function ItemTable({
   const [flightlrangleOptions, setFlightlrangleOptions] = useState<string[]>([]);
   const [flighttbangleOptions, setFlighttbangleOptions] = useState<string[]>([]);
   const [flightlimitOptions, setFlightlimitOptions] = useState<string[]>([]);
+  const [ffuelremaxOptions, setFfuelremaxOptions] = useState<string[]>([]);
+  const [afuelremaxOptions, setAfuelremaxOptions] = useState<string[]>([]);
+  const [fuelreOptions, setFuelreOptions] = useState<string[]>([]);
+  const [limitlevel1Options, setLimitlevel1Options] = useState<string[]>([]);
+  const [reflectOptions, setReflectOptions] = useState<string[]>([]);
+  const [sndattack1Options, setSndattack1Options] = useState<string[]>([]);
+  const [sndattack2Options, setSndattack2Options] = useState<string[]>([]);
+  const [questidOptions, setQuestidOptions] = useState<string[]>([]);
+  const [textfilenameOptions, setTextfilenameOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -406,6 +424,15 @@ export function ItemTable({
     fflightlrangle: flightlrangleOptions,
     fflighttbangle: flighttbangleOptions,
     dwflightlimit: flightlimitOptions,
+    dwffuelremax: ffuelremaxOptions,
+    dwafuelremax: afuelremaxOptions,
+    dwfuelre: fuelreOptions,
+    dwlimitlevel1: limitlevel1Options,
+    nreflect: reflectOptions,
+    dwsndattack1: sndattack1Options,
+    dwsndattack2: sndattack2Options,
+    dwquestid: questidOptions,
+    sztextfilename: textfilenameOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -516,6 +543,15 @@ export function ItemTable({
     fflightlrangle: "Select flight LR angle",
     fflighttbangle: "Select flight TB angle",
     dwflightlimit: "Select flight limit",
+    dwffuelremax: "Select FF fuel re max",
+    dwafuelremax: "Select AF fuel re max",
+    dwfuelre: "Select fuel re",
+    dwlimitlevel1: "Select limit level 1",
+    nreflect: "Select reflect",
+    dwsndattack1: "Select sound attack 1",
+    dwsndattack2: "Select sound attack 2",
+    dwquestid: "Select quest ID",
+    sztextfilename: "Select text filename",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -674,6 +710,15 @@ export function ItemTable({
     setFlightlrangleOptions(FFLIGHTLRANGLE_OPTIONS);
     setFlighttbangleOptions(FFLIGHTTBANGLE_OPTIONS);
     setFlightlimitOptions(DWFLIGHTLIMIT_OPTIONS);
+    setFfuelremaxOptions(DWFFUELREMAX_OPTIONS);
+    setAfuelremaxOptions(DWAFUELREMAX_OPTIONS);
+    setFuelreOptions(DWFUELRE_OPTIONS);
+    setLimitlevel1Options(DWLIMITLEVEL1_OPTIONS);
+    setReflectOptions(NREFLECT_OPTIONS);
+    setSndattack1Options(DWSNDATTACK1_OPTIONS);
+    setSndattack2Options(DWSNDATTACK2_OPTIONS);
+    setQuestidOptions(DWQUESTID_OPTIONS);
+    setTextfilenameOptions(SZTEXTFILENAME_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
