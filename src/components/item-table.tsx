@@ -142,6 +142,16 @@ import {
   NITEMRESISTWIND_OPTIONS,
   NITEMRESISTWATER_OPTIONS,
   NITEMRESISTEARTH_OPTIONS,
+  NEVILDOING_OPTIONS,
+  DWEXPERTLV_OPTIONS,
+  DWEXPERTMAX_OPTIONS,
+  DWSUBDEFINE_OPTIONS,
+  DWEXP_OPTIONS,
+  DWCOMBOSTYLE_OPTIONS,
+  FFLIGHTSPEED_OPTIONS,
+  FFLIGHTLRANGLE_OPTIONS,
+  FFLIGHTTBANGLE_OPTIONS,
+  DWFLIGHTLIMIT_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -277,6 +287,16 @@ export function ItemTable({
   const [itemresistwindOptions, setItemresistwindOptions] = useState<string[]>([]);
   const [itemresistwaterOptions, setItemresistwaterOptions] = useState<string[]>([]);
   const [itemresistearthOptions, setItemresistearthOptions] = useState<string[]>([]);
+  const [evildoingOptions, setEvildoingOptions] = useState<string[]>([]);
+  const [expertlvOptions, setExpertlvOptions] = useState<string[]>([]);
+  const [expertmaxOptions, setExpertmaxOptions] = useState<string[]>([]);
+  const [subdefineOptions, setSubdefineOptions] = useState<string[]>([]);
+  const [expOptions, setExpOptions] = useState<string[]>([]);
+  const [combostyleOptions, setCombostyleOptions] = useState<string[]>([]);
+  const [flightspeedOptions, setFlightspeedOptions] = useState<string[]>([]);
+  const [flightlrangleOptions, setFlightlrangleOptions] = useState<string[]>([]);
+  const [flighttbangleOptions, setFlighttbangleOptions] = useState<string[]>([]);
+  const [flightlimitOptions, setFlightlimitOptions] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -376,6 +396,16 @@ export function ItemTable({
     nitemresistwind: itemresistwindOptions,
     nitemresistwater: itemresistwaterOptions,
     nitemresistearth: itemresistearthOptions,
+    nevildoing: evildoingOptions,
+    dwexpertlv: expertlvOptions,
+    dwexpertmax: expertmaxOptions,
+    dwsubdefine: subdefineOptions,
+    dwexp: expOptions,
+    dwcombostyle: combostyleOptions,
+    fflightspeed: flightspeedOptions,
+    fflightlrangle: flightlrangleOptions,
+    fflighttbangle: flighttbangleOptions,
+    dwflightlimit: flightlimitOptions,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -476,6 +506,16 @@ export function ItemTable({
     nitemresistwind: "Select item resist wind",
     nitemresistwater: "Select item resist water",
     nitemresistearth: "Select item resist earth",
+    nevildoing: "Select evil doing",
+    dwexpertlv: "Select expert level",
+    dwexpertmax: "Select expert max",
+    dwsubdefine: "Select sub define",
+    dwexp: "Select exp",
+    dwcombostyle: "Select combo style",
+    fflightspeed: "Select flight speed",
+    fflightlrangle: "Select flight LR angle",
+    fflighttbangle: "Select flight TB angle",
+    dwflightlimit: "Select flight limit",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -624,6 +664,16 @@ export function ItemTable({
     setItemresistwindOptions(NITEMRESISTWIND_OPTIONS);
     setItemresistwaterOptions(NITEMRESISTWATER_OPTIONS);
     setItemresistearthOptions(NITEMRESISTEARTH_OPTIONS);
+    setEvildoingOptions(NEVILDOING_OPTIONS);
+    setExpertlvOptions(DWEXPERTLV_OPTIONS);
+    setExpertmaxOptions(DWEXPERTMAX_OPTIONS);
+    setSubdefineOptions(DWSUBDEFINE_OPTIONS);
+    setExpOptions(DWEXP_OPTIONS);
+    setCombostyleOptions(DWCOMBOSTYLE_OPTIONS);
+    setFlightspeedOptions(FFLIGHTSPEED_OPTIONS);
+    setFlightlrangleOptions(FFLIGHTLRANGLE_OPTIONS);
+    setFlighttbangleOptions(FFLIGHTTBANGLE_OPTIONS);
+    setFlightlimitOptions(DWFLIGHTLIMIT_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
