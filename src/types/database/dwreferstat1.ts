@@ -1,0 +1,9 @@
+export const DWREFERSTAT1_OPTIONS = [
+  "=",
+  "ARMOR_SET",
+  "BARUNA_D",
+  "PET_VIS",
+  "WEAPON_GENERAL",
+  "WEAPON_ULTIMATE",
+  "WEAPON_UNIQUE"
+];

@@ -1,0 +1,12 @@
+export const DWREFERSTAT2_OPTIONS = [
+  "=",
+  "DST_ADJDEF",
+  "DST_ATKPOWER",
+  "DST_DEX",
+  "DST_HP_MAX",
+  "DST_INT",
+  "DST_MELEE_STEALHP",
+  "DST_PVP_DMG",
+  "DST_STA",
+  "DST_STR"
+];

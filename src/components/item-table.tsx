@@ -125,6 +125,13 @@ import {
   DWSFXOBJ5_OPTIONS,
   DWUSEMOTION_OPTIONS,
   DWCIRCLETIME_OPTIONS,
+  DWSKILLTIME_OPTIONS,
+  DWEXETARGET_OPTIONS,
+  DWUSECHANCE_OPTIONS,
+  DWSPELLREGION_OPTIONS,
+  DWSPELLTYPE_OPTIONS,
+  DWREFERSTAT1_OPTIONS,
+  DWREFERSTAT2_OPTIONS,
 } from "@/types/database";
 
 const MAIN_COLUMNS: Array<keyof TPropItem> = [
@@ -243,6 +250,13 @@ export function ItemTable({
   const [sfxobj5Options, setSfxobj5Options] = useState<string[]>([]);
   const [usemotionOptions, setUsemotionOptions] = useState<string[]>([]);
   const [circletimeOptions, setCircletimeOptions] = useState<string[]>([]);
+  const [skilltimeOptions, setSkilltimeOptions] = useState<string[]>([]);
+  const [exetargetOptions, setExetargetOptions] = useState<string[]>([]);
+  const [usechanceOptions, setUsechanceOptions] = useState<string[]>([]);
+  const [spellregionOptions, setSpellregionOptions] = useState<string[]>([]);
+  const [spelltypeOptions, setSpelltypeOptions] = useState<string[]>([]);
+  const [referstat1Options, setReferstat1Options] = useState<string[]>([]);
+  const [referstat2Options, setReferstat2Options] = useState<string[]>([]);
   const selectOptionsByField = {
     dwitemjob: jobOptions,
     dwitemlv: levelOptions,
@@ -325,6 +339,13 @@ export function ItemTable({
     dwsfxobj5: sfxobj5Options,
     dwusemotion: usemotionOptions,
     dwcircletime: circletimeOptions,
+    dwskilltime: skilltimeOptions,
+    dwexetarget: exetargetOptions,
+    dwusechance: usechanceOptions,
+    dwspellregion: spellregionOptions,
+    dwspelltype: spelltypeOptions,
+    dwreferstat1: referstat1Options,
+    dwreferstat2: referstat2Options,
   } as Record<string, string[]>;
   const selectPlaceholdersByField = {
     dwitemjob: "Select job",
@@ -408,6 +429,13 @@ export function ItemTable({
     dwsfxobj5: "Select SFX object 5",
     dwusemotion: "Select use motion",
     dwcircletime: "Select circle time",
+    dwskilltime: "Select skill time",
+    dwexetarget: "Select execute target",
+    dwusechance: "Select use chance",
+    dwspellregion: "Select spell region",
+    dwspelltype: "Select spell type",
+    dwreferstat1: "Select refer stat 1",
+    dwreferstat2: "Select refer stat 2",
   } as Record<string, string>;
   const itemsPerPage = 20;
 
@@ -539,6 +567,13 @@ export function ItemTable({
     setSfxobj5Options(DWSFXOBJ5_OPTIONS);
     setUsemotionOptions(DWUSEMOTION_OPTIONS);
     setCircletimeOptions(DWCIRCLETIME_OPTIONS);
+    setSkilltimeOptions(DWSKILLTIME_OPTIONS);
+    setExetargetOptions(DWEXETARGET_OPTIONS);
+    setUsechanceOptions(DWUSECHANCE_OPTIONS);
+    setSpellregionOptions(DWSPELLREGION_OPTIONS);
+    setSpelltypeOptions(DWSPELLTYPE_OPTIONS);
+    setReferstat1Options(DWREFERSTAT1_OPTIONS);
+    setReferstat2Options(DWREFERSTAT2_OPTIONS);
   }, []);
 
   const fetchRecords = useCallback(async () => {
