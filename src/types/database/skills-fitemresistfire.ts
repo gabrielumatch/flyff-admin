@@ -1,0 +1,3 @@
+export const SKILLS_FITEMRESISTFIRE_OPTIONS = [
+  "0"
+];

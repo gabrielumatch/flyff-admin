@@ -1,0 +1,3 @@
+export const SKILLS_FITEMRESISTEARTH_OPTIONS = [
+  "0"
+];

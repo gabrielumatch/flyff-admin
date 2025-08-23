@@ -1,0 +1,5 @@
+export const SKILLS_DWSKILLTYPE_OPTIONS = [
+  "KT_MAGIC",
+  "KT_SKILL",
+  "ST_MAGIC"
+];

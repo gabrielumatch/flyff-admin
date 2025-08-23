@@ -1,0 +1,3 @@
+export const SKILLS_FITEMRESISTWATER_OPTIONS = [
+  "0"
+];

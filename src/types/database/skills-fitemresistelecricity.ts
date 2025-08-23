@@ -1,0 +1,3 @@
+export const SKILLS_FITEMRESISTELECRICITY_OPTIONS = [
+  "0"
+];

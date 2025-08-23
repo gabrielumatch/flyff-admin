@@ -1,0 +1,6 @@
+export const SKILLS_DWCOMBOSTYLE_OPTIONS = [
+  "CT_CIRCLE",
+  "CT_FINISH",
+  "CT_GENERAL",
+  "CT_STEP"
+];

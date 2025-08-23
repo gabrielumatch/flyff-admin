@@ -1,0 +1,3 @@
+export const SKILLS_FITEMRESISTWIND_OPTIONS = [
+  "0"
+];

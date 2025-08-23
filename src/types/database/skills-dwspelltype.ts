@@ -1,0 +1,13 @@
+export const SKILLS_DWSPELLTYPE_OPTIONS = [
+  "=",
+  "ST_EARTH",
+  "ST_EARTHWATER",
+  "ST_EARTHWIND",
+  "ST_ELECTRICITY",
+  "ST_ELECWIND",
+  "ST_FIRE",
+  "ST_FIREEARTH",
+  "ST_MAGIC",
+  "ST_WATER",
+  "ST_WIND"
+];

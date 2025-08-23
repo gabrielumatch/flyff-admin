@@ -1,0 +1,7 @@
+export const SKILLS_DWSPELLREGION_OPTIONS = [
+  "=",
+  "SRO_AROUND",
+  "SRO_DIRECT",
+  "SRO_LINE",
+  "SRO_REGION"
+];
