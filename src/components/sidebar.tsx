@@ -38,6 +38,11 @@ const sidebarNavItems = [
     icon: Zap,
   },
   {
+    title: "Classes",
+    href: "/dashboard/classes",
+    icon: Users,
+  },
+  {
     title: "Items",
     icon: Package,
     items: [

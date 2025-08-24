@@ -343,3 +343,6 @@ export { MONSTERS_DWSNDDMG2_OPTIONS } from '@/types/database/monsters-dwsnddmg2'
 export { MONSTERS_DWSNDDMG3_OPTIONS } from '@/types/database/monsters-dwsnddmg3';
 export { MONSTERS_DWSNDIDLE1_OPTIONS } from '@/types/database/monsters-dwsndidle1';
 export { MONSTERS_DWSNDIDLE2_OPTIONS } from '@/types/database/monsters-dwsndidle2';
+
+// Classes-specific static options exports
+export { CLASSES_JOBNAME_OPTIONS } from '@/types/database/classes-jobname';
