@@ -53,25 +53,25 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
 
   // Health and mana
   dwaddhp: "Additional HP bonus.",
-  dwaddmp: "Additional MP bonus.",
+  dwaddmp: "Additional MP bonus (=, 1, 20, 50, 100, 120, 185, 400, 1300, 10000).",
 
   // Defense stats
   dwnaturealarmor: "Natural armor value.",
-  nabrasion: "Abrasion resistance.",
-  nhardness: "Hardness value.",
+  nabrasion: "Abrasion resistance (=, 1, 130).",
+  nhardness: "Hardness value (=, 0).",
 
   // Elemental properties
-  eelementtype: "Elemental type of the monster.",
-  welementatk: "Elemental attack power.",
+  eelementtype: "Elemental type of the monster (0-5).",
+  welementatk: "Elemental attack power (0-18).",
 
   // Movement and behavior
-  dwhidelevel: "Hide/stealth level.",
-  fspeed: "Movement speed.",
-  dwshelter: "Shelter/cover value.",
-  bflying: "Whether the monster can fly (1) or not (0).",
-  dwjumping: "Jumping ability.",
-  dwairjump: "Air jumping ability.",
-  btaming: "Whether the monster can be tamed (1) or not (0).",
+  dwhidelevel: "Hide/stealth level (=, 1).",
+  fspeed: "Movement speed (0 to 0.25).",
+  dwshelter: "Shelter/cover value (= for default).",
+  bflying: "Whether the monster can fly (0 = no, 1 = yes).",
+  dwjumping: "Jumping ability (= for default).",
+  dwairjump: "Air jumping ability (= for default).",
+  btaming: "Whether the monster can be tamed (= for default).",
 
   // Resistance stats
   dwresismagic: "Magic resistance.",

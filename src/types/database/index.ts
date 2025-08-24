@@ -304,3 +304,14 @@ export { MONSTERS_DWARMRATE_OPTIONS } from '@/types/database/monsters-dwarmrate'
 export { MONSTERS_DWLEGRATE_OPTIONS } from '@/types/database/monsters-dwlegrate';
 export { MONSTERS_DWATTACKSPEED_OPTIONS } from '@/types/database/monsters-dwattackspeed';
 export { MONSTERS_DWREATTACKDELAY_OPTIONS } from '@/types/database/monsters-dwreattackdelay';
+export { MONSTERS_DWADDMP_OPTIONS } from '@/types/database/monsters-dwaddmp';
+export { MONSTERS_NABRASION_OPTIONS } from '@/types/database/monsters-nabrasion';
+export { MONSTERS_NHARDNESS_OPTIONS } from '@/types/database/monsters-nhardness';
+export { MONSTERS_DWADJATKDELAY_OPTIONS } from '@/types/database/monsters-dwadjatkdelay';
+export { MONSTERS_EELEMENTTYPE_OPTIONS } from '@/types/database/monsters-eelementtype';
+export { MONSTERS_WELEMENTATK_OPTIONS } from '@/types/database/monsters-welementatk';
+export { MONSTERS_DWHIDELEVEL_OPTIONS } from '@/types/database/monsters-dwhidelevel';
+export { MONSTERS_FSPEED_OPTIONS } from '@/types/database/monsters-fspeed';
+export { MONSTERS_DWSHELTER_OPTIONS } from '@/types/database/monsters-dwshelter';
+export { MONSTERS_DWJUMPING_OPTIONS } from '@/types/database/monsters-dwjumping';
+export { MONSTERS_DWAIRJUMP_OPTIONS } from '@/types/database/monsters-dwairjump';
