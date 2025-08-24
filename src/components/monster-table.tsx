@@ -76,13 +76,14 @@ export function MonsterTable({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="p-4">
+      <div className="max-w-none mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-          <p className="text-muted-foreground">{description}</p>
-        </div>
+            <h2 className="text-3xl font-bold">{title}</h2>
+            <p className="text-muted-foreground">{description}</p>
+          </div>
         <Button onClick={() => setIsAddModalOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Add Monster
@@ -136,6 +137,7 @@ export function MonsterTable({
           selectPlaceholdersByField={selectPlaceholdersByField}
         />
       )}
+    </div>
     </div>
   );
 }
