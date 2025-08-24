@@ -70,7 +70,7 @@ export function ClassTableContent({
     } else {
       // Smart pagination for larger page counts
       let startPage = Math.max(1, currentPage - 2);
-      let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+      const endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
       
       if (endPage - startPage + 1 < maxVisibleButtons) {
         startPage = Math.max(1, endPage - maxVisibleButtons + 1);
