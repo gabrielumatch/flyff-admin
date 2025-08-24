@@ -93,29 +93,29 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   dwexpvalue: "Experience value when killed.",
   nfxpvalue: "Flying experience value (0 to 1385).",
   nbodystate: "Body state value (=, 1).",
-  dwaddability: "Additional ability value.",
+  dwaddability: "Additional ability value (= for default).",
 
   // Combat flags
-  bkillable: "Whether the monster can be killed (1) or not (0).",
+  bkillable: "Whether the monster can be killed (0 = no, 1 = yes).",
 
   // Virtual items (drops)
-  dwvirtitem1: "Virtual item 1 ID.",
-  dwvirttype1: "Virtual item 1 type.",
-  dwvirtitem2: "Virtual item 2 ID.",
-  dwvirttype2: "Virtual item 2 type.",
-  dwvirtitem3: "Virtual item 3 ID.",
-  dwvirttype3: "Virtual item 3 type.",
+  dwvirtitem1: "Virtual item 1 ID (II_WEA_HAN_HAND).",
+  dwvirttype1: "Virtual item 1 type (VT_ITEM).",
+  dwvirtitem2: "Virtual item 2 ID (= for default).",
+  dwvirttype2: "Virtual item 2 type (= for default).",
+  dwvirtitem3: "Virtual item 3 ID (= for default).",
+  dwvirttype3: "Virtual item 3 type (= for default).",
 
   // Sound effects
-  dwsndatk1: "Primary attack sound effect.",
-  dwsndatk2: "Secondary attack sound effect.",
-  dwsnddie1: "Primary death sound effect.",
-  dwsnddie2: "Secondary death sound effect.",
-  dwsnddmg1: "Primary damage sound effect.",
-  dwsnddmg2: "Secondary damage sound effect.",
-  dwsnddmg3: "Tertiary damage sound effect.",
-  dwsndidle1: "Primary idle sound effect.",
-  dwsndidle2: "Secondary idle sound effect.",
+  dwsndatk1: "Primary attack sound effect (= for default).",
+  dwsndatk2: "Secondary attack sound effect (= for default).",
+  dwsnddie1: "Primary death sound effect (= for default).",
+  dwsnddie2: "Secondary death sound effect (= for default).",
+  dwsnddmg1: "Primary damage sound effect (=, SND_ITEM_ANIMAL, SND_ITEM_PLANT, SND_ITEM_TREE).",
+  dwsnddmg2: "Secondary damage sound effect (=, SND_PC_DMGWANB).",
+  dwsnddmg3: "Tertiary damage sound effect (= for default).",
+  dwsndidle1: "Primary idle sound effect (= or specific NPC sounds).",
+  dwsndidle2: "Secondary idle sound effect (= for default).",
 };
 
 export function getMonsterFieldDescription(field: string): string {
