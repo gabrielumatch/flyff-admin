@@ -108,15 +108,15 @@ export function SkillAddModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-6xl md:max-w-7xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="!max-w-[95vw] max-h-[95vh] overflow-y-auto flex flex-col"      >
+      <DialogHeader>
           <DialogTitle>Add New Skill</DialogTitle>
           <DialogDescription>Create a new skill entry</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <TooltipProvider>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
               {skillFields.map((field) => {
                 if (isHiddenField(field)) return null;
                 

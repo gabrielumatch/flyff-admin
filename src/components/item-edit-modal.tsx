@@ -84,8 +84,8 @@ export function ItemEditModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-6xl md:max-w-7xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="!max-w-[95vw] max-h-[95vh] overflow-y-auto flex flex-col"      >
+      <DialogHeader>
           <DialogTitle>Edit Item</DialogTitle>
           <DialogDescription>
             Update item:{" "}
@@ -97,7 +97,7 @@ export function ItemEditModal({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <TooltipProvider>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
               {fields.map((field) => {
                 const key = String(field);
                 return (

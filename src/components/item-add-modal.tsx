@@ -108,15 +108,15 @@ export function ItemAddModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-full max-w-[calc(100%-2rem)] sm:max-w-4xl md:max-w-5xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="!max-w-[95vw] max-h-[95vh] overflow-y-auto flex flex-col"      >
+      <DialogHeader>
           <DialogTitle>Add New Item</DialogTitle>
           <DialogDescription>Create a new item entry</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <TooltipProvider>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
               {allFields.map((key) => {
                 return (
                   <div key={key} className="space-y-2">
