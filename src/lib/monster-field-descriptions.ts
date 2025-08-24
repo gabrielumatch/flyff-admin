@@ -14,14 +14,14 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   dwdex: "Dexterity stat of the monster (1-5000).",
   dwint: "Intelligence stat of the monster (1-5000).",
   dwhr: "Hit Rate stat of the monster (0-4000 or = for default).",
-  dwer: "Evasion Rate stat of the monster.",
+  dwer: "Evasion Rate stat of the monster (0-26000 or = for default).",
 
   // Classification
   dwrace: "Race/type of the monster (e.g., = for default).",
   dwbelligerence: "Aggression level of the monster (BELLI_MELEE, BELLI_PEACEFUL, etc.).",
   dwgender: "Gender of the monster (e.g., = for default).",
-  dwlevel: "Level of the monster.",
-  dwfilghtlevel: "Flight level requirement for the monster.",
+  dwlevel: "Level of the monster (1-250 or = for default).",
+  dwfilghtlevel: "Flight level requirement for the monster (1-2000 or = for default).",
   dwsize: "Size category of the monster (e.g., = for default).",
   dwclass: "Class/category of the monster (RANK_NORMAL, RANK_BOSS, etc.).",
   bifpart: "Whether the monster has multiple parts (0 = no, 1 = yes).",
@@ -30,8 +30,8 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
 
   // Combat stats
   dwactionradius: "Action/attack radius of the monster (= for default).",
-  dwatkmin: "Minimum attack damage.",
-  dwatkmax: "Maximum attack damage.",
+  dwatkmin: "Minimum attack damage (0-300000 or = for default).",
+  dwatkmax: "Maximum attack damage (0-300000 or = for default).",
   dwatk1: "Primary attack type (weapon/item ID for monster attacks).",
   dwatk2: "Secondary attack type (weapon/item ID for monster attacks).",
   dwatk3: "Tertiary attack type (weapon/item ID for monster attacks).",
@@ -52,11 +52,11 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   dwadjatkdelay: "Adjusted attack delay.",
 
   // Health and mana
-  dwaddhp: "Additional HP bonus.",
+  dwaddhp: "Additional HP bonus (1-700000000 or = for default).",
   dwaddmp: "Additional MP bonus (=, 1, 20, 50, 100, 120, 185, 400, 1300, 10000).",
 
   // Defense stats
-  dwnaturealarmor: "Natural armor value.",
+  dwnaturealarmor: "Natural armor value (0-2000 or = for default).",
   nabrasion: "Abrasion resistance (=, 1, 130).",
   nhardness: "Hardness value (=, 0).",
 
@@ -74,7 +74,7 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   btaming: "Whether the monster can be tamed (= for default).",
 
   // Resistance stats
-  dwresismagic: "Magic resistance.",
+  dwresismagic: "Magic resistance (0-1500000 or = for default).",
   fresistelecricity: "Electricity resistance (-0.3 to 0.5).",
   fresistfire: "Fire resistance (-0.3 to 0.5).",
   fresistwind: "Wind resistance (-0.3 to 0.3).",
@@ -82,7 +82,7 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   fresistearth: "Earth resistance (-0.3 to 0.5).",
 
   // Economy and drops
-  dwcash: "Cash value when killed.",
+  dwcash: "Cash value when killed (0-1000000, =, or FALSE).",
   dwsourcematerial: "Source material ID (= or specific material types).",
   dwmaterialamount: "Amount of material dropped (=, 2000).",
   dwcohesion: "Cohesion value (= for default).",
@@ -90,7 +90,7 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   dwcorrectionvalue: "Correction value for drops (0 to 100000).",
 
   // Experience and progression
-  dwexpvalue: "Experience value when killed.",
+  dwexpvalue: "Experience value when killed (0-560980280).",
   nfxpvalue: "Flying experience value (0 to 1385).",
   nbodystate: "Body state value (=, 1).",
   dwaddability: "Additional ability value (= for default).",
