@@ -1,25 +1,4 @@
 // Monster race options for dwrace field
 export const MONSTERS_DWRACE_OPTIONS = [
-  "RACE_NONE",
-  "RACE_HUMAN",
-  "RACE_ASSA",
-  "RACE_MILE",
-  "RACE_CRUEL",
-  "RACE_ANIMAL",
-  "RACE_UNDEAD",
-  "RACE_PLANT",
-  "RACE_INSECT",
-  "RACE_FISH",
-  "RACE_DEMON",
-  "RACE_PEACE",
-  "RACE_DEVA",
-  "RACE_BOSS",
-  "RACE_DRAGON",
-  "RACE_GIANT",
-  "RACE_MACHINE",
-  "RACE_FAIRY",
-  "RACE_HUMAN_MALE",
-  "RACE_HUMAN_FEMALE",
-  "RACE_ASSA_MALE",
-  "RACE_ASSA_FEMALE"
+  "="
 ];

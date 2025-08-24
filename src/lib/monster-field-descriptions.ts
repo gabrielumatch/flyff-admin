@@ -8,7 +8,7 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   szcomment: "Developer note or comment about this monster.",
 
   // Basic stats
-  dwai: "Artificial Intelligence level of the monster.",
+  dwai: "Artificial Intelligence type of the monster (e.g., AII_MONSTER, AII_PET, AII_AGGRO_NORMAL).",
   dwstr: "Strength stat of the monster.",
   dwsta: "Stamina stat of the monster.",
   dwdex: "Dexterity stat of the monster.",
@@ -17,38 +17,38 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   dwer: "Evasion Rate stat of the monster.",
 
   // Classification
-  dwrace: "Race/type of the monster (e.g., RACE_HUMAN, RACE_ANIMAL).",
-  dwbelligerence: "Aggression level of the monster.",
-  dwgender: "Gender of the monster (GENDER_MALE, GENDER_FEMALE, etc.).",
+  dwrace: "Race/type of the monster (e.g., = for default).",
+  dwbelligerence: "Aggression level of the monster (BELLI_MELEE, BELLI_PEACEFUL, etc.).",
+  dwgender: "Gender of the monster (e.g., = for default).",
   dwlevel: "Level of the monster.",
   dwfilghtlevel: "Flight level requirement for the monster.",
-  dwsize: "Size category of the monster (SIZE_SMALL, SIZE_LARGE, etc.).",
-  dwclass: "Class/category of the monster (CLASS_NORMAL, CLASS_BOSS, etc.).",
-  bifpart: "Whether the monster has multiple parts.",
-  dwkarma: "Karma value of the monster.",
-  dwuseable: "Whether this monster can be used/summoned (1) or not (0).",
+  dwsize: "Size category of the monster (e.g., = for default).",
+  dwclass: "Class/category of the monster (RANK_NORMAL, RANK_BOSS, etc.).",
+  bifpart: "Whether the monster has multiple parts (0 = no, 1 = yes).",
+  dwkarma: "Karma value of the monster (-2000, =, 2000).",
+  dwuseable: "Whether this monster can be used/summoned (=, 1).",
 
   // Combat stats
-  dwactionradius: "Action/attack radius of the monster.",
+  dwactionradius: "Action/attack radius of the monster (= for default).",
   dwatkmin: "Minimum attack damage.",
   dwatkmax: "Maximum attack damage.",
-  dwatk1: "Primary attack type.",
-  dwatk2: "Secondary attack type.",
-  dwatk3: "Tertiary attack type.",
+  dwatk1: "Primary attack type (weapon/item ID for monster attacks).",
+  dwatk2: "Secondary attack type (weapon/item ID for monster attacks).",
+  dwatk3: "Tertiary attack type (weapon/item ID for monster attacks).",
 
   // Hit rates for different body parts
-  dwhorizontalrate: "Horizontal attack hit rate.",
-  dwverticalrate: "Vertical attack hit rate.",
-  dwdiagonalrate: "Diagonal attack hit rate.",
-  dwthrustrate: "Thrust attack hit rate.",
-  dwchestrate: "Chest attack hit rate.",
-  dwheadrate: "Head attack hit rate.",
-  dwarmrate: "Arm attack hit rate.",
-  dwlegrate: "Leg attack hit rate.",
+  dwhorizontalrate: "Horizontal attack hit rate (weapon/item ID or = for default).",
+  dwverticalrate: "Vertical attack hit rate (0.35 to 9.0 or = for default).",
+  dwdiagonalrate: "Diagonal attack hit rate (= or 0).",
+  dwthrustrate: "Thrust attack hit rate (= for default).",
+  dwchestrate: "Chest attack hit rate (= for default).",
+  dwheadrate: "Head attack hit rate (= for default).",
+  dwarmrate: "Arm attack hit rate (= for default).",
+  dwlegrate: "Leg attack hit rate (= for default).",
 
   // Combat timing
-  dwattackspeed: "Attack speed of the monster.",
-  dwreattackdelay: "Re-attack delay time.",
+  dwattackspeed: "Attack speed of the monster (50 to 1500 or = for default).",
+  dwreattackdelay: "Re-attack delay time (60 to 6000ms or = for default).",
   dwadjatkdelay: "Adjusted attack delay.",
 
   // Health and mana
