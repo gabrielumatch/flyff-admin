@@ -92,7 +92,7 @@ export function ClassEditModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="!max-w-[95vw] max-h-[95vh] overflow-y-auto flex flex-col">
+      <DialogContent className="!max-w-[80vw] max-h-[80vh] overflow-y-auto flex flex-col">
         <DialogHeader>
           <DialogTitle>Edit Class</DialogTitle>
           <DialogDescription>Edit class entry: {record.jobname}</DialogDescription>
@@ -100,7 +100,7 @@ export function ClassEditModal({
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <TooltipProvider>
-            <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {classFields.map((field) => {
                 if (isHiddenField(field)) return null;
                 
