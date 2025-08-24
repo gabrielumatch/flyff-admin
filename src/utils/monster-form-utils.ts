@@ -31,7 +31,6 @@ export const SELECT_FIELDS: Array<keyof TPropMover> = [
   'dwattackspeed',
   'dwreattackdelay',
   // Additional fields that should be select dropdowns
-  'dwhr',
   'dwer',
   'dwfilghtlevel',
   'dwatkmin',
@@ -90,6 +89,11 @@ export const NUMBER_FIELDS: Array<keyof TPropMover> = [
   'dwint',   // Intelligence: 1-5000
 ];
 
+// Fields that accept both numbers and specific string values (using regex validation)
+export const HYBRID_FIELDS: Array<keyof TPropMover> = [
+  'dwhr',    // Hit Rate: 0-4000 or "="
+];
+
 // Fields that should be hidden or not editable
 export const HIDDEN_FIELDS: Array<keyof TPropMover> = [
   'dwid',
@@ -121,6 +125,51 @@ export function getNumberFieldConstraints(fieldName: keyof TPropMover): { min: n
   };
   
   return constraints[fieldName as keyof typeof constraints] || null;
+}
+
+// Helper function to check if a field should be rendered as a hybrid field
+export function isHybridField(fieldName: keyof TPropMover): boolean {
+  return HYBRID_FIELDS.includes(fieldName);
+}
+
+// Helper function to get hybrid field constraints
+export function getHybridFieldConstraints(fieldName: keyof TPropMover): { 
+  min: number; 
+  max: number; 
+  step: number; 
+  stringOptions: string[];
+  regex: RegExp;
+  placeholder: string;
+} | null {
+  const constraints = {
+    dwhr: { 
+      min: 0, 
+      max: 4000, 
+      step: 1, 
+      stringOptions: ["="],
+      regex: /^(=|[0-9]{1,4})$/,
+      placeholder: "Enter number (0-4000) or ="
+    },
+  };
+  
+  return constraints[fieldName as keyof typeof constraints] || null;
+}
+
+// Helper function to validate hybrid field value
+export function validateHybridFieldValue(fieldName: keyof TPropMover, value: string): boolean {
+  const constraints = getHybridFieldConstraints(fieldName);
+  if (!constraints) return false;
+  
+  // Check if it matches the regex pattern
+  if (!constraints.regex.test(value)) return false;
+  
+  // If it's a number, check the range
+  if (value !== "=") {
+    const numValue = parseInt(value, 10);
+    return numValue >= constraints.min && numValue <= constraints.max;
+  }
+  
+  return true;
 }
 
 // Helper function to check if a field should be hidden

@@ -13,7 +13,7 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
   dwsta: "Stamina stat of the monster (1-5000).",
   dwdex: "Dexterity stat of the monster (1-5000).",
   dwint: "Intelligence stat of the monster (1-5000).",
-  dwhr: "Hit Rate stat of the monster.",
+  dwhr: "Hit Rate stat of the monster (0-4000 or = for default).",
   dwer: "Evasion Rate stat of the monster.",
 
   // Classification

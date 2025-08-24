@@ -18,7 +18,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getMonsterFieldDescription } from "@/lib/monster-field-descriptions";
 import { SearchableCombobox } from "@/components/searchable-combobox";
-import { isSelectField, isHiddenField, isNumberField, getNumberFieldConstraints } from "@/utils/monster-form-utils";
+import { isSelectField, isHiddenField, isNumberField, getNumberFieldConstraints, isHybridField, getHybridFieldConstraints, validateHybridFieldValue } from "@/utils/monster-form-utils";
 
 interface MonsterEditModalProps {
   open: boolean;
@@ -135,18 +135,33 @@ export function MonsterEditModal({
                         searchPlaceholder={`Search ${key}...`}
                         emptyMessage={`No ${key} options found.`}
                       />
-                    ) : isNumberField(field) ? (
-                      <Input
-                        id={key}
-                        type="number"
-                        min={getNumberFieldConstraints(field)?.min}
-                        max={getNumberFieldConstraints(field)?.max}
-                        step={getNumberFieldConstraints(field)?.step}
-                        value={formData[field] || ""}
-                        onChange={(e) => handleInputChange(field, e.target.value)}
-                        placeholder={placeholder}
-                      />
-                    ) : (
+                                         ) : isNumberField(field) ? (
+                       <Input
+                         id={key}
+                         type="number"
+                         min={getNumberFieldConstraints(field)?.min}
+                         max={getNumberFieldConstraints(field)?.max}
+                         step={getNumberFieldConstraints(field)?.step}
+                         value={formData[field] || ""}
+                         onChange={(e) => handleInputChange(field, e.target.value)}
+                         placeholder={placeholder}
+                       />
+                                           ) : isHybridField(field) ? (
+                        <Input
+                          id={key}
+                          type="text"
+                          value={formData[field] || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Only allow valid input (numbers or =)
+                            if (value === "" || validateHybridFieldValue(field, value)) {
+                              handleInputChange(field, value);
+                            }
+                          }}
+                          placeholder={getHybridFieldConstraints(field)?.placeholder || "Enter value"}
+                          className="font-mono"
+                        />
+                     ) : (
                       <Input
                         id={key}
                         value={formData[field] || ""}
