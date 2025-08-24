@@ -3,6 +3,7 @@ export * from '@/types/database/propitem';
 export * from '@/types/database/propskill';
 export * from '@/types/database/proptranslation';
 export * from '@/types/database/propitemetc-item';
+export * from '@/types/database/propmover';
 
 // Static options exports
 export { DWITEMJOB_OPTIONS } from '@/types/database/dwitemjob';
@@ -274,3 +275,14 @@ export { SKILLS_DWBUFFTICKTYPE_OPTIONS } from '@/types/database/skills-dwbufftic
 // Sets-specific static options exports
 export { SETS_ELEM_PART_OPTIONS } from '@/types/database/sets-elem-part';
 export { SETS_AVAIL_DST_OPTIONS } from '@/types/database/sets-avail-dst';
+
+// Monsters-specific static options exports
+export { MONSTERS_DWLEVEL_OPTIONS } from '@/types/database/monsters-dwlevel';
+export { MONSTERS_DWRACE_OPTIONS } from '@/types/database/monsters-dwrace';
+export { MONSTERS_DWGENDER_OPTIONS } from '@/types/database/monsters-dwgender';
+export { MONSTERS_DWSIZE_OPTIONS } from '@/types/database/monsters-dwsize';
+export { MONSTERS_DWCLASS_OPTIONS } from '@/types/database/monsters-dwclass';
+export { MONSTERS_DWUSEABLE_OPTIONS } from '@/types/database/monsters-dwuseable';
+export { MONSTERS_BFLYING_OPTIONS } from '@/types/database/monsters-bflying';
+export { MONSTERS_BTAMING_OPTIONS } from '@/types/database/monsters-btaming';
+export { MONSTERS_BKILLABLE_OPTIONS } from '@/types/database/monsters-bkillable';

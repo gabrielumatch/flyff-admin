@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   Menu,
   WandSparkles,
+  Zap,
 } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
@@ -30,6 +31,11 @@ const sidebarNavItems = [
     title: "Skills",
     href: "/dashboard/skills",
     icon: WandSparkles,
+  },
+  {
+    title: "Monsters",
+    href: "/dashboard/monsters",
+    icon: Zap,
   },
   {
     title: "Items",
