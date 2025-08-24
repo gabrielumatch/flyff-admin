@@ -4,6 +4,7 @@ export * from '@/types/database/propskill';
 export * from '@/types/database/proptranslation';
 export * from '@/types/database/propitemetc-item';
 export * from '@/types/database/propmover';
+export * from '@/types/database/propjob';
 
 // Static options exports
 export { DWITEMJOB_OPTIONS } from '@/types/database/dwitemjob';

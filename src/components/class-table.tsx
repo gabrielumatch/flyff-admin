@@ -1,116 +1,131 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { ClassSearchFilters } from "./class-search-filters";
-import { ClassTableContent } from "./class-table-content";
-import { ClassAddModal } from "./class-add-modal";
-import { ClassEditModal } from "./class-edit-modal";
+import { ClassEditModal } from "@/components/class-edit-modal";
+import { ClassAddModal } from "@/components/class-add-modal";
+import { ClassSearchFilters } from "@/components/class-search-filters";
+import { ClassTableContent } from "@/components/class-table-content";
 import { useClassOptions } from "@/hooks/use-class-options";
 import { useClassFilters } from "@/hooks/use-class-filters";
 import { useClassData } from "@/hooks/use-class-data";
 import type { TPropJob } from "@/types/database";
 
-interface ClassTableProps {
+export function ClassTable({
+  tableName,
+  title,
+  description,
+}: {
   tableName: string;
   title: string;
   description: string;
-}
-
-export function ClassTable({ tableName, title, description }: ClassTableProps) {
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<TPropJob | null>(null);
-
+}) {
+  // Custom hooks for clean state management
   const { selectOptionsByField, selectPlaceholdersByField } = useClassOptions();
   const {
     searchTerm,
     setSearchTerm,
-    jobFilter,
-    setJobFilter,
+    debouncedSearchTerm,
     currentPage,
     setCurrentPage,
-    debouncedSearchTerm,
-    resetFilters,
+    jobFilter,
+    setJobFilter,
   } = useClassFilters();
+  const {
+    records,
+    loading,
+    totalPages,
+    totalRecords,
+    fetchRecords,
+    deleteRecord,
+  } = useClassData(tableName, debouncedSearchTerm, currentPage, jobFilter);
 
-  const { records, loading, totalRecords, totalPages, fetchRecords, deleteRecord } =
-    useClassData(tableName, debouncedSearchTerm, currentPage, jobFilter);
+  // Modal state
+  const [editingRecord, setEditingRecord] = useState<TPropJob | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Get job options for filters
+  const jobOptions = selectOptionsByField["jobname"] || [];
 
   const handleEdit = (record: TPropJob) => {
-    setSelectedRecord(record);
-    setEditModalOpen(true);
+    setEditingRecord(record);
+    setIsEditModalOpen(true);
   };
 
-  const handleDelete = (jobname: string) => {
-    deleteRecord(jobname);
+  const handleDelete = async (jobname: string) => {
+    await deleteRecord(jobname);
   };
 
   const handleAddSuccess = () => {
+    setIsAddModalOpen(false);
     fetchRecords();
   };
 
   const handleEditSuccess = () => {
+    setIsEditModalOpen(false);
+    setEditingRecord(null);
     fetchRecords();
   };
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>{title}</CardTitle>
-              <p className="text-sm text-muted-foreground">{description}</p>
-            </div>
-            <Button onClick={() => setAddModalOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Class
-            </Button>
+    <div className="p-4">
+      <div className="max-w-none mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h2 className="text-3xl font-bold">{title}</h2>
+            <p className="text-muted-foreground">{description}</p>
           </div>
-        </CardHeader>
-        <CardContent>
-          <ClassSearchFilters
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            jobFilter={jobFilter}
-            setJobFilter={setJobFilter}
-            resetFilters={resetFilters}
-            selectOptionsByField={selectOptionsByField}
-          />
-          <ClassTableContent
-            records={records}
-            loading={loading}
-            totalRecords={totalRecords}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        </CardContent>
-      </Card>
+          <Button onClick={() => setIsAddModalOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Class
+          </Button>
+        </div>
 
-      <ClassAddModal
-        open={addModalOpen}
-        onOpenChange={setAddModalOpen}
-        onSuccess={handleAddSuccess}
-        selectOptionsByField={selectOptionsByField}
-        selectPlaceholdersByField={selectPlaceholdersByField}
-      />
+        {/* Search & Filters */}
+        <ClassSearchFilters
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          jobFilter={jobFilter}
+          onJobFilterChange={setJobFilter}
+          jobOptions={jobOptions}
+        />
 
-      {selectedRecord && (
-        <ClassEditModal
-          open={editModalOpen}
-          onOpenChange={setEditModalOpen}
-          record={selectedRecord}
-          onSuccess={handleEditSuccess}
+        {/* Table Content */}
+        <ClassTableContent
+          records={records}
+          loading={loading}
+          totalRecords={totalRecords}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+
+        {/* Add Modal */}
+        <ClassAddModal
+          open={isAddModalOpen}
+          onOpenChange={setIsAddModalOpen}
+          onSuccess={handleAddSuccess}
           selectOptionsByField={selectOptionsByField}
           selectPlaceholdersByField={selectPlaceholdersByField}
         />
-      )}
+
+        {/* Edit Modal */}
+        {editingRecord && (
+          <ClassEditModal
+            open={isEditModalOpen}
+            onOpenChange={setIsEditModalOpen}
+            record={editingRecord}
+            onSuccess={handleEditSuccess}
+            selectOptionsByField={selectOptionsByField}
+            selectPlaceholdersByField={selectPlaceholdersByField}
+          />
+        )}
+      </div>
     </div>
   );
 }

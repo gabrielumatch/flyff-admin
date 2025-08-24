@@ -1,70 +1,66 @@
-"use client";
-
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { SearchableCombobox } from "@/components/searchable-combobox";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface ClassSearchFiltersProps {
   searchTerm: string;
-  setSearchTerm: (value: string) => void;
+  onSearchChange: (value: string) => void;
   jobFilter: string;
-  setJobFilter: (value: string) => void;
-  resetFilters: () => void;
-  selectOptionsByField: Record<string, string[]>;
+  onJobFilterChange: (value: string) => void;
+  jobOptions: string[];
 }
 
 export function ClassSearchFilters({
   searchTerm,
-  setSearchTerm,
+  onSearchChange,
   jobFilter,
-  setJobFilter,
-  resetFilters,
-  selectOptionsByField,
+  onJobFilterChange,
+  jobOptions,
 }: ClassSearchFiltersProps) {
-  const jobOptions = selectOptionsByField["jobname"] || [];
-
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="search">Search by Job Name</Label>
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              id="search"
-              placeholder="Search classes..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle>Search & Filters</CardTitle>
+        <CardDescription>
+          Search by job name; filter by job type
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="search">Search</Label>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="search"
+                placeholder="Search job name..."
+                value={searchTerm}
+                onChange={(e) => onSearchChange(e.target.value)}
+                className="pl-8"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="job">Job Type</Label>
+            <SearchableCombobox
+              options={["all", ...jobOptions]}
+              value={jobFilter}
+              onValueChange={onJobFilterChange}
+              placeholder="All job types"
+              searchPlaceholder="Search job types..."
+              emptyMessage="No job types found."
             />
           </div>
         </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="job-filter">Filter by Job</Label>
-          <SearchableCombobox
-            options={jobOptions}
-            value={jobFilter}
-            onValueChange={setJobFilter}
-            placeholder="Select job type"
-            searchPlaceholder="Search jobs..."
-            emptyMessage="No job types found."
-          />
-        </div>
-
-        <div className="flex items-end">
-          <Button
-            variant="outline"
-            onClick={resetFilters}
-            className="w-full"
-          >
-            <X className="mr-2 h-4 w-4" />
-            Clear Filters
-          </Button>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
