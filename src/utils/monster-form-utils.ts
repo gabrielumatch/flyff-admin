@@ -31,10 +31,6 @@ export const SELECT_FIELDS: Array<keyof TPropMover> = [
   'dwattackspeed',
   'dwreattackdelay',
   // Additional fields that should be select dropdowns
-  'dwstr',
-  'dwsta',
-  'dwdex',
-  'dwint',
   'dwhr',
   'dwer',
   'dwfilghtlevel',
@@ -86,6 +82,14 @@ export const SELECT_FIELDS: Array<keyof TPropMover> = [
   'dwsndidle2',
 ];
 
+// Fields that should be rendered as number inputs with specific ranges
+export const NUMBER_FIELDS: Array<keyof TPropMover> = [
+  'dwstr',   // Strength: 1-5000
+  'dwsta',   // Stamina: 1-5000
+  'dwdex',   // Dexterity: 1-5000
+  'dwint',   // Intelligence: 1-5000
+];
+
 // Fields that should be hidden or not editable
 export const HIDDEN_FIELDS: Array<keyof TPropMover> = [
   'dwid',
@@ -100,6 +104,23 @@ export const REQUIRED_FIELDS: Array<keyof TPropMover> = [
 // Helper function to check if a field should be rendered as a select
 export function isSelectField(fieldName: keyof TPropMover): boolean {
   return SELECT_FIELDS.includes(fieldName);
+}
+
+// Helper function to check if a field should be rendered as a number input
+export function isNumberField(fieldName: keyof TPropMover): boolean {
+  return NUMBER_FIELDS.includes(fieldName);
+}
+
+// Helper function to get number field constraints
+export function getNumberFieldConstraints(fieldName: keyof TPropMover): { min: number; max: number; step: number } | null {
+  const constraints = {
+    dwstr: { min: 1, max: 5000, step: 1 },
+    dwsta: { min: 1, max: 5000, step: 1 },
+    dwdex: { min: 1, max: 5000, step: 1 },
+    dwint: { min: 1, max: 5000, step: 1 },
+  };
+  
+  return constraints[fieldName as keyof typeof constraints] || null;
 }
 
 // Helper function to check if a field should be hidden

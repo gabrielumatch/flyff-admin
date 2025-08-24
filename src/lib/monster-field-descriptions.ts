@@ -9,10 +9,10 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
 
   // Basic stats
   dwai: "Artificial Intelligence type of the monster (e.g., AII_MONSTER, AII_PET, AII_AGGRO_NORMAL).",
-  dwstr: "Strength stat of the monster.",
-  dwsta: "Stamina stat of the monster.",
-  dwdex: "Dexterity stat of the monster.",
-  dwint: "Intelligence stat of the monster.",
+  dwstr: "Strength stat of the monster (1-5000).",
+  dwsta: "Stamina stat of the monster (1-5000).",
+  dwdex: "Dexterity stat of the monster (1-5000).",
+  dwint: "Intelligence stat of the monster (1-5000).",
   dwhr: "Hit Rate stat of the monster.",
   dwer: "Evasion Rate stat of the monster.",
 

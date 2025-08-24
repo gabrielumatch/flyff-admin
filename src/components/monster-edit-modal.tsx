@@ -18,7 +18,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { FieldHelpTooltip } from "@/components/field-help-tooltip";
 import { getMonsterFieldDescription } from "@/lib/monster-field-descriptions";
 import { SearchableCombobox } from "@/components/searchable-combobox";
-import { isSelectField, isHiddenField } from "@/utils/monster-form-utils";
+import { isSelectField, isHiddenField, isNumberField, getNumberFieldConstraints } from "@/utils/monster-form-utils";
 
 interface MonsterEditModalProps {
   open: boolean;
@@ -134,6 +134,17 @@ export function MonsterEditModal({
                         placeholder={placeholder}
                         searchPlaceholder={`Search ${key}...`}
                         emptyMessage={`No ${key} options found.`}
+                      />
+                    ) : isNumberField(field) ? (
+                      <Input
+                        id={key}
+                        type="number"
+                        min={getNumberFieldConstraints(field)?.min}
+                        max={getNumberFieldConstraints(field)?.max}
+                        step={getNumberFieldConstraints(field)?.step}
+                        value={formData[field] || ""}
+                        onChange={(e) => handleInputChange(field, e.target.value)}
+                        placeholder={placeholder}
                       />
                     ) : (
                       <Input
