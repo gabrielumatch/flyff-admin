@@ -17,7 +17,7 @@ export function useClassData(
   const [totalRecords, setTotalRecords] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const ITEMS_PER_PAGE = 10;
+  const ITEMS_PER_PAGE = 40;
 
   const fetchRecords = useCallback(async () => {
     setLoading(true);
