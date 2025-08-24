@@ -75,24 +75,24 @@ export const MONSTER_FIELD_DESCRIPTIONS: Record<string, string> = {
 
   // Resistance stats
   dwresismagic: "Magic resistance.",
-  fresistelecricity: "Electricity resistance.",
-  fresistfire: "Fire resistance.",
-  fresistwind: "Wind resistance.",
-  fresistwater: "Water resistance.",
-  fresistearth: "Earth resistance.",
+  fresistelecricity: "Electricity resistance (-0.3 to 0.5).",
+  fresistfire: "Fire resistance (-0.3 to 0.5).",
+  fresistwind: "Wind resistance (-0.3 to 0.3).",
+  fresistwater: "Water resistance (-0.3 to 0.3).",
+  fresistearth: "Earth resistance (-0.3 to 0.5).",
 
   // Economy and drops
   dwcash: "Cash value when killed.",
-  dwsourcematerial: "Source material ID.",
-  dwmaterialamount: "Amount of material dropped.",
-  dwcohesion: "Cohesion value.",
-  dwholdingtime: "Holding time for drops.",
-  dwcorrectionvalue: "Correction value for drops.",
+  dwsourcematerial: "Source material ID (= or specific material types).",
+  dwmaterialamount: "Amount of material dropped (=, 2000).",
+  dwcohesion: "Cohesion value (= for default).",
+  dwholdingtime: "Holding time for drops (=, 6000, 180000).",
+  dwcorrectionvalue: "Correction value for drops (0 to 100000).",
 
   // Experience and progression
   dwexpvalue: "Experience value when killed.",
-  nfxpvalue: "Flying experience value.",
-  nbodystate: "Body state value.",
+  nfxpvalue: "Flying experience value (0 to 1385).",
+  nbodystate: "Body state value (=, 1).",
   dwaddability: "Additional ability value.",
 
   // Combat flags
