@@ -63,150 +63,158 @@ export function MonsterTableContent({
   buildPageHref,
   setCurrentPage,
 }: MonsterTableContentProps) {
-  const startRecord = (currentPage - 1) * itemsPerPage + 1;
-  const endRecord = Math.min(currentPage * itemsPerPage, totalRecords);
-
-  const renderCell = (record: TPropMover, field: keyof TPropMover): ReactNode => {
-    const value = record[field];
-    
-    if (field === "szname") {
-      const translatedName = nameByKey[value as string];
-      return (
-        <TwoLineText
-          primary={translatedName || value || ""}
-          secondary={value || ""}
-        />
-      );
+  const displayValue = (
+    record: TPropMover,
+    key: keyof TPropMover
+  ): ReactNode => {
+    if (key === "szname") {
+      const translated = record.szname ? nameByKey[record.szname] : undefined;
+      const primary =
+        translated && translated.trim().length > 0 ? translated : record.szname;
+      return <TwoLineText primary={primary} secondary={record.szname} />;
     }
-    
-    return value || "";
+    return record[key] ?? "-";
   };
-
-  if (loading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Monsters</CardTitle>
-          <CardDescription>
-            Loading monsters...
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center h-32">
-            <div className="text-muted-foreground">Loading...</div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Monsters</CardTitle>
+        <CardTitle>Monsters ({totalRecords})</CardTitle>
         <CardDescription>
-          Showing {startRecord} to {endRecord} of {totalRecords} monsters
+          Showing{" "}
+          {(currentPage - 1) * itemsPerPage + (totalRecords === 0 ? 0 : 1)}{" "}
+          to {Math.min(currentPage * itemsPerPage, totalRecords)} of{" "}
+          {totalRecords} records
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {MAIN_COLUMNS.map((col) => (
+                  <TableHead key={col}>{col}</TableHead>
+                ))}
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
                 <TableRow>
-                  {MAIN_COLUMNS.map((column) => (
-                    <TableHead key={column}>{column}</TableHead>
-                  ))}
-                  <TableHead className="w-[100px]">Actions</TableHead>
+                  <TableCell
+                    colSpan={MAIN_COLUMNS.length + 1}
+                    className="text-center py-8"
+                  >
+                    Loading...
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {records.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={MAIN_COLUMNS.length + 1} className="text-center">
-                      No monsters found
+              ) : records.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={MAIN_COLUMNS.length + 1}
+                    className="text-center py-8"
+                  >
+                    No records found
+                  </TableCell>
+                </TableRow>
+              ) : (
+                records.map((record) => (
+                  <TableRow key={record.dwid}>
+                    {MAIN_COLUMNS.map((col) => (
+                      <TableCell key={String(col)}>
+                        {displayValue(record, col)}
+                      </TableCell>
+                    ))}
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onEdit(record)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onDelete(record.dwid)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
-                ) : (
-                  records.map((record) => (
-                    <TableRow key={record.dwid}>
-                      {MAIN_COLUMNS.map((column) => (
-                        <TableCell key={column}>
-                          {renderCell(record, column)}
-                        </TableCell>
-                      ))}
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => onEdit(record)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => onDelete(record.dwid)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
 
-          {totalPages > 1 && (
+        {totalPages > 1 && (
+          <div className="mt-6">
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
-                    href={buildPageHref(currentPage - 1)}
+                    href={buildPageHref(Math.max(1, currentPage - 1))}
                     onClick={(e) => {
                       e.preventDefault();
-                      if (currentPage > 1) {
-                        setCurrentPage(currentPage - 1);
-                      }
+                      setCurrentPage(Math.max(1, currentPage - 1));
                     }}
-                    className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                    className={
+                      currentPage === 1
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
                   />
                 </PaginationItem>
-                
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      href={buildPageHref(page)}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCurrentPage(page);
-                      }}
-                      isActive={currentPage === page}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                
+                {(() => {
+                  const maxButtons = 5;
+                  let start = Math.max(
+                    1,
+                    currentPage - Math.floor(maxButtons / 2)
+                  );
+                  const end = Math.min(totalPages, start + maxButtons - 1);
+                  if (end - start + 1 < maxButtons)
+                    start = Math.max(1, end - maxButtons + 1);
+                  const pages: number[] = [];
+                  for (let p = start; p <= end; p++) pages.push(p);
+                  return pages.map((page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        href={buildPageHref(page)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(page);
+                        }}
+                        isActive={currentPage === page}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ));
+                })()}
                 <PaginationItem>
                   <PaginationNext
-                    href={buildPageHref(currentPage + 1)}
+                    href={buildPageHref(
+                      Math.min(totalPages, currentPage + 1)
+                    )}
                     onClick={(e) => {
                       e.preventDefault();
-                      if (currentPage < totalPages) {
-                        setCurrentPage(currentPage + 1);
-                      }
+                      setCurrentPage(Math.min(totalPages, currentPage + 1));
                     }}
-                    className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+                    className={
+                      currentPage === totalPages
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
                   />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
-          )}
-        </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
